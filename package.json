@@ -1,7 +1,7 @@
 {
-  "name": "fuse-angular",
+  "name": "revivo_admin_panel",
   "version": "18.0.0",
-  "description": "Fuse - Angular Admin Template and Starter Project",
+  "description": "Revio admin panel",
   "author": "https://themeforest.net/user/srcn",
   "license": "https://themeforest.net/licenses/standard",
   "private": true,
