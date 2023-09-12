@@ -16,9 +16,9 @@ import { provideIcons } from 'app/core/icons/icons.provider';
 import { provideTransloco } from 'app/core/transloco/transloco.provider';
 import { mockApiServices } from 'app/mock-api';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore} from '@angular/fire/firestore';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideFirestore, getFirestore, connectFirestoreEmulator} from '@angular/fire/firestore';
+import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import { getStorage, provideStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { environment } from 'environments/environment';
 
 
@@ -27,9 +27,27 @@ export const appConfig: ApplicationConfig = {
         //Firebase config
         importProvidersFrom(
             provideFirebaseApp(() => initializeApp(environment.firebase)),
-            provideFirestore(() => getFirestore()),
-            provideAuth(() => getAuth()),
-            provideStorage(() => getStorage())
+            provideFirestore(() => {
+                const fstore = getFirestore();
+                if (!environment.production) {
+                    connectFirestoreEmulator(fstore, 'localhost', 8080)
+                }
+                return fstore;
+            }),
+            provideAuth(() => {
+                const auth = getAuth();
+                if (!environment.production) {
+                    connectAuthEmulator(auth, 'http://localhost:9099', {disableWarnings: true})
+                }
+                return auth;
+            }),
+            provideStorage(() => {
+                const storage = getStorage();
+                if (!environment.production) {
+                    connectStorageEmulator(storage, 'localhost', 9199)
+                }
+                return storage;
+            })
         ),
 
         provideAnimations(),
