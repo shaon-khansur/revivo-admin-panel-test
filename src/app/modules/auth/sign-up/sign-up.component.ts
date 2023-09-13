@@ -11,7 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
-
+import {getAuth, Auth} from '@angular/fire/auth';
 @Component({
     selector     : 'auth-sign-up',
     templateUrl  : './sign-up.component.html',
@@ -56,8 +56,8 @@ export class AuthSignUpComponent implements OnInit
                 name      : ['', Validators.required],
                 email     : ['', [Validators.required, Validators.email]],
                 password  : ['', Validators.required],
-                company   : [''],
-                agreements: ['', Validators.requiredTrue],
+                // company   : [''],
+                // agreements: ['', Validators.requiredTrue],
             },
         );
     }
@@ -66,6 +66,16 @@ export class AuthSignUpComponent implements OnInit
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    signUpWithFirebase(): void {
+        const formData = new FormData();
+        formData.append('name', this.signUpForm.value.name)
+        formData.append('email', this.signUpForm.value.email)
+        formData.append('password', this.signUpForm.value.password)
+        // formData.append('name', this.signUpForm.value.role)
+        this._authService.createUserWithFirebase(formData).subscribe(res => {
+            console.log('res', res);
+        })
+    }
     /**
      * Sign up
      */
@@ -84,10 +94,19 @@ export class AuthSignUpComponent implements OnInit
         this.showAlert = false;
 
         // Sign up
-        this._authService.signUp(this.signUpForm.value)
+        const formData = new FormData();
+        formData.append('name', this.signUpForm.value.name)
+        formData.append('email', this.signUpForm.value.email)
+        formData.append('password', this.signUpForm.value.password)
+        // formData.append('name', this.signUpForm.value.role)
+        // this._authService.createUserWithFirebase(formData).subscribe(res => {
+        //     console.log('res', res);
+        // })
+        this._authService.createUserWithFirebase(formData)
             .subscribe(
                 (response) =>
                 {
+                    console.log('response', response)
                     // Navigate to the confirmation required page
                     this._router.navigateByUrl('/confirmation-required');
                 },
