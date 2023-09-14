@@ -10,7 +10,10 @@ const generatePalette = require(path.resolve(__dirname, ('src/@fuse/tailwind/uti
  * Tailwind-like color palettes automatically
  */
 const customPalettes = {
-    brand: generatePalette('#2196F3')
+    brand: generatePalette('#000066'),
+    accent: generatePalette('#00ccff'),
+    warn: generatePalette('#ff3399')
+
 };
 
 /**
@@ -19,45 +22,38 @@ const customPalettes = {
 const themes = {
     // Default theme is required for theming system to work correctly!
     'default': {
-        primary  : {
-            ...colors.indigo,
-            DEFAULT: colors.indigo[600]
-        },
-        accent   : {
-            ...colors.slate,
-            DEFAULT: colors.slate[800]
-        },
-        warn     : {
-            ...colors.red,
-            DEFAULT: colors.red[600]
-        },
+        primary  : customPalettes.brand,
+        accent   : customPalettes.accent,
+        warn     : customPalettes.warn,
         'on-warn': {
             500: colors.red['50']
         }
     },
     // Rest of the themes will use the 'default' as the base
     // theme and will extend it with their given configuration.
-    'brand' : {
-        primary: customPalettes.brand
-    },
-    'teal'  : {
-        primary: {
-            ...colors.teal,
-            DEFAULT: colors.teal[600]
-        }
-    },
-    'rose'  : {
-        primary: colors.rose
-    },
-    'purple': {
-        primary: {
-            ...colors.purple,
-            DEFAULT: colors.purple[600]
-        }
-    },
-    'amber' : {
-        primary: colors.amber
-    }
+    // 'brand' : {
+    //     primary: customPalettes.brand,
+    //     accent: customPalettes.accent,
+    //     warn: customPalettes.warn
+    // },
+    // 'teal'  : {
+    //     primary: {
+    //         ...colors.teal,
+    //         DEFAULT: colors.teal[600]
+    //     }
+    // },
+    // 'rose'  : {
+    //     primary: colors.rose
+    // },
+    // 'purple': {
+    //     primary: {
+    //         ...colors.purple,
+    //         DEFAULT: colors.purple[600]
+    //     }
+    // },
+    // 'amber' : {
+    //     primary: colors.amber
+    // }
 };
 
 /**

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation, inject } from '@angular/core';
-import { authState, Auth } from '@angular/fire/auth';
+import { authState, Auth, getAuth } from '@angular/fire/auth';
 import {  } from '@angular/fire/app';
 import { Subscription } from 'rxjs';
 
