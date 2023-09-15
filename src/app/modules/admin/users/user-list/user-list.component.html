@@ -31,9 +31,9 @@
                                 {{usersCount}}
                             </ng-container>
                             {{usersCount | i18nPlural: {
-                            '=0'   : 'No contacts',
-                            '=1'   : 'contact',
-                            'other': 'contacts'
+                            '=0'   : 'No users',
+                            '=1'   : 'user',
+                            'other': 'users'
                         } }}
                         </div>
                     </div>
@@ -72,38 +72,42 @@
                 <!-- Contacts list -->
                 <div class="relative">
                     <ng-container *ngIf="usersList$ | async as users">
-                        <ng-container *ngIf="users.length; else noUsers">
-                            <ng-container *ngFor="let user of users; let i = index; trackBy: trackByFn">
-                                <!-- Group -->
-                                <ng-container *ngIf="i === 0 || user.name.charAt(0) !== users[i - 1].name.charAt(0)">
-                                    <div class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-900">
-                                        {{user.name.charAt(0)}}
-                                    </div>
-                                </ng-container>
-                                <!-- Contact -->
-                                <a
-                                    class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b"
-                                    [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedUser || selectedUser.id !== user.id,
-                                                'bg-primary-50 dark:bg-hover': selectedUser && selectedUser.id === user.id}"
-                                    [routerLink]="['./', user.id]">
-                                    <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
-                                        <ng-container *ngIf="user.avatar">
-                                            <img
-                                                class="object-cover w-full h-full"
-                                                [src]="user.avatar"
-                                                alt="Contact avatar"/>
-                                        </ng-container>
-                                        <ng-container *ngIf="!user.avatar">
-                                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                        <ng-container *ngIf="systemUser$ | async as sysUser">
+                            <ng-container *ngIf="users.length; else noUsers">
+                                <ng-container *ngFor="let user of users; let i = index; trackBy: trackByFn">
+                                    <ng-container *ngIf="user.id === sysUser.id ? false : true">
+                                        <!-- Group -->
+                                        <ng-container *ngIf="i === 0 || user.name.charAt(0) !== users[i - 1].name.charAt(0)">
+                                            <div class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-900">
                                                 {{user.name.charAt(0)}}
                                             </div>
                                         </ng-container>
-                                    </div>
-                                    <div class="min-w-0 ml-4">
-                                        <div class="font-medium leading-5 truncate">{{user.name}}</div>
-                                        <div class="leading-5 truncate text-secondary">{{user.email}}</div>
-                                    </div>
-                                </a>
+                                        <!-- Contact -->
+                                        <a
+                                            class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b"
+                                            [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedUser || selectedUser.id !== user.id,
+                                                        'bg-primary-50 dark:bg-hover': selectedUser && selectedUser.id === user.id}"
+                                            [routerLink]="['./', user.id]">
+                                            <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
+                                                <ng-container *ngIf="user.avatar">
+                                                    <img
+                                                        class="object-cover w-full h-full"
+                                                        [src]="user.avatar"
+                                                        alt="Contact avatar"/>
+                                                </ng-container>
+                                                <ng-container *ngIf="!user.avatar">
+                                                    <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                                        {{user.name.charAt(0)}}
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                            <div class="min-w-0 ml-4">
+                                                <div class="font-medium leading-5 truncate">{{user.name}}</div>
+                                                <div class="leading-5 truncate text-secondary">{{user.email}}</div>
+                                            </div>
+                                        </a>
+                                    </ng-container>
+                                </ng-container>
                             </ng-container>
                         </ng-container>
                     </ng-container>

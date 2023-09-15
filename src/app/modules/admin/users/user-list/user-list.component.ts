@@ -32,9 +32,12 @@ import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddComponent } from '../add/add.component';
+import { UsersComponent } from '../users.component';
 
 @Component({
     selector: 'app-user-list',
@@ -63,6 +66,8 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 })
 export class UserListComponent implements OnInit {
     usersService = inject(UsersService);
+    usersComponent = inject(UsersComponent);
+    systemUser$: Observable<User>;
     usersCount: number = 0;
     usersList$: Observable<User[]>;
     selectedUser: User;
@@ -75,14 +80,17 @@ export class UserListComponent implements OnInit {
         private _changeDetectorRef: ChangeDetectorRef,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
-
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
-        this.usersList$ = this.usersService.users$;
+        this.systemUser$ = this.usersComponent.systemUser$;
+        this.usersList$ = this.usersService.users$.pipe(
+            tap((userList) => (this.usersCount = userList.length))
+        );
+
         this.usersService.users$.subscribe((list) => {
-            console.log('user list', list);
             this.usersCount = list.length;
             this._changeDetectorRef.markForCheck();
         });
@@ -92,11 +100,9 @@ export class UserListComponent implements OnInit {
             .subscribe((user) => {
                 // Update the selected contact
                 this.selectedUser = user;
-                console.log('selected user', this.selectedUser)
-                // Mark for check
+
                 this._changeDetectorRef.markForCheck();
             });
-
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
@@ -126,16 +132,25 @@ export class UserListComponent implements OnInit {
     }
 
     createUser(): void {
-        // Create the contact
-        this.usersService.createUser({}).subscribe((newUser) => {
-            // Go to the new contact
-            this._router.navigate(['./', newUser.id], {
-                relativeTo: this._activatedRoute,
+        // Create the user
+        const dialgoConfig = new MatDialogConfig();
+        this.dialog
+            .open(AddComponent, dialgoConfig)
+            .afterClosed()
+            .subscribe((res) => {
+                if (res) {
+                    this.usersService.getAllUser().subscribe();
+                }
             });
+        // this.usersService.createUser({}).subscribe((newUser) => {
+        //     // Go to the new contact
+        //     this._router.navigate(['./', newUser.id], {
+        //         relativeTo: this._activatedRoute,
+        //     });
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
+        //     // Mark for check
+        //     this._changeDetectorRef.markForCheck();
+        // });
     }
 
     onBackdropClicked(): void {

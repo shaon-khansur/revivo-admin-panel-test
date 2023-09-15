@@ -84,8 +84,6 @@ export class UserDetailsComponent implements OnInit {
         private fauth: Auth
     ) {}
     ngOnInit(): void {
-        console.log('Deatails component rendered');
-
         // Open the drawer
         this._userListComponent.matDrawer.open();
 
@@ -104,7 +102,6 @@ export class UserDetailsComponent implements OnInit {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((users: User[]) => {
                 this.users = users;
-                console.log('D', this.users);
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
@@ -153,8 +150,6 @@ export class UserDetailsComponent implements OnInit {
             return;
         }
 
-        console.log('file', file);
-
         // Upload the avatar
         // this._contactsService.uploadAvatar(this.contact.id, file).subscribe();
     }
@@ -175,20 +170,34 @@ export class UserDetailsComponent implements OnInit {
 
     deleteUser(): void {
         // Open the confirmation dialog
-        console.log('delete user called');
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete contact',
+            title: 'Delete user',
             message:
-                'Are you sure you want to delete this contact? This action cannot be undone!',
+                'Are you sure you want to delete this user? This action cannot be undone!',
             actions: {
                 confirm: {
-                    label: 'Delete',
+                    show: true,
+                    label: 'Ok',
+                    color: 'primary',
                 },
             },
         });
 
         confirmation.afterClosed().subscribe((result) => {
-            console.log(result);
+            if (result === 'confirmed') {
+                this._usersService
+                    .deleteUser(this.userForm.value.id)
+                    .subscribe({
+                        next: (res) => {
+                            this._userListComponent.matDrawer
+                                .close()
+                                .then(() => {
+                                    this._usersService.getAllUser().subscribe();
+                                });
+                            this._changeDetectorRef.markForCheck();
+                        },
+                    });
+            }
         });
     }
 
@@ -204,11 +213,11 @@ export class UserDetailsComponent implements OnInit {
     }
 
     updateUser(): void {
-        console.log('Update user called', this.userForm.value);
         this._usersService
             .updateUser(this.userForm.value.id, this.userForm.value)
             .subscribe({
                 next: (res) => {
+                    this._usersService.getAllUser().subscribe();
                     this._fuseConfirmationService.open({
                         title: 'User updated.',
                         message: 'Successfuly updated user',
@@ -247,24 +256,7 @@ export class UserDetailsComponent implements OnInit {
                         },
                         dismissible: false,
                     });
-                }
+                },
             });
-        // Get the contact object
-        // const contact = this.contactForm.getRawValue();
-
-        // // Go through the contact object and clear empty values
-        // contact.emails = contact.emails.filter((email) => email.email);
-
-        // contact.phoneNumbers = contact.phoneNumbers.filter(
-        //     (phoneNumber) => phoneNumber.phoneNumber
-        // );
-
-        // // Update the contact on the server
-        // this._contactsService
-        //     .updateContact(contact.id, contact)
-        //     .subscribe(() => {
-        //         // Toggle the edit mode off
-        //         this.toggleEditMode(false);
-        //     });
     }
 }

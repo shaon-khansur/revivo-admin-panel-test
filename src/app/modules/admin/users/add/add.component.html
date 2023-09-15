@@ -1,0 +1,104 @@
+<!-- <div class="dialog"> -->
+<h1 class="text-lg font-bold text-primary">Creat User</h1>
+<div mat-dialog-content>
+    <form [formGroup]="userCreateForm">
+        <!-- <div class="flex flex-col bg-card rounded overflow-hidden"> -->
+        <p class="text-secondary">User login credential for application</p>
+
+        <div class="flex flex-col mt-5">
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="name"
+                    [placeholder]="'First name'"
+                />
+
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:user-circle'"
+                ></mat-icon>
+                <mat-error
+                    *ngIf="userCreateForm.get('name').hasError('required')"
+                >
+                    Name field is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="email"
+                    [placeholder]="'Email'"
+                />
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:envelope'"
+                ></mat-icon>
+                <mat-error
+                    *ngIf="userCreateForm.get('email').hasError('required')"
+                >
+                    Email is required
+                </mat-error>
+                <mat-error
+                    *ngIf="userCreateForm.get('email').hasError('email')"
+                >
+                    Please enter a valid email address
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="password"
+                    [placeholder]="'Password'"
+                />
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:lock-closed'"
+                ></mat-icon>
+                <mat-error
+                    *ngIf="userCreateForm.get('password').hasError('required')"
+                >
+                    Password is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-select [placeholder]="'User role'" formControlName="role">
+                    <mat-option
+                        *ngFor="let role of userRole"
+                        [value]="role.value"
+                        >{{ role.name }}</mat-option
+                    >
+                </mat-select>
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:cog'"
+                ></mat-icon>
+                <mat-error
+                    *ngIf="userCreateForm.get('role').hasError('required')"
+                >
+                    Role is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- </div> -->
+    </form>
+</div>
+<div mat-dialog-actions [align]="'end'">
+    <button color="accent" mat-flat-button mat-dialog-close>Cancel</button>
+    <button
+        (click)="createUser()"
+        color="primary"
+        mat-raised-button
+        [disabled]="userCreateForm.invalid"
+    >
+        Create
+    </button>
+</div>
+<!-- </div> -->

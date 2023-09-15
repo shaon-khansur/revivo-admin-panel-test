@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable, ReplaySubject, tap } from 'rxjs';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { User } from './user.types';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -24,6 +25,11 @@ export class UserService {
             }
             console.log('user services user patch')
         });
+
+        // this.authService.systemUser$.subscribe(user => {
+        //     this.user = user;
+        // })
+
     }
 
     // -----------------------------------------------------------------------------------------------------

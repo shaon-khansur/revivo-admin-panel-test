@@ -67,10 +67,15 @@ export class UsersService {
         formData.append('name', data.name);
         formData.append('email', data.email);
         formData.append('password', data.password);
+        formData.append('role', data.role);
         return this.http.post(`${environment.baseUrl}sign-up`, formData);
     }
 
     updateUser(id, data): Observable<any> {
         return this.http.put(`${environment.baseUrl}users/${id}`, data);
+    }
+
+    deleteUser(id): Observable<any> {
+        return this.http.delete(`${environment.baseUrl}users/${id}`);
     }
 }

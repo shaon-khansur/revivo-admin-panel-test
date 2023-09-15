@@ -15,10 +15,18 @@ import {
     browserSessionPersistence,
 } from '@angular/fire/auth';
 import { Route, Router } from '@angular/router';
+import { IdTokenResult } from 'firebase/auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private _authenticated: boolean = false;
+    systemUser$: Observable<{
+        id: string;
+        name: string;
+        email: string;
+        avatar: string;
+        role: { role: string };
+    }>;
 
     /**
      * Constructor
@@ -29,21 +37,34 @@ export class AuthService {
         private auth: Auth,
         private router: Router
     ) {
-        onAuthStateChanged(
-            this.auth,
-            (user: User) => {
-                console.log('onAuthState Changed', user);
-                // if (!user) {
-                //     this.router.navigate(['login'])
-                // }
-            },
-            (error) => {
-                console.log('onAuthState change error', error);
-            },
-            () => {
-                console.log('onAuthState change completed');
-            }
-        );
+        this.systemUser$ = new Observable((observer) => {
+            onAuthStateChanged(
+                this.auth,
+                (user: User) => {
+                    if (user) {
+                        user.getIdTokenResult().then((value) => {
+                            // console.log('valueof otken', value);
+                            observer.next({
+                                id: user.uid,
+                                name: user.displayName,
+                                email: user.email,
+                                role: { role: value.claims['role'] },
+                                avatar: user.photoURL ? user.photoURL : '',
+                            });
+                        });
+                    } else {
+                        observer.next(null);
+                    }
+                },
+                (error) => {
+                    observer.next(null);
+                },
+                () => {
+                    console.log('completed called Bor!')
+                    // observer.complete();
+                }
+            );
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -246,16 +267,14 @@ export class AuthService {
             return of(false);
         }
 
-        return new Observable((observer) => {
-            onAuthStateChanged(this.auth, (user) => {
-                observer.next(user);
-            });
-        }).pipe(
+        return this.systemUser$.pipe(
             switchMap((user) => {
                 if (user) {
+                    // console.log('systemUser', user);
                     return of(true);
+                } else {
+                    return of(false);
                 }
-                return of(false);
             })
         );
 
