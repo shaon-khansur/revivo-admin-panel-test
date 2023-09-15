@@ -24,6 +24,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:user-group',
                 link : '/dashboards/users',
             },
+            {
+                id   : 'user-management.users',
+                title: 'Example',
+                type : 'basic',
+                icon : 'heroicons_outline:chart-pie',
+                link : '/dashboards/example'
+            }
         ],
     },
 ];

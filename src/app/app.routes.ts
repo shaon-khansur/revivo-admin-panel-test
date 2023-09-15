@@ -3,6 +3,7 @@ import { initialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
+import { adminGuard } from './core/auth/guards/admin.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -75,7 +76,8 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'dashboards', children: [
-                {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes')},
+                {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes'), canActivate: [adminGuard]},
+                {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')}
 
             ]}
         ]
