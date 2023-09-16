@@ -2,13 +2,25 @@
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
-    // {
-    //     id   : 'example',
-    //     title: 'Example',
-    //     type : 'basic',
-    //     icon : 'heroicons_outline:chart-pie',
-    //     link : '/example'
-    // }
+    {
+        id      : 'dashboard.admin',
+        title   : 'Dashboard',
+        subtitle: 'Admin Dashboard',
+        type    : 'basic',
+        icon    : 'heroicons_outline:chart-pie',
+        link    : '/dashboard/admin'
+
+    },
+
+    {
+        id      : 'dashboard.support',
+        title   : 'Dashboard',
+        subtitle: 'Support Dashboard',
+        type    : 'basic',
+        icon    : 'heroicons_outline:chart-pie',
+        link    : '/dashboard/support'
+
+    },
 
     {
         id      : 'user-management',
@@ -22,7 +34,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: 'Users',
                 type : 'basic',
                 icon : 'heroicons_outline:user-group',
-                link : '/dashboards/users',
+                link : '/user-management/users',
             },
         ],
     },

@@ -5,6 +5,10 @@ import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { adminGuard } from './core/auth/guards/admin.guard';
 import { Error404Component } from './modules/error-404/error-404.component';
+import { ExampleComponent } from './modules/admin/example/example.component';
+import { SupportComponent } from './modules/supports/support/support.component';
+import { SupportDashboardComponent } from './modules/supports/support-dashboard/support-dashboard.component';
+import { supportDashboardGuard } from './core/auth/guards/support-dashboard.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -12,14 +16,14 @@ import { Error404Component } from './modules/error-404/error-404.component';
 export const appRoutes: Route[] = [
 
     // Redirect empty path to '/example'
-    {path: '', pathMatch : 'full', redirectTo: 'dashboards'},
+    {path: '', pathMatch : 'full', redirectTo: 'dashboard/admin'},
 
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboards'},
+    {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboard/admin'},
 
 
     // Auth routes for guests
@@ -77,15 +81,21 @@ export const appRoutes: Route[] = [
             initialData: initialDataResolver
         },
         children: [
-            {path: 'dashboards', children: [
-                {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes')},
-                {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
-
-
+            {path: 'dashboard', children: [
+                {path: 'admin', component: ExampleComponent},
             ], canActivate: [adminGuard]},
 
+            {path: 'user-management', children: [
+                {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes')},
+            ], canActivate: [adminGuard]},
+
+            {path: 'dashboard', children: [
+                {path: 'support', component: SupportDashboardComponent}
+
+            ], canActivate: [supportDashboardGuard]},
+
             {path: 'supports', children: [
-                {path: 'support', loadChildren: () => import('app/modules/admin/example/example.routes')}
+                {path: 'support', component: SupportComponent}
 
             ]},
             {path: "**", component: Error404Component},
