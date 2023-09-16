@@ -69,13 +69,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Subscribe to navigation data
-        this._navigationService.navigation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((navigation: Navigation) =>
-            {
-                this.navigation = navigation;
-            });
+
 
         // Subscribe to the user service
         this._userService.user$
@@ -83,7 +77,29 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
             .subscribe((user: User) =>
             {
                 this.user = user;
+                console.log('classy', this.user)
             });
+
+
+             // Subscribe to navigation data
+        this._navigationService.navigation$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((navigation: Navigation) =>
+        {
+            this.navigation = navigation;
+            console.log(this.navigation, this.user)
+            this.navigation.default.forEach(item => {
+                item['hidden'] = (item) => {
+                    if (item.id === 'user-management' && this.user.role?.role !== 'admin') {
+                        return true;
+                    } else {
+                        return false
+                    }
+
+                }
+            })
+        });
+
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$

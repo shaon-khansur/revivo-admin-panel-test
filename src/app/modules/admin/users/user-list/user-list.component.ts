@@ -87,7 +87,12 @@ export class UserListComponent implements OnInit {
     ngOnInit(): void {
         this.systemUser$ = this.usersComponent.systemUser$;
         this.usersList$ = this.usersService.users$.pipe(
-            tap((userList) => (this.usersCount = userList.length))
+            tap((userList) => {
+                {
+                    (this.usersCount = userList.length),
+                        console.log(this.usersCount);
+                }
+            })
         );
 
         this.usersService.users$.subscribe((list) => {

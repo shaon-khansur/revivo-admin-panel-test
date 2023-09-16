@@ -122,14 +122,15 @@ export class AuthService {
                 credentials.password
             )
                 .then((userCrendetial: UserCredential) => {
-                    userCrendetial.user.getIdToken().then((token) => {
-                        this.accessToken = token;
+                    userCrendetial.user.getIdTokenResult().then((value) => {
+                        this.accessToken = value.token;
                         this._authenticated = true;
                         this._userService.user = {
                             id: userCrendetial.user.uid,
                             name: userCrendetial.user.displayName,
                             email: userCrendetial.user.email,
                             avatar: userCrendetial.user.photoURL,
+                            role: {role: value.claims['role']}
                         };
                         observer.next(userCrendetial);
                     });

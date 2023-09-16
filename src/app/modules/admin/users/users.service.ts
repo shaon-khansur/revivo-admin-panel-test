@@ -25,6 +25,7 @@ export class UsersService {
     getAllUser(): Observable<User[]> {
         return this.http.get<User[]>(`${environment.baseUrl}users`).pipe(
             tap((users) => {
+
                 this._users.next(users);
             })
         );
