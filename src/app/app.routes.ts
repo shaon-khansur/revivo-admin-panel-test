@@ -4,6 +4,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { adminGuard } from './core/auth/guards/admin.guard';
+import { Error404Component } from './modules/error-404/error-404.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -19,6 +20,7 @@ export const appRoutes: Route[] = [
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
     {path: 'signed-in-redirect', pathMatch : 'full', redirectTo: 'dashboards'},
+
 
     // Auth routes for guests
     {
@@ -76,14 +78,17 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'dashboards', children: [
-                {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes'), canActivate: [adminGuard]},
-                {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')}
+                {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes')},
+                {path: 'example', loadChildren: () => import('app/modules/admin/example/example.routes')},
 
-            ]},
+
+            ], canActivate: [adminGuard]},
+
             {path: 'supports', children: [
                 {path: 'support', loadChildren: () => import('app/modules/admin/example/example.routes')}
 
-            ]}
+            ]},
+            {path: "**", component: Error404Component},
         ]
     }
 ];
