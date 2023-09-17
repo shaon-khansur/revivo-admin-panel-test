@@ -10,6 +10,7 @@ import { SupportComponent } from './modules/supports/support/support.component';
 import { SupportDashboardComponent } from './modules/supports/support-dashboard/support-dashboard.component';
 import { supportDashboardGuard } from './core/auth/guards/support-dashboard.guard';
 
+
 // @formatter:off
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -98,7 +99,11 @@ export const appRoutes: Route[] = [
                 {path: 'support', component: SupportComponent}
 
             ]},
+            {path: 'utility', children: [
+                {path: 'settings', loadChildren: () => import('app/modules/settings/settings.routes')}
+            ]},
             {path: "**", component: Error404Component},
+
         ]
     }
 ];

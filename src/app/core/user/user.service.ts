@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+    firebaseUser;
     private auth = inject(Auth);
     private _user: BehaviorSubject<User> = new BehaviorSubject<User>(null);
     // private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
@@ -16,6 +17,7 @@ export class UserService {
      */
     constructor(private _httpClient: HttpClient) {
         onAuthStateChanged(this.auth, (user) => {
+            this.firebaseUser = user;
             if (user) {
                 user.getIdTokenResult().then((value) => {
                     console.log('value', value)

@@ -54,6 +54,22 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
+    {
+        id      : 'utility',
+        title   : 'Utility',
+        subtitle: 'System utility',
+        type    : 'group',
+        icon    : 'heroicons_outline:cog-8-tooth',
+        children: [
+            {
+                id   : 'utility.settings',
+                title: 'Settings',
+                type : 'basic',
+                icon : 'heroicons_outline:cog-8-tooth',
+                link : '/utility/settings',
+            },
+        ],
+    },
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {
