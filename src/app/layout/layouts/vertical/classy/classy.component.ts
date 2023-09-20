@@ -110,16 +110,17 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                             item['hidden'] = (item) => true;
                         }
                     } else if (item.title !== 'Dashboard') {
-                        item['hidden'] = (item) => {
-                            if (
-                                item.id === 'user-management' &&
-                                this.user.role?.role !== 'admin'
-                            ) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        };
+
+                    }
+
+                    //User management for Admin only
+                    if (item.id === 'user-management' && this.user.role.role !== 'admin') {
+                        item['hidden'] = (item) => true;
+                    }
+
+                    // Deals for Admin only
+                    if (item.id === 'deals' && this.user.role.role !== 'admin') {
+                        item['hidden'] = (item) => true;
                     }
                 });
             });
