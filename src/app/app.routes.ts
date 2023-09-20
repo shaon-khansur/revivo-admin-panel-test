@@ -95,6 +95,8 @@ export const appRoutes: Route[] = [
 
             ], canActivate: [supportDashboardGuard]},
 
+            {path: 'deals', loadChildren: () => import('app/modules/admin/deals/deals.routes')},
+
             {path: 'supports', children: [
                 {path: 'support', component: SupportComponent}
 
@@ -102,6 +104,10 @@ export const appRoutes: Route[] = [
             {path: 'utility', children: [
                 {path: 'settings', loadChildren: () => import('app/modules/settings/settings.routes')}
             ]},
+
+
+
+
             {path: "**", component: Error404Component},
 
         ]

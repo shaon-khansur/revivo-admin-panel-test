@@ -39,6 +39,30 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ],
     },
     {
+        id      : 'deals',
+        title   : 'Deals',
+        subtitle: 'Manage Deals',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'deals.manage',
+                title: 'Manage Deals',
+                type : 'basic',
+                icon : 'heroicons_outline:fire',
+                link : '/deals/manage',
+            },
+            {
+                id   : 'deals.destination',
+                title: 'Destination',
+                type : 'basic',
+                icon : 'heroicons_outline:building-office',
+                link : '/deals/destination',
+            },
+
+        ],
+    },
+    {
         id      : 'supports',
         title   : 'Supports',
         subtitle: 'System support',
