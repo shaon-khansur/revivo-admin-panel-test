@@ -1,1 +1,46 @@
-<p>destination works!</p>
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="flex justify-between items-center mb-4">
+            <div></div>
+            <button
+            class="ml-4"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="createDestination()"
+            >
+            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+            <span class="ml-2 mr-1">Add</span>
+        </button>
+        </div>
+        <div cdkDropListGroup>
+            <div class="example-container">
+                <h3>Active Destinations (deals)</h3>
+                <div
+                    cdkDropList
+                    [cdkDropListData]="active"
+                    class="example-list"
+                    (cdkDropListDropped)="drop($event)"
+                >
+                    <div class="example-box" *ngFor="let item of active" cdkDrag>
+                        {{ item }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-container">
+                <h3>Inactive Destinations (deals)</h3>
+
+                <div
+                    cdkDropList
+                    [cdkDropListData]="inactive"
+                    class="example-list"
+                    (cdkDropListDropped)="drop($event)"
+                >
+                    <div class="example-box" *ngFor="let item of inactive" cdkDrag>
+                        {{ item }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
