@@ -15,7 +15,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { DestinationService } from '../service/destination.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-destination',
@@ -58,7 +57,6 @@ export class AddDestinationComponent implements OnInit {
               next: (res: any) => {
                   console.log(console.log(res));
                   this._dialogRef.close(res.data);
-                  Swal.fire("Success", res.message, "success");
               },
           });
       }

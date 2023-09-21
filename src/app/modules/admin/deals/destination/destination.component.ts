@@ -4,7 +4,6 @@ import { CdkDragDrop, CdkDrag, CdkDropList, CdkDropListGroup, moveItemInArray, t
 import { RouterLink, RouterOutlet} from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DestinationService } from './service/destination.service';
-import Swal from 'sweetalert2';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -120,7 +119,7 @@ drop(event: CdkDragDrop<string[]>) {
       this.active = this.destinationList.filter((item: any) => item.active === true).map((item: any) => item.name);
       this.inactive = this.destinationList.filter((item: any) => item.active === false).map((item: any) => item.name);
     }, (err) => {
-      Swal.fire("Error", err.error.message, "error");
+      console.log(err);
     });
   }
 
