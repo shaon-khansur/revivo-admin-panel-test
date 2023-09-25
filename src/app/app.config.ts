@@ -20,6 +20,7 @@ import { provideFirestore, getFirestore, connectFirestoreEmulator} from '@angula
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
 import { getStorage, provideStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { environment } from 'environments/environment';
+import {getApp} from '@angular/fire/app'
 
 
 export const appConfig: ApplicationConfig = {
@@ -42,7 +43,7 @@ export const appConfig: ApplicationConfig = {
                 return auth;
             }),
             provideStorage(() => {
-                const storage = getStorage();
+                const storage = getStorage(getApp());
                 if (!environment.production) {
                     connectStorageEmulator(storage, 'localhost', 9199)
                 }
