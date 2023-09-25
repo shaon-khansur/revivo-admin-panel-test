@@ -96,6 +96,7 @@ export const appRoutes: Route[] = [
             ], canActivate: [supportDashboardGuard]},
 
             {path: 'deals', loadChildren: () => import('app/modules/admin/deals/deals.routes')},
+            {path: 'deals/destinations', loadChildren: () => import('app/modules/admin/deals/destination/destination.routes')},
 
             {path: 'supports', children: [
                 {path: 'support', component: SupportComponent}

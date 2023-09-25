@@ -53,11 +53,18 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/deals/manage',
             },
             {
-                id   : 'deals.destination',
-                title: 'Destination',
+                id   : 'deals.destination-manage',
+                title: 'Manage Destination',
                 type : 'basic',
                 icon : 'heroicons_outline:building-office',
-                link : '/deals/destination',
+                link : '/deals/destination-manage',
+            },
+            {
+                id   : 'deals.destinations',
+                title: 'Destination List',
+                type : 'basic',
+                icon : 'heroicons_outline:building-office',
+                link : '/deals/destinations',
             },
 
         ],
