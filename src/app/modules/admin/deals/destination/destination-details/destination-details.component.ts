@@ -34,6 +34,18 @@ import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { getAuth, Auth } from '@angular/fire/auth';
 import { Destination } from '../destination';
 
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    uploadBytesResumable,
+    getDownloadURL
+  } from '@angular/fire/storage';
+  import {initializeApp} from 'firebase/app'
+  import { environment } from 'environments/environment';
+  
+  const fapp = initializeApp(environment.firebase);
+
 @Component({
   selector: 'app-destination-details',
   standalone: true,
@@ -63,13 +75,13 @@ import { Destination } from '../destination';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DestinationDetailsComponent {
+    @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
+
   destination: Destination;
   destinations: Destination[];
   editMode: boolean = false;
-  userForm: UntypedFormGroup;
+  form: UntypedFormGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-
-  @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
 
   constructor(
       private _destinationListComponent: DestinationListComponent,
@@ -83,10 +95,12 @@ export class DestinationDetailsComponent {
       this._destinationListComponent.matDrawer.open();
 
       // Create the contact form
-      this.userForm = this._formBuilder.group({
+      this.form = this._formBuilder.group({
           id: [''],
-        //   avatar: [''],
+          avatar: [''],
           name: ['', [Validators.required]],
+          price: ['', [Validators.required]],
+          unTitle: ['', [Validators.required]],
           active: ['', [Validators.required]],
       });
 
@@ -114,7 +128,7 @@ export class DestinationDetailsComponent {
               // ).clear();
 
               // Patch values to the form
-              this.userForm.patchValue(user);
+              this.form.patchValue(user);
 
               // Toggle the edit mode off
               this.toggleEditMode(false);
@@ -129,36 +143,62 @@ export class DestinationDetailsComponent {
   }
 
   uploadAvatar(fileList: FileList): void {
-      // Return if canceled
-      if (!fileList.length) {
-          return;
-      }
+    // Return if canceled
+    if (!fileList.length) {
+        return;
+    }
 
-      const allowedTypes = ['image/jpeg', 'image/png'];
-      const file = fileList[0];
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    const file = fileList[0];
 
-      // Return if the file is not allowed
-      if (!allowedTypes.includes(file.type)) {
-          return;
-      }
+    // Return if the file is not allowed
+    if (!allowedTypes.includes(file.type)) {
+        return;
+    }
 
-      // Upload the avatar
-      // this._contactsService.uploadAvatar(this.contact.id, file).subscribe();
-  }
+    // const firebaseApp = getApp();
+    const storage = getStorage(fapp);
 
-  removeAvatar(): void {
-      // Get the form control for 'avatar'
-      const avatarFormControl = this.userForm.get('avatar');
+    const fileRef = ref(storage, `destination/${file.name}`);
 
-      // Set the avatar as null
-      avatarFormControl.setValue(null);
 
-      // Set the file input value as null
-      this._avatarFileInput.nativeElement.value = null;
+    uploadBytesResumable(fileRef, file).on(
+        'state_changed',
+        (snapshot) => {},
+        (error) => {},
+        () => {
+            console.log('upload complete')
+            getDownloadURL(fileRef).then(url => {
+                console.log('url', url)
 
-      // Update the contact
-      this.destination.avatar = null;
-  }
+                this.form.get('avatar').setValue(url);
+            })
+        }
+    );
+
+    // Upload the avatar
+    // this._contactsService.uploadAvatar(this.contact.id, file).subscribe();
+}
+  
+removeAvatar(): void {
+  // Get the form control for 'avatar'
+  const avatarFormControl = this.form.get('avatar');
+
+  // Log a message to indicate that the function is being executed
+  console.log('Removing avatar...');
+
+  // Set the avatar as null
+  avatarFormControl.setValue(null);
+
+  // Log a message to indicate that the avatar form control has been set to null
+  console.log('Avatar form control set to null:', avatarFormControl.value);
+
+  // Set the file input value as null
+  this._avatarFileInput.nativeElement.value = null;
+
+  // Log a message to indicate that the file input value has been cleared
+  console.log('File input value cleared.');
+}
 
   deleteDestination(): void {
       // Open the confirmation dialog
@@ -178,7 +218,7 @@ export class DestinationDetailsComponent {
       confirmation.afterClosed().subscribe((result) => {
           if (result === 'confirmed') {
               this._destinationsService
-                  .deleteDestination(this.userForm.value.id)
+                  .deleteDestination(this.form.value.id)
                   .subscribe({
                       next: (res) => {
                           this._destinationListComponent.matDrawer
@@ -206,7 +246,7 @@ export class DestinationDetailsComponent {
 
   updateDestination(): void {
       this._destinationsService
-          .updateDestination(this.userForm.value.id, this.userForm.value)
+          .updateDestination(this.form.value.id, this.form.value)
           .subscribe({
               next: (res) => {
                   this._destinationsService.getAllDestination().subscribe();
