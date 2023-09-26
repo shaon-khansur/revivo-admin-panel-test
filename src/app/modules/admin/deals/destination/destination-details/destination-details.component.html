@@ -72,6 +72,12 @@
                             <div class="ml-2 leading-6">{{destination?.name}}</div> <!-- Adjusted margin -->
                         </div>
                     </ng-container>
+                    <ng-container *ngIf="destination?.airport">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Airport:</div>
+                            <div class="ml-2 leading-6">{{destination?.airport}}</div> <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
                     <!-- Status -->
                     <ng-container *ngIf="destination?.active">
                         <div class="flex sm:items-center">
@@ -91,6 +97,12 @@
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">UnTitle:</div>
                             <div class="ml-2 leading-6">{{destination?.unTitle}}</div> <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="destination?.description">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Description:</div>
+                            <div class="ml-2 leading-6">{{destination?.description}}</div> <!-- Adjusted margin -->
                         </div>
                     </ng-container>
                 </div>                
@@ -188,6 +200,21 @@
                                 [spellcheck]="false">
                         </mat-form-field>
                     </div>
+
+                    
+                    <!-- Airport -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>Airport</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'airport'"
+                                [placeholder]="'Airport'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div>
                     
                     <!-- Price -->
                     <div class="mt-8">
@@ -216,13 +243,25 @@
                         </mat-form-field>
                     </div>
 
+                    <div class="mt-8">
+                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                            <mat-label>Description</mat-label>
+                            <textarea
+                                matInput
+                                formControlName="description"
+                                placeholder="Description"
+                                rows="5"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+
                     <!-- Title -->
                     <div class="mt-8">
                         <mat-checkbox
                           [formControl]="form.get('active')"
                            [color]="'primary'"
                            [labelPosition]="'after'">
-                            Status
+                            Active Status
                         </mat-checkbox>
                     </div>
 

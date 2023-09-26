@@ -58,6 +58,18 @@
             <mat-form-field class="flex-auto">
                 <input
                     matInput
+                    formControlName="airport"
+                    placeholder="Airport"
+                />
+                <mat-error
+                    *ngIf="form.get('airport').hasError('required')"
+                >
+                    Airport field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
                     formControlName="index"
                     placeholder="Index Id"
                 />
@@ -91,7 +103,19 @@
                     UnTitle field is required
                 </mat-error>
             </mat-form-field>
-            <mat-checkbox formControlName="active">Is Checked</mat-checkbox>
+            <mat-form-field class="flex-auto">
+                <textarea
+                    matInput
+                    formControlName="description"
+                    placeholder="Description"
+                    rows="5"
+                ></textarea>
+                <mat-error *ngIf="form.get('description').hasError('required')">
+                    Description field is required
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-checkbox formControlName="active">Active Status</mat-checkbox>
         </div>
     </form>
 </div>

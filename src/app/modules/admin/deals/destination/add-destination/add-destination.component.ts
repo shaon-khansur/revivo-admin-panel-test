@@ -60,9 +60,11 @@ export class AddDestinationComponent implements OnInit {
     this.form = this.fb.group({
       name: [null, Validators.required],
       avatar: [null],
-      index: [null, Validators.required],
-      price: [null, Validators.required],
-      unTitle: [null, Validators.required],
+      index: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      price: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      unTitle: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      airport: [null, Validators.required],
+      description: [null, Validators.required],
       active: [false]
     });
     

@@ -101,6 +101,8 @@ export class DestinationDetailsComponent {
           name: ['', [Validators.required]],
           price: ['', [Validators.required]],
           unTitle: ['', [Validators.required]],
+          airport: ['', [Validators.required]],
+          description: ['', [Validators.required]],
           active: ['', [Validators.required]],
       });
 
