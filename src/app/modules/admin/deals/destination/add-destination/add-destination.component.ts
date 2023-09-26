@@ -61,8 +61,8 @@ export class AddDestinationComponent implements OnInit {
       name: [null, Validators.required],
       avatar: [null],
       index: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      price: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      unTitle: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      // price: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      // unTitle: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       airport: [null, Validators.required],
       description: [null, Validators.required],
       active: [false]
