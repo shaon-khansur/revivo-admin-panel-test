@@ -6,10 +6,10 @@
         <!-- Header -->
         <div class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
             <!-- Background -->
-            <ng-container *ngIf="user?.background ? user?.background : ''">
+            <ng-container *ngIf="destination?.background ? destination?.background : ''">
                 <img
                     class="absolute inset-0 object-cover w-full h-full"
-                    [src]="user?.background ? user?.background : ''">
+                    [src]="destination?.background ? destination?.background : ''">
             </ng-container>
             <!-- Close button -->
             <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
@@ -35,12 +35,12 @@
                     <div class="flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
                         <img
                             class="object-cover w-full h-full"
-                            *ngIf="user.avatar ? true : false"
-                            [src]="user.avatar">
+                            *ngIf="destination?.avatar ? true : false"
+                            [src]="destination?.avatar">
                         <div
                             class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                            *ngIf="!(user.avatar ? true : false)">
-                            {{user.name.charAt(0)}}
+                            *ngIf="!(destination?.avatar ? true : false)">
+                            {{destination?.name.charAt(0)}}
                         </div>
                     </div>
                     <!-- Actions -->
@@ -60,24 +60,51 @@
                 </div>
 
                 <!-- Name -->
-                <div class="mt-3 text-4xl font-bold truncate">{{user?.name}}</div>
+                <div class="mt-3 text-4xl font-bold truncate">{{destination?.name}}</div>
 
 
 
-                <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
+                <div class="flex flex-col mt-4 pt-6 border-t space-y-4"> <!-- Reduced space-y value -->
                     <!-- Name -->
-                    <ng-container *ngIf="user?.name">
+                    <ng-container *ngIf="destination?.name">
                         <div class="flex sm:items-center">
-                            <div class="ml-6 leading-6">{{user?.name}}</div>
+                            <div class="font-bold ml-6">Destination Name:</div>
+                            <div class="ml-2 leading-6">{{destination?.name}}</div> <!-- Adjusted margin -->
                         </div>
                     </ng-container>
-                    <ng-container *ngIf="user?.name">
+                    <ng-container *ngIf="destination?.airport">
                         <div class="flex sm:items-center">
-                            <div class="ml-6 leading-6">{{user?.active}}</div>
+                            <div class="font-bold ml-6">Airport:</div>
+                            <div class="ml-2 leading-6">{{destination?.airport}}</div> <!-- Adjusted margin -->
                         </div>
                     </ng-container>
-
-                </div>
+                    <!-- Status -->
+                    <ng-container *ngIf="destination?.active">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Status:</div>
+                            <div class="ml-2 leading-6">{{destination?.active}}</div> <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
+                    <!-- Price -->
+                    <!-- <ng-container *ngIf="destination?.price">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Price:</div>
+                            <div class="ml-2 leading-6">{{destination?.price}}</div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="destination?.unTitle">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">UnTitle:</div>
+                            <div class="ml-2 leading-6">{{destination?.unTitle}}</div>
+                        </div>
+                    </ng-container> -->
+                    <ng-container *ngIf="destination?.description">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Description:</div>
+                            <div class="ml-2 leading-6">{{destination?.description}}</div> <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
+                </div>                
 
             </div>
         </div>
@@ -89,10 +116,10 @@
         <!-- Header -->
         <div class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
             <!-- Background -->
-            <ng-container *ngIf="user?.background ? user?.background : ''">
+            <ng-container *ngIf="destination?.background ? destination?.background : ''">
                 <img
                     class="absolute inset-0 object-cover w-full h-full"
-                    [src]="user?.background ? user?.background : ''">
+                    [src]="destination?.background ? destination?.background : ''">
             </ng-container>
             <!-- Close button -->
             <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
@@ -110,7 +137,7 @@
         <!-- Contact form -->
         <div class="relative flex flex-col flex-auto items-center px-6 sm:px-12">
             <div class="w-full max-w-3xl">
-                <form [formGroup]="userForm">
+                <form [formGroup]="form">
 
                     <!-- Avatar -->
                     <div class="flex flex-auto items-end -mt-16">
@@ -149,12 +176,12 @@
                             <!-- Image/Letter -->
                             <img
                                 class="object-cover w-full h-full"
-                                *ngIf="user?.avatar"
-                                [src]="user?.avatar">
+                                *ngIf="destination?.avatar"
+                                [src]="destination?.avatar">
                             <div
                                 class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                                *ngIf="!user.avatar">
-                                {{user.name.charAt(0)}}
+                                *ngIf="!destination?.avatar">
+                                {{destination?.name.charAt(0)}}
                             </div>
                         </div>
                     </div>
@@ -173,13 +200,67 @@
                         </mat-form-field>
                     </div>
 
+                    
+                    <!-- Airport -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>Airport</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'airport'"
+                                [placeholder]="'Airport'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div>
+                    
+                    <!-- Price -->
+                    <!-- <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>Price</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'price'"
+                                [placeholder]="'Price'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div> -->
+                    <!-- UnTitle -->
+                    <!-- <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>UnTitle</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'unTitle'"
+                                [placeholder]="'UnTitle'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div> -->
+
+                    <div class="mt-8">
+                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                            <mat-label>Description</mat-label>
+                            <textarea
+                                matInput
+                                formControlName="description"
+                                placeholder="Description"
+                                rows="5"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+
                     <!-- Title -->
                     <div class="mt-8">
                         <mat-checkbox
-                          [formControl]="userForm.get('active')"
+                          [formControl]="form.get('active')"
                            [color]="'primary'"
                            [labelPosition]="'after'">
-                            Status
+                            Active Status
                         </mat-checkbox>
                     </div>
 
@@ -206,7 +287,7 @@
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"
-                            [disabled]="userForm.invalid"
+                            [disabled]="form.invalid"
                             [matTooltip]="'Save'"
                             (click)="updateDestination()">
                             Save

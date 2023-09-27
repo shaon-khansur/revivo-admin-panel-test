@@ -20,7 +20,7 @@ import {
 } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { UsersService } from '../users.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, finalize, takeUntil } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -33,7 +33,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { getAuth, Auth } from '@angular/fire/auth';
+import {
+    getStorage,
+    ref,
+    uploadBytes,
+    uploadBytesResumable,
+    getDownloadURL
+} from '@angular/fire/storage';
+import { getApp } from '@angular/fire/app';
+import {initializeApp} from 'firebase/app'
+import { environment } from 'environments/environment';
 
+const fapp = initializeApp(environment.firebase);
 @Component({
     selector: 'app-user-details',
     standalone: true,
@@ -81,8 +92,10 @@ export class UserDetailsComponent implements OnInit {
         private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _usersService: UsersService,
-        private fauth: Auth
-    ) {}
+        private fauth: Auth,
+
+    )
+    {}
     ngOnInit(): void {
         // Open the drawer
         this._userListComponent.matDrawer.open();
@@ -149,6 +162,24 @@ export class UserDetailsComponent implements OnInit {
         if (!allowedTypes.includes(file.type)) {
             return;
         }
+
+        // const firebaseApp = getApp();
+        const storage = getStorage(fapp);
+
+        const fileRef = ref(storage, `destination/${file.name}`);
+
+
+        uploadBytesResumable(fileRef, file).on(
+            'state_changed',
+            (snapshot) => {},
+            (error) => {},
+            () => {
+                console.log('upload complete')
+                getDownloadURL(fileRef).then(url => {
+                    console.log('url', url)
+                })
+            }
+        );
 
         // Upload the avatar
         // this._contactsService.uploadAvatar(this.contact.id, file).subscribe();

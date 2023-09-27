@@ -1,44 +1,132 @@
-    <h1 class="text-lg font-bold text-primary">Create Destination</h1>
-    <div mat-dialog-content class="custom-dialog">
-        <form [formGroup]="form">
-            <div class="flex flex-col mt-5">
-                <mat-form-field class="flex-auto">
-                    <input
-                        matInput
-                        formControlName="name"
-                        [placeholder]="'Destination Name'"
-                    />
-                    <mat-error
-                        *ngIf="form.get('name').hasError('required')"
-                    >
-                        Name field is required
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <input
-                        matInput
-                        formControlName="index"
-                        [placeholder]="'Index Id'"
-                    />
-                    <mat-error
-                        *ngIf="form.get('index').hasError('required')"
-                    >
-                        Index field is required
-                    </mat-error>
-                </mat-form-field>
-                <mat-checkbox formControlName="active">Is Checked</mat-checkbox>
-            </div>
-        </form>
-    </div>
-    <div mat-dialog-actions [align]="'end'">
-        <button color="accent" mat-flat-button mat-dialog-close>Cancel</button>
-        <button
-            (click)="createDestinantion()"
-            color="primary"
-            mat-raised-button
-            [disabled]="form.invalid"
-        >
-            Create
-        </button>
-    </div>
-    
+<div mat-dialog-content class="custom-dialog">
+    <form [formGroup]="form">
+        <div class="flex flex-col">
+            <mat-grid-list cols="2" rowHeight="2:1">
+                <mat-grid-tile>
+                    <h1 class="text-lg font-bold text-primary">Create Destination</h1>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div class="flex flex-auto items-end">
+                        <div class="relative flex items-center justify-center w-32 h-32 overflow-hidden ring-4 ring-bg-card">
+                            <!-- Upload / Remove avatar -->
+                            <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                            <div class="absolute inset-0 flex items-center justify-center z-20">
+                                <div>
+                                    <input
+                                        id="avatar-file-input"
+                                        class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                        type="file"
+                                        [multiple]="false"
+                                        (change)="uploadAvatar(avatarFileInput.files)"
+                                        [accept]="'image/jpeg, image/png'"
+                                        #avatarFileInput>
+                                    <label
+                                        class="flex items-center justify-center w-10 h-10 cursor-pointer hover:bg-hover"
+                                        for="avatar-file-input"
+                                        matRipple>
+                                        <mat-icon
+                                            class="text-white"
+                                            [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                                    </label>
+                                </div>
+                                <div>
+                                    <button
+                                        mat-icon-button
+                                        (click)="removeAvatar()">
+                                        <mat-icon
+                                            class="text-white"
+                                            [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+            <mat-form-field class="flex-auto mt-10">
+                <input
+                    matInput
+                    formControlName="name"
+                    placeholder="Destination Name"
+                />
+                <mat-error
+                    *ngIf="form.get('name').hasError('required')"
+                >
+                    Name field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="airport"
+                    placeholder="Airport"
+                />
+                <mat-error
+                    *ngIf="form.get('airport').hasError('required')"
+                >
+                    Airport field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="index"
+                    placeholder="Index Id"
+                />
+                <mat-error
+                    *ngIf="form.get('index').hasError('required')"
+                >
+                    Index field is required
+                </mat-error>
+            </mat-form-field>
+            <!-- <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="price"
+                    placeholder="Price"
+                />
+                <mat-error
+                    *ngIf="form.get('price').hasError('required')"
+                >
+                    Price field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
+                    formControlName="unTitle"
+                    placeholder="UnTitle"
+                />
+                <mat-error
+                    *ngIf="form.get('unTitle').hasError('required')"
+                >
+                    UnTitle field is required
+                </mat-error>
+            </mat-form-field> -->
+            <mat-form-field class="flex-auto">
+                <textarea
+                    matInput
+                    formControlName="description"
+                    placeholder="Description"
+                    rows="5"
+                ></textarea>
+                <mat-error *ngIf="form.get('description').hasError('required')">
+                    Description field is required
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-checkbox formControlName="active">Active Status</mat-checkbox>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions [align]="'end'">
+    <button color="accent" mat-flat-button mat-dialog-close>Cancel</button>
+    <button
+        (click)="createDestination()"
+        color="primary"
+        mat-raised-button
+        [disabled]="form.invalid"
+    >
+        Create
+    </button>
+</div>
