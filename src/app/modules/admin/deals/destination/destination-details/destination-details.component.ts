@@ -144,63 +144,6 @@ export class DestinationDetailsComponent {
       return this._destinationListComponent.matDrawer.close();
   }
 
-  uploadAvatar(fileList: FileList): void {
-    // Return if canceled
-    if (!fileList.length) {
-        return;
-    }
-
-    const allowedTypes = ['image/jpeg', 'image/png'];
-    const file = fileList[0];
-
-    // Return if the file is not allowed
-    if (!allowedTypes.includes(file.type)) {
-        return;
-    }
-
-    // const firebaseApp = getApp();
-    const storage = getStorage(fapp);
-
-    const fileRef = ref(storage, `destination/${file.name}`);
-
-
-    uploadBytesResumable(fileRef, file).on(
-        'state_changed',
-        (snapshot) => {},
-        (error) => {},
-        () => {
-            console.log('upload complete')
-            getDownloadURL(fileRef).then(url => {
-                console.log('url', url)
-
-                this.form.get('avatar').setValue(url);
-            })
-        }
-    );
-
-    // Upload the avatar
-    // this._contactsService.uploadAvatar(this.contact.id, file).subscribe();
-}
-  
-removeAvatar(): void {
-  // Get the form control for 'avatar'
-  const avatarFormControl = this.form.get('avatar');
-
-  // Log a message to indicate that the function is being executed
-  console.log('Removing avatar...');
-
-  // Set the avatar as null
-  avatarFormControl.setValue(null);
-
-  // Log a message to indicate that the avatar form control has been set to null
-  console.log('Avatar form control set to null:', avatarFormControl.value);
-
-  // Set the file input value as null
-  this._avatarFileInput.nativeElement.value = null;
-
-  // Log a message to indicate that the file input value has been cleared
-  console.log('File input value cleared.');
-}
 
   deleteDestination(): void {
       // Open the confirmation dialog
@@ -245,6 +188,67 @@ removeAvatar(): void {
       // Mark for check
       this._changeDetectorRef.markForCheck();
   }
+
+  uploadAvatar(fileList: FileList): void {
+    // Return if canceled
+    if (!fileList.length) {
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    const file = fileList[0];
+
+    // Return if the file is not allowed
+    if (!allowedTypes.includes(file.type)) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const fileString = event.target.result as string;
+      const base64Image = fileString.split(',')[1];
+      
+      // Create the avatar object
+      const avatar = {
+        content: base64Image,
+        name: file.name,
+        type: file.type
+      };
+
+      this.form.get('avatar').setValue(avatar, { emitEvent: false });
+
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  removeAvatar(): void {
+    const avatarFormControl = this.form.get('avatar');
+
+    avatarFormControl.setValue(null, { emitEvent: false }); // Don't emit the change event
+    this._avatarFileInput.nativeElement.value = null;
+  }
+  
+// removeAvatar(): void {
+//   // Get the form control for 'avatar'
+//   const avatarFormControl = this.form.get('avatar');
+
+//   // Log a message to indicate that the function is being executed
+//   console.log('Removing avatar...');
+
+//   // Set the avatar as null
+//   avatarFormControl.setValue(null);
+
+//   // Log a message to indicate that the avatar form control has been set to null
+//   console.log('Avatar form control set to null:', avatarFormControl.value);
+
+//   // Set the file input value as null
+//   this._avatarFileInput.nativeElement.value = null;
+
+//   // Log a message to indicate that the file input value has been cleared
+//   console.log('File input value cleared.');
+// }
 
   updateDestination(): void {
       this._destinationsService

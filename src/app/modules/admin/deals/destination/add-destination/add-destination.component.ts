@@ -4,7 +4,7 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
 import {
     FormBuilder,
     FormGroup,
@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DestinationService } from '../service/destination.service';
 import {
   getStorage,
@@ -23,7 +23,7 @@ import {
   uploadBytesResumable,
   getDownloadURL
 } from '@angular/fire/storage';
-import {initializeApp} from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 import { environment } from 'environments/environment';
 
 const fapp = initializeApp(environment.firebase);
@@ -61,8 +61,6 @@ export class AddDestinationComponent implements OnInit {
       name: [null, Validators.required],
       avatar: [null],
       index: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      // price: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-      // unTitle: [null, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       airport: [null, Validators.required],
       description: [null, Validators.required],
       active: [false]
@@ -70,11 +68,10 @@ export class AddDestinationComponent implements OnInit {
     
   }
 
-
   uploadAvatar(fileList: FileList): void {
     // Return if canceled
     if (!fileList.length) {
-        return;
+      return;
     }
 
     const allowedTypes = ['image/jpeg', 'image/png'];
@@ -82,63 +79,65 @@ export class AddDestinationComponent implements OnInit {
 
     // Return if the file is not allowed
     if (!allowedTypes.includes(file.type)) {
-        return;
+      return;
     }
 
-    // const firebaseApp = getApp();
-    const storage = getStorage(fapp);
+    const reader = new FileReader();
 
-    const fileRef = ref(storage, `destination/${file.name}`);
+    reader.onload = (event) => {
+      const fileString = event.target.result as string;
+      const base64Image = fileString.split(',')[1];
+      
+      // Create the avatar object
+      const avatar = {
+        content: base64Image,
+        name: file.name,
+        type: file.type
+      };
 
+      // Set the avatar object in the form control
+      this.form.get('avatar').setValue(avatar, { emitEvent: false }); // Don't emit the change event
 
-    uploadBytesResumable(fileRef, file).on(
-        'state_changed',
-        (snapshot) => {},
-        (error) => {},
-        () => {
-            console.log('upload complete')
-            getDownloadURL(fileRef).then(url => {
-                console.log('url', url)
+      // Use setTimeout to ensure the setValue operation is completed before calling createDestination
+      setTimeout(() => {
+        this.createDestination();
+      }, 0);
+    };
 
-                this.form.get('avatar').setValue(url);
-            })
-        }
-    );
+    reader.readAsDataURL(file);
+  }
 
-    // Upload the avatar
-    // this.destinationService.uploadAvatar(this.contact.id, file).subscribe();
-}
-  
-removeAvatar(): void {
-  // Get the form control for 'avatar'
-  const avatarFormControl = this.form.get('avatar');
+  removeAvatar(): void {
+    // Get the form control for 'avatar'
+    const avatarFormControl = this.form.get('avatar');
 
-  // Log a message to indicate that the function is being executed
-  console.log('Removing avatar...');
-
-  // Set the avatar as null
-  avatarFormControl.setValue(null);
-
-  // Log a message to indicate that the avatar form control has been set to null
-  console.log('Avatar form control set to null:', avatarFormControl.value);
-
-  // Set the file input value as null
-  this._avatarFileInput.nativeElement.value = null;
-
-  // Log a message to indicate that the file input value has been cleared
-  console.log('File input value cleared.');
-}
-
+    // Clear the selected image and base64 string
+    avatarFormControl.setValue(null, { emitEvent: false }); // Don't emit the change event
+    this._avatarFileInput.nativeElement.value = null;
+  }
 
   createDestination(): void {
-      this.form.markAllAsTouched();
-      if (this.form.valid) {
-          this.destinationService.insertDeals(this.form.value).subscribe({
-              next: (res: any) => {
-                  console.log(console.log(res));
-                  this._dialogRef.close(res.data);
-              },
-          });
-      }
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      // Get the avatar object from the form control
+      const avatar = this.form.get('avatar').value;
+
+      // Create the destination data including the avatar
+      const destinationData = {
+        name: this.form.get('name').value,
+        index: this.form.get('index').value,
+        airport: this.form.get('airport').value,
+        description: this.form.get('description').value,
+        active: this.form.get('active').value,
+        avatar: avatar
+      };
+
+      this.destinationService.insertDeals(destinationData).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this._dialogRef.close(res.data);
+        },
+      });
+    }
   }
 }
