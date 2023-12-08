@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<!-- <div mat-dialog-content>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
             <p class="text-md font-bold">Payload</p>
@@ -18,8 +18,66 @@
                 rows="100"
                 class="resize-none border rounded-md p-2 w-full h-32"
                 placeholder="Textarea 1"
-                [value]="apiErrorValue"
+                [value]="apiResponse"
             ></textarea>
         </div>
     </div>
-</div>
+</div> -->
+
+<!-- <mat-dialog-content class="mat-typography">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+            <p class="text-md font-bold">Payload</p>
+            <textarea
+                cols="100"
+                rows="100"
+                class="resize-none border rounded-md p-2 w-full h-32"
+                placeholder="Textarea 2"
+                [value]="payloadValue"
+            ></textarea>
+        </div>
+
+        <div>
+            <p class="text-md font-bold">Error</p>
+            <textarea
+                cols="100"
+                rows="100"
+                class="resize-none border rounded-md p-2 w-full h-32"
+                placeholder="Textarea 1"
+                [value]="apiResponse"
+            ></textarea>
+        </div>
+    </div>
+</mat-dialog-content> -->
+
+
+
+<mat-dialog-content class="mat-typography">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+            <p class="text-md font-bold">Payload</p>
+            <textarea
+                cols="100"
+                rows="100"
+                class="resize-none border rounded-md p-2 w-full h-50vh"
+                placeholder="Textarea 2"
+                [value]="payloadValue"
+            ></textarea>
+        </div>
+
+        <div>
+            <p class="text-md font-bold">Error</p>
+            <textarea
+                cols="100"
+                rows="100"
+                class="resize-none border rounded-md p-2 w-full h-50vh"
+                placeholder="Textarea 1"
+                [value]="apiResponse"
+            ></textarea>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

@@ -5,9 +5,11 @@ import { Observable, concatMap, from, map, toArray } from 'rxjs';
 
 export interface FareUpsellErrorsData {
     id: string;
-    timeStamp: number;
+    timeStamp: string;
     apiError: string | any;
     payload: string | any;
+    success: boolean;
+    response: string | any | null;
 }
 
 @Injectable({
@@ -27,9 +29,11 @@ export class FareUpsellErrorService {
                 map((data) => {
                     return {
                         id: data.id,
-                        timeStamp: data.timeStamp,
+                        timeStamp: new Date(data.timeStamp).toISOString(),
                         apiError: JSON.parse(data.apiError),
-                        payload: JSON.parse(data.payload)
+                        payload: JSON.parse(data.payload),
+                        success: data.success,
+                        response: data.response
                     }
                 }),
                 toArray()
