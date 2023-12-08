@@ -9,6 +9,7 @@ import { ExampleComponent } from './modules/admin/example/example.component';
 import { SupportComponent } from './modules/supports/support/support.component';
 import { SupportDashboardComponent } from './modules/supports/support-dashboard/support-dashboard.component';
 import { supportDashboardGuard } from './core/auth/guards/support-dashboard.guard';
+import { FareUpsellApiErroComponent } from './modules/supports/fare-upsell-api-erro/fare-upsell-api-erro.component';
 
 
 // @formatter:off
@@ -99,7 +100,8 @@ export const appRoutes: Route[] = [
             {path: 'deals/destinations', loadChildren: () => import('app/modules/admin/deals/destination/destination.routes')},
 
             {path: 'supports', children: [
-                {path: 'support', component: SupportComponent}
+                {path: 'support', component: SupportComponent},
+                {path: 'fare-upsell-api-error',component: FareUpsellApiErroComponent }
 
             ]},
             {path: 'utility', children: [
