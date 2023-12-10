@@ -26,7 +26,7 @@ export class FareUpsellApiErroComponent implements OnInit {
     fareUpsellService = inject(FareUpsellErrorService);
     constructor(private matDialog: MatDialog) {}
 
-    displayedColumns: string[] = ['date', 'error', 'status', 'view'];
+    displayedColumns: string[] = ['date', 'itineraries',  'error', 'count', 'status', 'view'];
     dataSource: any[] = [];
 
     ngOnInit(): void {
@@ -37,6 +37,7 @@ export class FareUpsellApiErroComponent implements OnInit {
                         new Date(b.timeStamp).getTime() -
                         new Date(a.timeStamp).getTime()
                 );
+                console.log('fa', res)
             },
             error: (err) => {
                 console.log('fareupsellErrorData erro', err);
@@ -51,5 +52,24 @@ export class FareUpsellApiErroComponent implements OnInit {
 
     view(rowData): void {
         this.matDialog.open(ErrorViewComponent, { data: rowData });
+    }
+
+    getItineraries(data: {flightOffers: any[], type: 'flight-offers-upselling'}) {
+        let departure = '';
+        let arrival = '';
+        data.flightOffers.forEach(offer => {
+            offer.itineraries.forEach(iti => {
+                for (let i = 0; i < iti.segments.length; i++) {
+                    if (i === 0) {
+                        departure = iti.segments[0].departure.iataCode;
+                    }
+                    if (i === iti.segments.length - 1) {
+                        arrival = iti.segments[i].arrival.iataCode;
+                    }
+                }
+            })
+        })
+
+        return `${departure} -> ${arrival}`
     }
 }

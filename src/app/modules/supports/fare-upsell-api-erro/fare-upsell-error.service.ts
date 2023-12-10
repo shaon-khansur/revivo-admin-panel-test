@@ -30,10 +30,10 @@ export class FareUpsellErrorService {
                     return {
                         id: data.id,
                         timeStamp: new Date(data.timeStamp).toISOString(),
-                        apiError: JSON.parse(data.apiError),
+                        apiError: data.apiError ? JSON.parse(data.apiError) : data.apiError,
                         payload: JSON.parse(data.payload),
                         success: data.success,
-                        response: data.response
+                        response: data.response ?  JSON.parse(data.response) : data.response
                     }
                 }),
                 toArray()
