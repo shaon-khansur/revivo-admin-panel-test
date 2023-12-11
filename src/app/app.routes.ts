@@ -10,6 +10,7 @@ import { SupportComponent } from './modules/supports/support/support.component';
 import { SupportDashboardComponent } from './modules/supports/support-dashboard/support-dashboard.component';
 import { supportDashboardGuard } from './core/auth/guards/support-dashboard.guard';
 import { FareUpsellApiErroComponent } from './modules/supports/fare-upsell-api-erro/fare-upsell-api-erro.component';
+import { CreateOrderErrorComponent } from './modules/supports/create-order-error/create-order-error.component';
 
 
 // @formatter:off
@@ -101,7 +102,8 @@ export const appRoutes: Route[] = [
 
             {path: 'supports', children: [
                 {path: 'support', component: SupportComponent},
-                {path: 'fare-upsell-api-error',component: FareUpsellApiErroComponent }
+                {path: 'fare-upsell-api-error',component: FareUpsellApiErroComponent },
+                {path: 'create-order-error',component: CreateOrderErrorComponent }
 
             ]},
             {path: 'utility', children: [
