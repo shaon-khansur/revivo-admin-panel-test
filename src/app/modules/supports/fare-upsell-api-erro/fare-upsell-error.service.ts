@@ -10,6 +10,7 @@ export interface FareUpsellErrorsData {
     payload: string | any;
     success: boolean;
     response: string | any | null;
+    retry: boolean
 }
 
 @Injectable({
@@ -33,7 +34,8 @@ export class FareUpsellErrorService {
                         apiError: data.apiError ? JSON.parse(data.apiError) : data.apiError,
                         payload: JSON.parse(data.payload),
                         success: data.success,
-                        response: data.response ?  JSON.parse(data.response) : data.response
+                        response: data.response ?  JSON.parse(data.response) : data.response,
+                        retry: 'retry' in data ? data.retry : false
                     }
                 }),
                 toArray()

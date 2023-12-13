@@ -26,7 +26,7 @@ export class FareUpsellApiErroComponent implements OnInit {
     fareUpsellService = inject(FareUpsellErrorService);
     constructor(private matDialog: MatDialog) {}
 
-    displayedColumns: string[] = ['date', 'itineraries',  'error', 'count', 'status', 'view'];
+    displayedColumns: string[] = ['date', 'itineraries',  'error', 'retry', 'count', 'status', 'view'];
     dataSource: any[] = [];
 
     ngOnInit(): void {
