@@ -17,6 +17,13 @@
             </td>
         </ng-container>
 
+        <ng-container matColumnDef="amaCref">
+            <th mat-header-cell *matHeaderCellDef>amaCref</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.apiError ? getAmaClient(element) : 'N/A'}}
+            </td>
+        </ng-container>
+
         <ng-container matColumnDef="itineraries">
             <th mat-header-cell *matHeaderCellDef>Itineraries</th>
             <td mat-cell *matCellDef="let element">

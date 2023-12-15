@@ -26,7 +26,7 @@ export class FareUpsellApiErroComponent implements OnInit {
     fareUpsellService = inject(FareUpsellErrorService);
     constructor(private matDialog: MatDialog) {}
 
-    displayedColumns: string[] = ['date', 'itineraries',  'error', 'retry', 'count', 'status', 'view'];
+    displayedColumns: string[] = ['date', 'amaCref', 'itineraries',  'error', 'retry', 'count', 'status', 'view'];
     dataSource: any[] = [];
 
     ngOnInit(): void {
@@ -71,5 +71,13 @@ export class FareUpsellApiErroComponent implements OnInit {
         })
 
         return `${departure} -> ${arrival}`
+    }
+
+    getAmaClient(element): string {
+        if (element.apiError && 'Ama-Client-Ref' in element.apiError.config.headers) {
+            return element.apiError.config.headers["Ama-Client-Ref"]
+        } else {
+            return 'N/A';
+        }
     }
 }
