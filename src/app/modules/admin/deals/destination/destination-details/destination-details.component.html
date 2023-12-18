@@ -102,7 +102,7 @@
                     </ng-container>
                     <ng-container *ngIf="destination?.airportCode">
                         <div class="flex sm:items-center">
-                            <div class="font-bold ml-6">Airport Code:</div>
+                            <div class="font-bold ml-6">Airport Codes:</div>
                             <div class="ml-2 leading-6">
                                 {{ destination?.airportCode }}
                             </div>
@@ -127,15 +127,14 @@
                             <!-- Adjusted margin -->
                         </div>
                     </ng-container>
-                    <ng-container *ngIf="destination?.airport">
+                    <!-- <ng-container *ngIf="destination?.airport">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Airport:</div>
                             <div class="ml-2 leading-6">
                                 {{ destination?.airport }}
                             </div>
-                            <!-- Adjusted margin -->
                         </div>
-                    </ng-container>
+                    </ng-container> -->
                     <!-- Status -->
                     <ng-container *ngIf="destination?.active">
                         <div class="flex sm:items-center">
@@ -312,6 +311,7 @@
                     </div>
                     <div class="mt-8">
                         <mat-form-field class="w-full">
+                            <mat-label>Airport codes*</mat-label>
                             <mat-chip-grid
                                 #chipGrid
                                 aria-label="Enter Airport codes"
@@ -334,7 +334,7 @@
                                     </button>
                                 </mat-chip-row>
                                 <input
-                                    placeholder="Airport code..."
+                                    placeholder="Airport codes..."
                                     [matChipInputFor]="chipGrid"
                                     [matChipInputSeparatorKeyCodes]="
                                         separatorKeysCodes
@@ -347,6 +347,7 @@
                     </div>
                     <div class="mt-8">
                         <mat-form-field class="w-full">
+                            <mat-label>City Names*</mat-label>
                             <mat-chip-grid
                                 #cityNameGrid
                                 aria-label="Enter CityName"
@@ -381,7 +382,20 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="mt-8">
+                    <mat-form-field class="flex-auto w-full mt-8">
+                        <mat-label>Hotel Star</mat-label>
+                        <mat-select formControlName="hotelStar" placeholder="Select minimum hotel star">
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="4">4</mat-option>
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="6">6</mat-option>
+                            <mat-option value="7">7</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
@@ -394,10 +408,10 @@
                                 [spellcheck]="false"
                             />
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <!-- Airport -->
-                    <div class="mt-8">
+                    <!-- <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
@@ -410,7 +424,7 @@
                                 [spellcheck]="false"
                             />
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <!-- Price -->
                     <!-- <div class="mt-8">

@@ -123,7 +123,7 @@ export class DestinationDetailsComponent {
             hotelStar: ['', [Validators.required]],
             //   price: ['', [Validators.required]],
             //   unTitle: ['', [Validators.required]],
-            airport: ['', [Validators.required]],
+            // airport: ['', [Validators.required]],
             airportCode: ['', [Validators.required]],
             cityNames: ['', [Validators.required]],
             description: ['', [Validators.required]],
