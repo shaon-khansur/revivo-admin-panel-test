@@ -97,7 +97,7 @@ export class AddDestinationComponent implements OnInit {
             description: [null, Validators.required],
             active: [false],
             price: [null, Validators.required],
-            discountPrice: [null, Validators.required],
+            unTitle: [null, Validators.required],
             discount: [
                 null,
                 [Validators.required, Validators.pattern(/^[0-9]+$/)],
@@ -212,7 +212,7 @@ export class AddDestinationComponent implements OnInit {
                 description: this.form.get('description').value,
                 active: this.form.get('active').value,
                 price: this.form.get('price').value,
-                discountPrice: this.form.get('discountPrice').value,
+                unTitle: this.form.get('unTitle').value,
                 discount: this.form.get('discount').value,
                 avatar: avatar,
             };

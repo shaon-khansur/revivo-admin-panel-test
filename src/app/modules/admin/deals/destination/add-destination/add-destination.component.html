@@ -177,12 +177,10 @@
             <mat-form-field class="flex-auto">
                 <input
                     matInput
-                    formControlName="discountPrice"
+                    formControlName="unTitle"
                     placeholder="Discount Price"
                 />
-                <mat-error
-                    *ngIf="form.get('discountPrice').hasError('required')"
-                >
+                <mat-error *ngIf="form.get('unTitle').hasError('required')">
                     Discount Price field is required
                 </mat-error>
             </mat-form-field>

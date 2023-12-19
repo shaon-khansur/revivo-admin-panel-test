@@ -122,7 +122,7 @@ export class DestinationDetailsComponent {
             destinationId: ['', [Validators.required]],
             hotelStar: ['', [Validators.required]],
             price: ['', [Validators.required]],
-            discountPrice: ['', [Validators.required]],
+            unTitle: ['', [Validators.required]],
             discount: ['', [Validators.required]],
             // airport: ['', [Validators.required]],
             airportCode: ['', [Validators.required]],
