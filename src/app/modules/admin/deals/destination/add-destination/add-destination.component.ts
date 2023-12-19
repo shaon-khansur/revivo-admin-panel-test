@@ -96,6 +96,12 @@ export class AddDestinationComponent implements OnInit {
             cityNames: [null, Validators.required],
             description: [null, Validators.required],
             active: [false],
+            price: [null, Validators.required],
+            discountPrice: [null, Validators.required],
+            discount: [
+                null,
+                [Validators.required, Validators.pattern(/^[0-9]+$/)],
+            ],
         });
     }
 
@@ -205,6 +211,9 @@ export class AddDestinationComponent implements OnInit {
                 cityNames: this.form.get('cityNames').value,
                 description: this.form.get('description').value,
                 active: this.form.get('active').value,
+                price: this.form.get('price').value,
+                discountPrice: this.form.get('discountPrice').value,
+                discount: this.form.get('discount').value,
                 avatar: avatar,
             };
 

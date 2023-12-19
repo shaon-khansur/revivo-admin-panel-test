@@ -395,20 +395,6 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <!-- <div class="mt-8">
-                        <mat-form-field
-                            class="w-full"
-                            [subscriptSizing]="'dynamic'"
-                        >
-                            <mat-label>Hotel Star</mat-label>
-                            <input
-                                matInput
-                                [formControlName]="'hotelStar'"
-                                [placeholder]="'Hotel Star'"
-                                [spellcheck]="false"
-                            />
-                        </mat-form-field>
-                    </div> -->
 
                     <!-- Airport -->
                     <!-- <div class="mt-8">
@@ -427,7 +413,7 @@
                     </div> -->
 
                     <!-- Price -->
-                    <!-- <div class="mt-8">
+                    <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'">
@@ -438,20 +424,34 @@
                                 [placeholder]="'Price'"
                                 [spellcheck]="false">
                         </mat-form-field>
-                    </div> -->
+                    </div>
                     <!-- UnTitle -->
-                    <!-- <div class="mt-8">
+                    <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'">
-                            <mat-label>UnTitle</mat-label>
+                            <mat-label>Discount Price</mat-label>
                             <input
                                 matInput
-                                [formControlName]="'unTitle'"
-                                [placeholder]="'UnTitle'"
+                                [formControlName]="'discountPrice'"
+                                [placeholder]="'Discount Price'"
                                 [spellcheck]="false">
                         </mat-form-field>
-                    </div> -->
+                    </div>
+                    <!-- discount -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'">
+                            <mat-label>Discount</mat-label>
+                            <input
+                                matInput
+                                type="number"
+                                [formControlName]="'discount'"
+                                [placeholder]="'Discount'"
+                                [spellcheck]="false">
+                        </mat-form-field>
+                    </div>
 
                     <div class="mt-8">
                         <mat-form-field
