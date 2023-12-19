@@ -88,7 +88,10 @@
             </mat-form-field> -->
 
             <mat-form-field class="flex-auto">
-                <mat-select formControlName="hotelStar" placeholder="Select minimum hotel star">
+                <mat-select
+                    formControlName="hotelStar"
+                    placeholder="Select minimum hotel star"
+                >
                     <mat-option value="1">1</mat-option>
                     <mat-option value="2">2</mat-option>
                     <mat-option value="3">3</mat-option>
@@ -98,7 +101,6 @@
                     <mat-option value="7">7</mat-option>
                 </mat-select>
             </mat-form-field>
-            
 
             <!-- ... other form controls -->
 
@@ -126,7 +128,6 @@
                         [matChipInputAddOnBlur]="addOnBlur"
                         (matChipInputTokenEnd)="addChip($event)"
                     />
-                    
                 </mat-chip-grid>
             </mat-form-field>
             <mat-form-field class="flex-auto">
@@ -157,17 +158,6 @@
             </mat-form-field>
 
             <!-- ... other form controls -->
-
-            <!-- <mat-form-field class="flex-auto">
-                <input
-                    matInput
-                    formControlName="airport"
-                    placeholder="Airport"
-                />
-                <mat-error *ngIf="form.get('airport').hasError('required')">
-                    Airport field is required
-                </mat-error>
-            </mat-form-field> -->
             <mat-form-field class="flex-auto">
                 <input
                     matInput
@@ -179,14 +169,8 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
-                <input
-                    matInput
-                    formControlName="price"
-                    placeholder="Price"
-                />
-                <mat-error
-                    *ngIf="form.get('price').hasError('required')"
-                >
+                <input matInput formControlName="price" placeholder="Price" />
+                <mat-error *ngIf="form.get('price').hasError('required')">
                     Price field is required
                 </mat-error>
             </mat-form-field>
@@ -194,24 +178,23 @@
                 <input
                     matInput
                     formControlName="discountPrice"
-                    placeholder="UnTitle"
+                    placeholder="Discount Price"
                 />
                 <mat-error
                     *ngIf="form.get('discountPrice').hasError('required')"
                 >
-                    UnTitle field is required
+                    Discount Price field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
                 <input
                     matInput
+                    type="number"
                     formControlName="discount"
                     placeholder="Discount"
                 />
-                <mat-error
-                    *ngIf="form.get('discount').hasError('required')"
-                >
-                    UnTitle field is required
+                <mat-error *ngIf="form.get('discount').hasError('required')">
+                    Discount field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
