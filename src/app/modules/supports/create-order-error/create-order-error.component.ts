@@ -54,4 +54,8 @@ export class CreateOrderErrorComponent implements OnInit {
     view(rowData): void {
         this.matDialog.open(ErrorDialogComponent, { data: rowData });
     }
+
+    getApiErrorMessafe(error): string {
+        return error.data.errors[0].title;
+    }
 }

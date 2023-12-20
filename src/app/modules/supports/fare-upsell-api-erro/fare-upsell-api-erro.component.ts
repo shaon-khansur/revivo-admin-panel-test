@@ -74,10 +74,14 @@ export class FareUpsellApiErroComponent implements OnInit {
     }
 
     getAmaClient(element): string {
-        if (element.apiError && 'Ama-Client-Ref' in element.apiError.config.headers) {
-            return element.apiError.config.headers["Ama-Client-Ref"]
+        if (element.apiError) {
+            return element.apiError.headers["ama-client-ref"]
         } else {
             return 'N/A';
         }
+    }
+
+    getApiErrorMessafe(error): string {
+        return error.data.errors[0].title;
     }
 }
