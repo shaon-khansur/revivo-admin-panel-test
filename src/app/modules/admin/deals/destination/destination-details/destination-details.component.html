@@ -118,6 +118,15 @@
                             <!-- Adjusted margin -->
                         </div>
                     </ng-container>
+                    <ng-container *ngIf="destination?.dealDestination">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Deal Destination:</div>
+                            <div class="ml-2 leading-6">
+                                {{ destination?.dealDestination }}
+                            </div>
+                            <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
                     <ng-container *ngIf="destination?.hotelStar">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Hotel Star:</div>
@@ -127,15 +136,6 @@
                             <!-- Adjusted margin -->
                         </div>
                     </ng-container>
-                    <!-- <ng-container *ngIf="destination?.airport">
-                        <div class="flex sm:items-center">
-                            <div class="font-bold ml-6">Airport:</div>
-                            <div class="ml-2 leading-6">
-                                {{ destination?.airport }}
-                            </div>
-                        </div>
-                    </ng-container> -->
-                    <!-- Status -->
                     <ng-container *ngIf="destination?.active">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Status:</div>
@@ -383,6 +383,42 @@
                                     "
                                     [matChipInputAddOnBlur]="addOnBlur"
                                     (matChipInputTokenEnd)="addCityName($event)"
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field class="w-full">
+                            <mat-label>Deal Destination*</mat-label>
+                            <mat-chip-grid
+                                #dealDestinationGrid
+                                aria-label="Enter Deal Destination"
+                            >
+                                <mat-chip-row
+                                    *ngFor="let code of dealDestination"
+                                    (removed)="removedealDestination(code)"
+                                    [editable]="true"
+                                    (edited)="editdealDestination(code, $event)"
+                                    [aria-description]="
+                                        'press enter to edit ' + code
+                                    "
+                                >
+                                    {{ code }}
+                                    <button
+                                        matChipRemove
+                                        [attr.aria-label]="'remove ' + code"
+                                    >
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                                <input
+                                    placeholder="Deal Destination..."
+                                    [matChipInputFor]="dealDestinationGrid"
+                                    [matChipInputSeparatorKeyCodes]="
+                                        separatorKeysCodes
+                                    "
+                                    [matChipInputAddOnBlur]="addOnBlur"
+                                    (matChipInputTokenEnd)="adddealDestination($event)"
                                 />
                             </mat-chip-grid>
                         </mat-form-field>

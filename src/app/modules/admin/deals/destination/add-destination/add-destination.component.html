@@ -156,6 +156,32 @@
                     />
                 </mat-chip-grid>
             </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <mat-chip-grid #dealDestinationGrid aria-label="Enter Deal Destination">
+                    <mat-chip-row
+                        *ngFor="let chip of dealDestination; let i = index"
+                        (removed)="removedealDestination(i)"
+                        [editable]="true"
+                        (edited)="editdealDestination(i, $event)"
+                        [aria-description]="'press enter to edit ' + chip"
+                    >
+                        {{ chip }}
+                        <button
+                            matChipRemove
+                            [attr.aria-label]="'remove ' + chip"
+                        >
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                    <input
+                        placeholder="Deal Destination..."
+                        [matChipInputFor]="dealDestinationGrid"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="adddealDestination($event)"
+                    />
+                </mat-chip-grid>
+            </mat-form-field>
 
             <!-- ... other form controls -->
             <mat-form-field class="flex-auto">

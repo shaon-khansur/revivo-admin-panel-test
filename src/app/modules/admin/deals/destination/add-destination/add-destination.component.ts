@@ -74,6 +74,7 @@ export class AddDestinationComponent implements OnInit {
     announcer = inject(LiveAnnouncer);
     airportChips: string[] = [];
     CityNames: string[] = [];
+    dealDestination: string[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -94,6 +95,7 @@ export class AddDestinationComponent implements OnInit {
             // airport: [null, Validators.required],
             airportCode: [null, Validators.required],
             cityNames: [null, Validators.required],
+            dealDestination: [null, Validators.required],
             description: [null, Validators.required],
             active: [false],
             price: [null, Validators.required],
@@ -127,6 +129,17 @@ export class AddDestinationComponent implements OnInit {
         }
         this.form.get('cityNames').setValue(this.CityNames);
     }
+    adddealDestination(event: any): void {
+        const input = event.input;
+        const value = event.value;
+        if ((value || '').trim()) {
+            this.dealDestination.push(value.trim());
+        }
+        if (input) {
+            input.value = '';
+        }
+        this.form.get('dealDestination').setValue(this.dealDestination);
+    }
 
     editChip(index: number, newValue: string): void {
         if (newValue && !this.airportChips.includes(newValue)) {
@@ -138,12 +151,20 @@ export class AddDestinationComponent implements OnInit {
             this.CityNames[index] = newValue;
         }
     }
+    editdealDestination(index: number, newValue: string): void {
+        if (newValue && !this.dealDestination.includes(newValue)) {
+            this.dealDestination[index] = newValue;
+        }
+    }
 
     removeChip(index: number): void {
         this.airportChips.splice(index, 1);
     }
     removeCityNames(index: number): void {
         this.CityNames.splice(index, 1);
+    }
+    removedealDestination(index: number): void {
+        this.dealDestination.splice(index, 1);
     }
 
     uploadAvatar(fileList: FileList): void {
@@ -209,6 +230,7 @@ export class AddDestinationComponent implements OnInit {
                 // airport: this.form.get('airport').value,
                 airportCode: this.form.get('airportCode').value,
                 cityNames: this.form.get('cityNames').value,
+                dealDestination: this.form.get('dealDestination').value,
                 description: this.form.get('description').value,
                 active: this.form.get('active').value,
                 price: this.form.get('price').value,
