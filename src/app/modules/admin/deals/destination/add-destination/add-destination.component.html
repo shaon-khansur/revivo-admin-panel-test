@@ -169,19 +169,19 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
-                <input matInput formControlName="price" placeholder="Price" />
+                <input matInput formControlName="price" placeholder="Discount Price" />
                 <mat-error *ngIf="form.get('price').hasError('required')">
-                    Price field is required
+                    Discount Price field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
                 <input
                     matInput
                     formControlName="unTitle"
-                    placeholder="Discount Price"
+                    placeholder="Price"
                 />
                 <mat-error *ngIf="form.get('unTitle').hasError('required')">
-                    Discount Price field is required
+                    Price field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
