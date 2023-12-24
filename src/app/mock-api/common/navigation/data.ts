@@ -83,6 +83,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:user-group',
                 link : '/supports/support',
             },
+            {
+                id   : 'support.fare',
+                title: 'Fare upsell API Error',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/supports/fare-upsell-api-error',
+            },
+            {
+                id   : 'support.order',
+                title: 'Create order API Error',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/supports/create-order-error',
+            },
         ],
     },
     {
