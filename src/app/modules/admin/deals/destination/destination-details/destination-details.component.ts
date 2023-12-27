@@ -120,6 +120,7 @@ export class DestinationDetailsComponent {
             id: [''],
             avatar: [''],
             name: ['', [Validators.required]],
+            countryName: ['', [Validators.required]],
             destinationId: ['', [Validators.required]],
             hotelStar: ['', [Validators.required]],
             price: ['', [Validators.required]],

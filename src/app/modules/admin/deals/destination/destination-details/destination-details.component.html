@@ -91,6 +91,15 @@
                             <!-- Adjusted margin -->
                         </div>
                     </ng-container>
+                    <ng-container *ngIf="destination?.countryName">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Country Name:</div>
+                            <div class="ml-2 leading-6">
+                                {{ destination?.countryName }}
+                            </div>
+                            <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
                     <ng-container *ngIf="destination?.destinationId">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Destination Id:</div>
@@ -295,6 +304,20 @@
                                 matInput
                                 [formControlName]="'name'"
                                 [placeholder]="'Name'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Country Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'countryName'"
+                                [placeholder]="'Country Name'"
                                 [spellcheck]="false"
                             />
                         </mat-form-field>
