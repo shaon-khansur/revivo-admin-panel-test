@@ -224,6 +224,17 @@
             <mat-form-field class="flex-auto">
                 <textarea
                     matInput
+                    formControlName="remark"
+                    placeholder="Remark"
+                    rows="2"
+                ></textarea>
+                <mat-error *ngIf="form.get('remark').hasError('required')">
+                    Remark field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <textarea
+                    matInput
                     formControlName="description"
                     placeholder="Description"
                     rows="5"

@@ -173,6 +173,15 @@
                             <div class="ml-2 leading-6">{{destination?.discount}}</div>
                         </div>
                     </ng-container>
+                    <ng-container *ngIf="destination?.remark">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Remark:</div>
+                            <div class="ml-2 leading-6">
+                                {{ destination?.remark }}
+                            </div>
+                            <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
                     <ng-container *ngIf="destination?.description">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Description:</div>
@@ -510,6 +519,20 @@
                         </mat-form-field>
                     </div>
 
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Description</mat-label>
+                            <textarea
+                                matInput
+                                formControlName="remark"
+                                placeholder="Remark"
+                                rows="5"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
                     <div class="mt-8">
                         <mat-form-field
                             class="w-full"

@@ -126,7 +126,7 @@ export class DestinationDetailsComponent {
             price: ['', [Validators.required]],
             unTitle: ['', [Validators.required]],
             discount: ['', [Validators.required]],
-            // airport: ['', [Validators.required]],
+            remark: ['', [Validators.required]],
             airportCode: ['', [Validators.required]],
             cityNames: ['', [Validators.required]],
             dealDestination: ['', [Validators.required]],
