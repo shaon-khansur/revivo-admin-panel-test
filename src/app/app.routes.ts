@@ -11,6 +11,8 @@ import { SupportDashboardComponent } from './modules/supports/support-dashboard/
 import { supportDashboardGuard } from './core/auth/guards/support-dashboard.guard';
 import { FareUpsellApiErroComponent } from './modules/supports/fare-upsell-api-erro/fare-upsell-api-erro.component';
 import { CreateOrderErrorComponent } from './modules/supports/create-order-error/create-order-error.component';
+import { AirportComponent } from './modules/settings/airport/airport.component';
+import { AirlineComponent } from './modules/settings/airline/airline.component';
 
 
 // @formatter:off
@@ -107,7 +109,9 @@ export const appRoutes: Route[] = [
 
             ]},
             {path: 'utility', children: [
-                {path: 'settings', loadChildren: () => import('app/modules/settings/settings.routes')}
+                {path: 'settings', loadChildren: () => import('app/modules/settings/settings.routes')},
+                {path: 'airport', component: AirportComponent, canActivate: [adminGuard]},
+                {path: 'airline', component: AirlineComponent, canActivate: [adminGuard]},
             ]},
 
 
