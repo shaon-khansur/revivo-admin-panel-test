@@ -37,4 +37,8 @@ export class AirlineService {
             `${environment.baseUrl}airlines/search?name=${data.name}&code=${data.code}&page=${data.page}`
         );
     }
+
+    updateAirline(data): Observable<any> {
+        return this.http.put(`${environment.baseUrl}airlines/${data.id}`, data.value)
+    }
 }

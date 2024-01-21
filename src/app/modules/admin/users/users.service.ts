@@ -25,7 +25,6 @@ export class UsersService {
     getAllUser(): Observable<User[]> {
         return this.http.get<User[]>(`${environment.baseUrl}users`).pipe(
             tap((users) => {
-
                 this._users.next(users);
             })
         );
@@ -78,5 +77,9 @@ export class UsersService {
 
     deleteUser(id): Observable<any> {
         return this.http.delete(`${environment.baseUrl}users/${id}`);
+    }
+
+    singUpUser(data): Observable<any> {
+        return this.http.post(`${environment.baseUrl}sign-up`, data).pipe(map((res: any) => res?.data));
     }
 }

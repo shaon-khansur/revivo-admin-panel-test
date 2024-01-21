@@ -1,1 +1,63 @@
-<p>airline-dialog works!</p>
+<div mat-dialog-content>
+    <form
+        [formGroup]="form"
+        class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+    >
+        <!-- <ng-container>
+            <input type="text" formControlName="">
+        </ng-container> -->
+        <div class="flex flex-col gt-xs:flex-row">
+            <div class="flex flex-row space-x-7">
+                <div>
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <mat-label>Code</mat-label>
+                        <input matInput formControlName="code" />
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:user-circle'"
+                        ></mat-icon>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <img class="w-26" [src]="fileString ? fileString : airlogo" alt="" srcset="" />
+                    <input
+                        type="file"
+                        [multiple]="false"
+                        (change)="uploadAvatar(avatarFileInput.files)"
+                        [accept]="'image/jpeg, image/png'"
+                        #avatarFileInput
+                    />
+                </div>
+            </div>
+            <mat-form-field class="flex-auto gt-xs:pr-3">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" />
+                <mat-icon
+                    class="icon-size-5"
+                    matSuffix
+                    [svgIcon]="'heroicons_solid:user-circle'"
+                ></mat-icon>
+            </mat-form-field>
+        </div>
+    </form>
+
+    <div mat-dialog-actions [align]="'end'" class="mt-4">
+        <button
+            color="accent"
+            mat-flat-button
+            mat-dialog-close
+            (click)="close()"
+        >
+            Cancel
+        </button>
+        <button
+            (click)="update()"
+            color="primary"
+            mat-raised-button
+            [disabled]="form.invalid"
+        >
+            Update
+        </button>
+    </div>
+</div>

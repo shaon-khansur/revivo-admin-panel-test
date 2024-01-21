@@ -90,7 +90,7 @@ export class UserListComponent implements OnInit {
             tap((userList) => {
                 {
                     (this.usersCount = userList.length),
-                        console.log(this.usersCount);
+                        console.log('userList', userList);
                 }
             })
         );

@@ -123,13 +123,13 @@ export class AirlineComponent {
         config.data = airport;
         this.dialog.open(AirlineDialogComponent, config).afterClosed().subscribe(values => {
             if (values) {
-                // this.airlineService.updateAirport({id: airport.id, value: values}).subscribe({
-                //     next: (res) => {
-                //         const index = this.allAirlines.findIndex(el => el.id === res.updatedAirport.id);
-                //         this.allAirlines[index] = res.updatedAirport;
-                //         this.dataSource = new MatTableDataSource(this.allAirlines);
-                //     }
-                // })
+                this.airlineService.updateAirline({id: airport.id, value: values}).subscribe({
+                    next: (res) => {
+                        const index = this.allAirlines.findIndex(el => el.id === res.updatedAirline.id);
+                        this.allAirlines[index] = res.updatedAirline;
+                        this.dataSource = new MatTableDataSource(this.allAirlines);
+                    }
+                })
             }
         })
     }

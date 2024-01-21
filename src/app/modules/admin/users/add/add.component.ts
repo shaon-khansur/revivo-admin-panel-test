@@ -56,12 +56,16 @@ export class AddComponent implements OnInit {
     createUser(): void {
         this.userCreateForm.markAllAsTouched();
         if (this.userCreateForm.valid) {
-            this.usersService.createUser(this.userCreateForm.value).subscribe({
-                next: (res) => {
-                    console.log(console.log(res));
-                    this._dialogRef.close(res.data);
-                },
-            });
+            this.usersService.singUpUser(this.userCreateForm.value).subscribe(user => {
+                console.log('user', user)
+                this._dialogRef.close(user);
+            })
+            // this.usersService.createUser(this.userCreateForm.value).subscribe({
+            //     next: (res) => {
+            //         console.log(console.log(res));
+            //         this._dialogRef.close(res.data);
+            //     },
+            // });
         }
     }
 
