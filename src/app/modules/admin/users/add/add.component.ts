@@ -37,6 +37,7 @@ export class AddComponent implements OnInit {
     userRole: any[] = [
         { name: 'Admin', value: 'admin' },
         { name: 'Support & Billing', value: 'support_and_billing' },
+        { name: 'Customer', value: 'customer' },
     ];
     constructor(
         private fb: FormBuilder,
