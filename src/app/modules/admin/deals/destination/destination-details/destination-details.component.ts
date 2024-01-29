@@ -91,6 +91,7 @@ export interface Airports {
 export class DestinationDetailsComponent {
     airportCodes: string[];
     cityNames: string[];
+    dealDestination: string[];
     separatorKeysCodes: number[] = [ENTER, COMMA];
     addOnBlur = true;
     announcer = inject(LiveAnnouncer);
@@ -119,14 +120,16 @@ export class DestinationDetailsComponent {
             id: [''],
             avatar: [''],
             name: ['', [Validators.required]],
+            countryName: ['', [Validators.required]],
             destinationId: ['', [Validators.required]],
             hotelStar: ['', [Validators.required]],
             price: ['', [Validators.required]],
             unTitle: ['', [Validators.required]],
             discount: ['', [Validators.required]],
-            // airport: ['', [Validators.required]],
+            remark: ['', [Validators.required]],
             airportCode: ['', [Validators.required]],
             cityNames: ['', [Validators.required]],
+            dealDestination: ['', [Validators.required]],
             description: ['', [Validators.required]],
             active: ['', [Validators.required]],
         });
@@ -149,6 +152,7 @@ export class DestinationDetailsComponent {
                 this.destination = user;
                 this.airportCodes = this.destination.airportCode;
                 this.cityNames = this.destination.cityNames;
+                this.dealDestination = this.destination.dealDestination;
 
                 // Clear the emails and phoneNumbers form arrays
                 // (this.contactForm.get('emails') as UntypedFormArray).clear();
@@ -183,6 +187,13 @@ export class DestinationDetailsComponent {
         }
         event.chipInput!.clear();
     }
+    adddealDestination(event: MatChipInputEvent): void {
+        const value = (event.value || '').trim();
+        if (value) {
+            this.dealDestination.push(value);
+        }
+        event.chipInput!.clear();
+    }
 
     editChip(code: string, event: MatChipEditedEvent) {
         const value = event.value.trim();
@@ -198,12 +209,23 @@ export class DestinationDetailsComponent {
     editCityName(code: string, event: MatChipEditedEvent) {
         const value = event.value.trim();
         if (!value) {
-            this.removeChip(code);
+            this.removeCityName(code);
             return;
         }
         const index = this.cityNames.indexOf(code);
         if (index >= 0) {
             this.cityNames[index] = value;
+        }
+    }
+    editdealDestination(code: string, event: MatChipEditedEvent) {
+        const value = event.value.trim();
+        if (!value) {
+            this.removedealDestination(code);
+            return;
+        }
+        const index = this.dealDestination.indexOf(code);
+        if (index >= 0) {
+            this.dealDestination[index] = value;
         }
     }
 
@@ -224,6 +246,15 @@ export class DestinationDetailsComponent {
             this.cityNames.splice(index, 1);
 
             // Announce the removal
+            this.announcer.announce(`Removed ${code}`);
+        }
+    }
+    removedealDestination(code: string): void {
+        const index = this.dealDestination.indexOf(code);
+
+        if (index >= 0) {
+            this.dealDestination.splice(index, 1);
+
             this.announcer.announce(`Removed ${code}`);
         }
     }

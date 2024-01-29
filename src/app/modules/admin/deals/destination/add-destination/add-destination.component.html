@@ -79,13 +79,13 @@
                     placeholder="Destination Id (should be unique)"
                 />
             </mat-form-field>
-            <!-- <mat-form-field class="flex-auto">
+            <mat-form-field class="flex-auto">
                 <input
                     matInput
-                    formControlName="hotelStar"
-                    placeholder="Minimum hotel star"
+                    formControlName="countryName"
+                    placeholder="Country Name"
                 />
-            </mat-form-field> -->
+            </mat-form-field>
 
             <mat-form-field class="flex-auto">
                 <mat-select
@@ -156,6 +156,32 @@
                     />
                 </mat-chip-grid>
             </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <mat-chip-grid #dealDestinationGrid aria-label="Enter Deal Destination">
+                    <mat-chip-row
+                        *ngFor="let chip of dealDestination; let i = index"
+                        (removed)="removedealDestination(i)"
+                        [editable]="true"
+                        (edited)="editdealDestination(i, $event)"
+                        [aria-description]="'press enter to edit ' + chip"
+                    >
+                        {{ chip }}
+                        <button
+                            matChipRemove
+                            [attr.aria-label]="'remove ' + chip"
+                        >
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                    <input
+                        placeholder="Deal Destination..."
+                        [matChipInputFor]="dealDestinationGrid"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="adddealDestination($event)"
+                    />
+                </mat-chip-grid>
+            </mat-form-field>
 
             <!-- ... other form controls -->
             <mat-form-field class="flex-auto">
@@ -169,19 +195,19 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
-                <input matInput formControlName="price" placeholder="Price" />
+                <input matInput formControlName="price" placeholder="Discount Price" />
                 <mat-error *ngIf="form.get('price').hasError('required')">
-                    Price field is required
+                    Discount Price field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
                 <input
                     matInput
                     formControlName="unTitle"
-                    placeholder="Discount Price"
+                    placeholder="Price"
                 />
                 <mat-error *ngIf="form.get('unTitle').hasError('required')">
-                    Discount Price field is required
+                    Price field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
@@ -193,6 +219,17 @@
                 />
                 <mat-error *ngIf="form.get('discount').hasError('required')">
                     Discount field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <textarea
+                    matInput
+                    formControlName="remark"
+                    placeholder="Remark"
+                    rows="2"
+                ></textarea>
+                <mat-error *ngIf="form.get('remark').hasError('required')">
+                    Remark field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
