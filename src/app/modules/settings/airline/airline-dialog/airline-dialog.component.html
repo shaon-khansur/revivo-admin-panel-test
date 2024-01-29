@@ -20,14 +20,21 @@
                     </mat-form-field>
                 </div>
                 <div>
-                    <img class="w-26" [src]="fileString ? fileString : airlogo" alt="" srcset="" />
-                    <input
-                        type="file"
-                        [multiple]="false"
-                        (change)="uploadAvatar(avatarFileInput.files)"
-                        [accept]="'image/jpeg, image/png'"
-                        #avatarFileInput
-                    />
+                    <div>
+                        <img
+                            class="w-26"
+                            [src]="fileString ? fileString : airlogo"
+                            alt=""
+                            srcset=""
+                        />
+                        <input
+                            type="file"
+                            [multiple]="false"
+                            (change)="uploadAvatar(avatarFileInput.files)"
+                            [accept]="'image/jpeg, image/png'"
+                            #avatarFileInput
+                        />
+                    </div>
                 </div>
             </div>
             <mat-form-field class="flex-auto gt-xs:pr-3">
