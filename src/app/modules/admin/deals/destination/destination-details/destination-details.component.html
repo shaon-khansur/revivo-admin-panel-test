@@ -158,21 +158,28 @@
                     <ng-container *ngIf="destination?.price">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Discount Price:</div>
-                            <div class="ml-2 leading-6">{{destination?.price}}</div>
+                            <div class="ml-2 leading-6">
+                                {{ destination?.price }}
+                            </div>
                         </div>
                     </ng-container>
                     <ng-container *ngIf="destination?.unTitle">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Price:</div>
-                            <div class="ml-2 leading-6">{{destination?.unTitle}}</div>
+                            <div class="ml-2 leading-6">
+                                {{ destination?.unTitle }}
+                            </div>
                         </div>
                     </ng-container>
                     <ng-container *ngIf="destination?.discount">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Discount:</div>
-                            <div class="ml-2 leading-6">{{destination?.discount}}</div>
+                            <div class="ml-2 leading-6">
+                                {{ destination?.discount }}
+                            </div>
                         </div>
                     </ng-container>
+                    <!-- remark -->
                     <ng-container *ngIf="destination?.remark">
                         <div class="flex sm:items-center">
                             <div class="font-bold ml-6">Remark:</div>
@@ -450,7 +457,9 @@
                                         separatorKeysCodes
                                     "
                                     [matChipInputAddOnBlur]="addOnBlur"
-                                    (matChipInputTokenEnd)="adddealDestination($event)"
+                                    (matChipInputTokenEnd)="
+                                        adddealDestination($event)
+                                    "
                                 />
                             </mat-chip-grid>
                         </mat-form-field>
@@ -518,7 +527,7 @@
                             />
                         </mat-form-field>
                     </div>
-
+                    <!-- remark -->
                     <div class="mt-8">
                         <mat-form-field
                             class="w-full"
