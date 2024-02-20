@@ -72,7 +72,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:building-office',
                 link : '/deals/destinations',
-            },
+            }
 
         ],
     },
@@ -119,6 +119,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:cog-8-tooth',
                 link : '/utility/settings',
+            },
+            {
+                id   : 'utility.airport',
+                title: 'Airport setting',
+                type : 'basic',
+                icon : 'heroicons_outline:cog-8-tooth',
+                link : '/utility/airport',
+            },
+            {
+                id   : 'utility.airline',
+                title: 'Airline setting',
+                type : 'basic',
+                icon : 'heroicons_outline:cog-8-tooth',
+                link : '/utility/airline',
             },
         ],
     },

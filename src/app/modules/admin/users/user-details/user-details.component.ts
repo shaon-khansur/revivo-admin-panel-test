@@ -79,6 +79,7 @@ export class UserDetailsComponent implements OnInit {
     userRole: any[] = [
         { name: 'Admin', value: 'admin' },
         { name: 'Support & Billing', value: 'support_and_billing' },
+        {name: 'Customer', value: 'customer'}
     ];
     editMode: boolean = false;
     userForm: UntypedFormGroup;
