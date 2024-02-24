@@ -53,11 +53,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/deals/manage',
             },
             {
-                id   : 'deals.deal-price',
-                title: 'Deal Price',
+                id   : 'deals.deal-settings',
+                title: 'Deal Settings',
                 type : 'basic',
-                icon : 'heroicons_outline:currency-dollar',
-                link : '/deals/deal-price',
+                icon : 'heroicons_outline:cog-8-tooth',
+                link : '/deals/deal-settings',
             },
             {
                 id   : 'deals.destination-manage',
