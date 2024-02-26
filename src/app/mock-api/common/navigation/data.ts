@@ -39,6 +39,22 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ],
     },
     {
+        id: 'flights',
+        title: 'Flights',
+        subtitle: 'Manage Flights',
+        type: 'group',
+        icon: 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'flights.flightCommission',
+                title: 'Flight Commission',
+                type : 'basic',
+                icon : 'heroicons_outline:fire',
+                link : '/flights/flight-commission',
+            }
+        ]
+    },
+    {
         id      : 'deals',
         title   : 'Deals',
         subtitle: 'Manage Deals',

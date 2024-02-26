@@ -99,6 +99,8 @@ export const appRoutes: Route[] = [
 
             ], canActivate: [supportDashboardGuard]},
 
+            {path: 'flights', loadChildren: () => import('app/modules/admin/flights/flights.routes')},
+
             {path: 'deals', loadChildren: () => import('app/modules/admin/deals/deals.routes')},
             {path: 'deals/destinations', loadChildren: () => import('app/modules/admin/deals/destination/destination.routes')},
 
