@@ -122,6 +122,11 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     if (item.id === 'deals' && this.user.role.role !== 'admin') {
                         item['hidden'] = (item) => true;
                     }
+
+                    //Flights for admin only
+                    if (item.id === 'flights' && this.user.role.role !== 'admin') {
+                        item['hidden'] = (item) => true;
+                    }
                 });
             });
 
