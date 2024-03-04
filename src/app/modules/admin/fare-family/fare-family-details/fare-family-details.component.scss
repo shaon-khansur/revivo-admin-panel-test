@@ -1,14 +1,17 @@
-.Title{
+.Title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.123);
 }
-.Plan{
+.Plan {
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
 }
-.Amount{
+.Amount {
     font-size: 1.5rem;
     font-weight: bold;
 }

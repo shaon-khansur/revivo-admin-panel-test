@@ -35,6 +35,7 @@ export class FareFamilyDetailsComponent implements OnInit {
             next: (response) => {
                 this.fareFamilyData = response;
                 this.dataSource = this.fareFamilyData;
+                this.dataSource.sort((a, b) => a.fareAmount - b.fareAmount)
             },
         });
     }
