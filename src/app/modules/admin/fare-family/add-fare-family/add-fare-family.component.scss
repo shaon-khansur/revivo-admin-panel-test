@@ -1,0 +1,17 @@
+.inputField {
+    width: 100% !important;
+}
+.feature-input{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    @media screen and (max-width:780px) {
+        flex-wrap: wrap;
+    }
+}
+.plans-field{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+

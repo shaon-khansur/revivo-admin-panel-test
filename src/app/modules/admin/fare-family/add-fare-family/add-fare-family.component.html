@@ -1,0 +1,98 @@
+<div class="w-full">
+    <form [formGroup]="fareForm">
+        <div class="plans-field">
+            <mat-form-field class="inputField">
+                <mat-label>Plan's Title</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    aria-label="Fare Name"
+                    placeholder="Type Fare Family Plan's Title"
+                    formControlName="fareName"
+                />
+            </mat-form-field>
+            <mat-form-field class="inputField">
+                <mat-label>Plan's Amount</mat-label>
+                <input
+                    matInput
+                    type="number"
+                    aria-label="Fare Amount"
+                    placeholder="Type Fare Family Plan's Amount"
+                    formControlName="fareAmount"
+                />$
+            </mat-form-field>
+        </div>
+
+        <div formArrayName="features">
+            <div
+                *ngFor="let feature of faresFormArray.controls; let i = index"
+                [formGroupName]="i"
+            >
+                <div class="feature-input">
+                    <mat-form-field class="inputField">
+                        <mat-label>Title</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            aria-label="Feature Title"
+                            placeholder="Type Feature Title"
+                            formControlName="fareFeatureTitle"
+                        />
+                    </mat-form-field>
+                    <mat-form-field class="inputField">
+                        <mat-label>Icon</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            aria-label="Feature Icon"
+                            placeholder="Type Feature Icon"
+                            formControlName="fareFeatureIcon"
+                        />
+                    </mat-form-field>
+                    <mat-form-field class="inputField small-input">
+                        <mat-label>Label</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            aria-label="Feature Label"
+                            placeholder="Type Feature Label"
+                            formControlName="fareFeatureLabel"
+                        />
+                    </mat-form-field>
+                </div>
+
+                <div class="feature-input">
+                    <mat-checkbox
+                        formControlName="fareFeatureIncluded"
+                        class="example-margin"
+                        >Included!</mat-checkbox
+                    >
+                    <button mat-icon-button (click)="removeFare(i)">
+                        <mat-icon>remove_circle</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button
+            color="primary"
+            mat-raised-button
+            (click)="addFare()"
+            class="inputField"
+        >
+            + Add Feature
+        </button>
+        <div class="space-x-4 mt-8">
+            <button
+                (click)="submitForm()"
+                color="secondary"
+                mat-raised-button
+                [disabled]="fareForm.invalid"
+            >
+                Create
+            </button>
+            <button (click)="close()" color="warn" mat-raised-button>
+                Close
+            </button>
+        </div>
+    </form>
+</div>

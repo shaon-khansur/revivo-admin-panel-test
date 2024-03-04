@@ -39,18 +39,18 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ],
     },
     {
-        id: 'flights',
-        title: 'Flights',
-        subtitle: 'Manage Flights',
+        id: 'site-settings',
+        title: 'Data Managements',
+        subtitle: 'Manage your site settings',
         type: 'group',
         icon: 'heroicons_outline:home',
         children: [
             {
-                id   : 'flights.flightCommission',
-                title: 'Flight Commission',
+                id   : 'site-settings.flightCommission',
+                title: 'Site Settings',
                 type : 'basic',
                 icon : 'heroicons_outline:fire',
-                link : '/flights/flight-commission',
+                link : '/data-management/site-settings',
             }
         ]
     },
@@ -68,13 +68,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:fire',
                 link : '/deals/manage',
             },
-            {
-                id   : 'deals.deal-settings',
-                title: 'Deal Settings',
-                type : 'basic',
-                icon : 'heroicons_outline:cog-8-tooth',
-                link : '/deals/deal-settings',
-            },
+            // {
+            //     id   : 'deals.deal-settings',
+            //     title: 'Deal Settings',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:cog-8-tooth',
+            //     link : '/deals/deal-settings',
+            // },
             {
                 id   : 'deals.destination-manage',
                 title: 'Manage Destination',

@@ -7,7 +7,7 @@ import { DealSettingsComponent } from './deal-settings/deal-settings.component';
 
 export default [
     { path: 'manage', component: ManageComponent },
-    { path: 'deal-settings', component: DealSettingsComponent },
+    // { path: 'deal-settings', component: DealSettingsComponent },
     { path: 'destination-manage', component: DestinationManageComponent },
     { path: 'destination', component: DestinationComponent }
 ] as Routes;
