@@ -1,4 +1,5 @@
 // Import necessary Angular and Material components
+import { MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
@@ -36,15 +37,25 @@ export class AddFareFamilyComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddFareFamilyComponent>,
-        @Inject(MAT_DIALOG_DATA) private dialogData: any
+        @Inject(MAT_DIALOG_DATA) private dialogData: any,
+        private mediaMatcher: MediaMatcher
     ) {}
 
     ngOnInit(): void {
+        
         this.fareForm = this.fb.group({
+            id: [this.dialogData?.id || null],
             fareName: ['', Validators.required],
             fareAmount: [null, Validators.required],
             features: this.fb.array([], Validators.required),
         });
+
+        if (this.isSmallDevice()) {
+            this.addFare();
+        } else {
+            this.addFare();
+            this.addFare();
+        }
         if (this.dialogData) {
             this.fareForm.patchValue(this.dialogData);
         }
@@ -72,6 +83,10 @@ export class AddFareFamilyComponent implements OnInit {
         } else {
             console.log('Form is invalid. Please check your entries.');
         }
+    }
+
+    private isSmallDevice(): boolean {
+        return this.mediaMatcher.matchMedia('(max-width: 779px)').matches;
     }
 
     private createFareFormGroup(): FormGroup {

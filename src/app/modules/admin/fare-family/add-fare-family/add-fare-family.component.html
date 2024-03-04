@@ -1,5 +1,5 @@
 <div class="w-full">
-    <form [formGroup]="fareForm">
+    <form [formGroup]="fareForm" class="scroll-container">
         <div class="plans-field">
             <mat-form-field class="inputField">
                 <mat-label>Plan's Title</mat-label>
@@ -24,6 +24,7 @@
         </div>
 
         <div formArrayName="features">
+            <h1 class="features">Features :</h1>
             <div
                 *ngFor="let feature of faresFormArray.controls; let i = index"
                 [formGroupName]="i"

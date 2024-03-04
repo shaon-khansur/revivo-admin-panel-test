@@ -1,17 +1,26 @@
 .inputField {
     width: 100% !important;
 }
-.feature-input{
+.feature-input {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    @media screen and (max-width:780px) {
+    @media screen and (max-width: 780px) {
         flex-wrap: wrap;
     }
 }
-.plans-field{
+.plans-field {
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
+.scroll-container {
+    height: 520px;
+    width: auto;
+}
+h1.features {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
