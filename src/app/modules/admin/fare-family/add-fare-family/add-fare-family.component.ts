@@ -37,12 +37,13 @@ export class AddFareFamilyComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddFareFamilyComponent>,
-        @Inject(MAT_DIALOG_DATA) private dialogData: any,
+        @Inject(MAT_DIALOG_DATA) public dialogData: any,
         private mediaMatcher: MediaMatcher
     ) {}
 
     ngOnInit(): void {
-        
+        console.log(this.dialogData);
+
         this.fareForm = this.fb.group({
             id: [this.dialogData?.id || null],
             fareName: ['', Validators.required],
@@ -50,11 +51,19 @@ export class AddFareFamilyComponent implements OnInit {
             features: this.fb.array([], Validators.required),
         });
 
-        if (this.isSmallDevice()) {
-            this.addFare();
+        if (
+            this.dialogData &&
+            this.dialogData.features &&
+            this.dialogData.features.length > 0
+        ) {
+            this.dialogData.features.forEach(() => this.addFare());
         } else {
-            this.addFare();
-            this.addFare();
+            if (this.isSmallDevice()) {
+                this.addFare();
+            } else {
+                this.addFare();
+                this.addFare();
+            }
         }
         if (this.dialogData) {
             this.fareForm.patchValue(this.dialogData);
