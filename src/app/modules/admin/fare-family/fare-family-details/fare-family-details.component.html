@@ -31,9 +31,21 @@
                     class="mat-elevation-z8"
                 >
                     <ng-container matColumnDef="fareFeatureIcon">
-                        <th mat-header-cell *matHeaderCellDef>Feature Icon</th>
+                        <th mat-header-cell *matHeaderCellDef>Icon</th>
                         <td mat-cell *matCellDef="let element">
-                            {{ element?.fareFeatureIcon }}
+                            <img
+                                loading="lazy"
+                                src="{{
+                                    '../../../../../assets/icons/fare-family/' +
+                                        element?.fareFeatureIcon
+                                }}"
+                                alt=""
+                                class="icon-size-6"
+                                [ngClass]="{
+                                    'included-green': element?.fareFeatureIncluded === true,
+                                    'included-red': element?.fareFeatureIncluded === false,
+                                  }"
+                            />
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="fareFeatureTitle">
