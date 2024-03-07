@@ -27,11 +27,14 @@ export class FlightCommissionService {
     }
 
     addCommission(data): Observable<CommissionData> {
+        delete data.id
         return this.http.post<CommissionData>(`${environment.baseUrl}flight-commission`, data);
     }
 
     updateCommssion(data: CommissionData): Observable<CommissionData> {
-        return this.http.put<CommissionData>(`${environment.baseUrl}flight-commission/${data.id}`, data);
+        const id = data.id;
+        delete data.id
+        return this.http.put<CommissionData>(`${environment.baseUrl}flight-commission/${id}`, data);
     }
 
     deleteCommission(data: CommissionData): Observable<CommissionData> {
