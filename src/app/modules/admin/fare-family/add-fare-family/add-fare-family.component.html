@@ -60,14 +60,29 @@
                             formControlName="fareFeatureLabel"
                         />
                     </mat-form-field>
+                    <mat-form-field class="inputField small-input">
+                        <mat-label>Non-Include Label</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            aria-label="Feature Label"
+                            placeholder="Type Non-Include Feature Label"
+                            formControlName="fareFeatureLabelNon"
+                        />
+                    </mat-form-field>
                 </div>
 
                 <div class="feature-input">
-                    <mat-checkbox
+                    <!-- <mat-checkbox
                         formControlName="fareFeatureIncluded"
                         class="example-margin"
                         >Included!</mat-checkbox
-                    >
+                    > -->
+                    <mat-radio-group formControlName="fareFeatureIncluded" class="example-margin">
+                        <mat-radio-button [value]="true">Included</mat-radio-button>
+                        <mat-radio-button [value]="false">Not Included</mat-radio-button>
+                        <mat-radio-button [value]="null">Unknown</mat-radio-button>
+                    </mat-radio-group>
                     <button mat-icon-button (click)="removeFare(i)">
                         <mat-icon>remove_circle</mat-icon>
                     </button>

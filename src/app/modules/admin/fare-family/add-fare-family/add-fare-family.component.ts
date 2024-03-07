@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
     selector: 'app-add-fare-family',
@@ -27,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
         MatButtonModule,
         MatIconModule,
         MatCheckboxModule,
+        MatRadioModule
     ],
     templateUrl: './add-fare-family.component.html',
     styleUrls: ['./add-fare-family.component.scss'],
@@ -103,6 +105,7 @@ export class AddFareFamilyComponent implements OnInit {
             fareFeatureTitle: ['', Validators.required],
             fareFeatureIcon: ['', Validators.required],
             fareFeatureLabel: ['', Validators.required],
+            fareFeatureLabelNon: ['', Validators.required],
             fareFeatureIncluded: [false],
         });
     }

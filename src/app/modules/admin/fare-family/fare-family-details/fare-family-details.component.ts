@@ -40,11 +40,9 @@ export class FareFamilyDetailsComponent implements OnInit {
         });
     }
     edit(element) {
-        console.log(element.id);
-
         this.dialog
             .open(AddFareFamilyComponent, {
-                width: '800px',
+                width: '1200px',
                 data: element,
             })
             .afterClosed()
@@ -69,7 +67,7 @@ export class FareFamilyDetailsComponent implements OnInit {
     }
     add() {
         const dialogRef = this.dialog.open(AddFareFamilyComponent, {
-            width: '800px',
+            width: '1200px',
             data: {},
         });
 
