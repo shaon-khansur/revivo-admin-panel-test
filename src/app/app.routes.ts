@@ -93,6 +93,9 @@ export const appRoutes: Route[] = [
             {path: 'user-management', children: [
                 {path: 'users', loadChildren: () => import('app/modules/admin/users/users.routes')},
             ], canActivate: [adminGuard]},
+            {path: 'ama-flight-order', children: [
+                {path: 'orders', loadChildren: () => import('app/modules/admin/ama-flights/ama-flight-orders.routes')},
+            ], canActivate: [adminGuard]},
 
             {path: 'dashboard', children: [
                 {path: 'support', component: SupportDashboardComponent}

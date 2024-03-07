@@ -84,7 +84,7 @@ export class FlightCommisionComponent {
         'provider',
         'view',
     ];
-    dataSource: CommissionData[];
+    dataSource: CommissionData[] = [];
 
     @ViewChild('commissionTable') table: MatTable<CommissionData[]>;
 
@@ -140,7 +140,7 @@ export class FlightCommisionComponent {
                             const index = this.dataSource.findIndex(
                                 (c) => c.id === updatedCommission.id
                             );
-                            
+
                             this.dataSource[index] = {
                                 ...updatedCommission,
                             } as CommissionData;

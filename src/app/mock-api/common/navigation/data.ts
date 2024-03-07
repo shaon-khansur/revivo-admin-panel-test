@@ -39,6 +39,22 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ],
     },
     {
+        id      : 'ama-flight-order-management',
+        title   : 'Amadeus Flight Order Managements',
+        subtitle: 'Manage your amadeus flight orders',
+        type    : 'group',
+        icon    : 'heroicons_outline:home',
+        children: [
+            {
+                id   : 'ama-flight-order-management.orders',
+                title: 'Amadeus Flight Orders',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/ama-flight-order/orders',
+            },
+        ],
+    },
+    {
         id: 'site-settings',
         title: 'Data Managements',
         subtitle: 'Manage your site settings',
