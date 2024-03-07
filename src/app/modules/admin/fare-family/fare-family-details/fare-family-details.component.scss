@@ -1,0 +1,25 @@
+.Title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.123);
+}
+.Plan {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.Amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.included-green {
+    filter: invert(100%) sepia(6%) saturate(6586%) hue-rotate(50deg)
+      brightness(272%) contrast(75%);
+  }
+  .included-red {
+    filter: invert(52%) sepia(87%) saturate(7079%) hue-rotate(346deg)
+      brightness(150%) contrast(90%);
+  }

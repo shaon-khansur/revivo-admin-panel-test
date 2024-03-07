@@ -16,7 +16,7 @@
                 <div
                     class="text-4xl font-extrabold tracking-tight leading-none"
                 >
-                    Flights Commission
+                    Site Settings
                 </div>
                 <!-- Close button -->
                 <div class="lg:hidden">
@@ -98,7 +98,7 @@
                 <!-- Load settings panel -->
                 <div class="mt-8">
                     <ng-container [ngSwitch]="selectedPanel">
-                        <!-- Deals -->
+                        <!-- Flights -->
                         <ng-container *ngSwitchCase="'commission'">
                             <div class="p-2 w-full flex flex-row justify-end">
                                 <button
@@ -241,9 +241,12 @@
                                 </table>
                             </div>
                         </ng-container>
-                        <!-- Prices -->
-                        <ng-container *ngSwitchCase="'price'">
-                            <div>Price section</div>
+                        <!-- Deals -->
+                        <ng-container *ngSwitchCase="'dealCommission'">
+                            <app-dealcomission />
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'fareFamily'">
+                            <app-fare-family-details />
                         </ng-container>
                     </ng-container>
                 </div>

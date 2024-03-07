@@ -36,6 +36,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { AddFlightCommissionComponent } from '../add-flight-commission/add-flight-commission.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { DealcomissionComponent } from '../../deals/deal-settings/dealcomission/dealcomission.component';
+import { FareFamilyDetailsComponent } from '../../fare-family/fare-family-details/fare-family-details.component';
 
 @Component({
     selector: 'app-flight-commision',
@@ -58,6 +60,8 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
         MatCheckboxModule,
         MatSelectModule,
         MatTableModule,
+        DealcomissionComponent,
+        FareFamilyDetailsComponent
     ],
     templateUrl: './flight-commision.component.html',
     styleUrls: ['./flight-commision.component.scss'],
@@ -67,7 +71,7 @@ export class FlightCommisionComponent {
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
     panels: any[] = [];
-    selectedPanel: string = 'commission';
+    selectedPanel: string = 'fareFamily';
     flightsCommissionsData: CommissionData[];
 
     displayedColumns: string[] = [
@@ -106,10 +110,16 @@ export class FlightCommisionComponent {
                 description: 'Manage your Flight commission',
             },
             {
-                id: 'price',
-                icon: 'heroicons_outline:currency-dollar',
-                title: 'Price',
-                description: 'Manage Deal Prices',
+                id: 'dealCommission',
+                icon: 'heroicons_outline:clipboard-document-list',
+                title: 'Deal Commission',
+                description: 'Manage your Deal commission',
+            },
+            {
+                id: 'fareFamily',
+                icon: 'heroicons_outline:clipboard-document-list',
+                title: 'Alp Fare Family',
+                description: 'Manage your Fare Family Options',
             },
         ];
     }
@@ -130,6 +140,7 @@ export class FlightCommisionComponent {
                             const index = this.dataSource.findIndex(
                                 (c) => c.id === updatedCommission.id
                             );
+                            
                             this.dataSource[index] = {
                                 ...updatedCommission,
                             } as CommissionData;

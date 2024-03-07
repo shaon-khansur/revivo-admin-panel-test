@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="16.407265"
+   height="18.197334"
+   viewBox="0 0 16.407265 18.197333"
+   sodipodi:docname="ux-revivo-02.pdf"
+   inkscape:export-filename="..\Revivo-FrontEnd\src\assets\icon\cancel.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     inkscape:zoom="0.49440065"
+     inkscape:cx="1291.4627"
+     inkscape:cy="2303.7996"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1"
+     inkscape:export-bgcolor="#ffffff00" />
+  <defs
+     id="defs1">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath385">
+      <path
+         d="M 0,0 H 1920 V 3334 H 0 Z"
+         id="path385" />
+    </clipPath>
+  </defs>
+  <g
+     id="g1"
+     inkscape:groupmode="layer"
+     inkscape:label="1"
+     transform="translate(-1955.7739,-1602.948)">
+    <g
+       id="g454">
+      <path
+         d="m 1479.125,1211.051 c -0.031,-0.434 -0.434,-0.649 -0.434,-0.649 l -1,-0.711 c 0.028,-0.129 0.043,-0.269 0.043,-0.421 0,-0.29 -0.054,-0.551 -0.148,-0.719 -0.078,0.023 -0.164,0.035 -0.254,0.035 -0.09,0 -0.176,-0.012 -0.258,-0.035 -0.078,0.144 -0.129,0.359 -0.14,0.601 l -0.977,-0.691 c 0.043,-0.149 0.066,-0.32 0.066,-0.512 0,-0.289 -0.058,-0.547 -0.148,-0.719 -0.082,0.024 -0.168,0.04 -0.254,0.04 -0.09,0 -0.176,-0.016 -0.258,-0.04 -0.086,0.168 -0.144,0.422 -0.148,0.704 l -1.223,-0.868 c -0.078,-1.937 -0.234,-3.519 -0.234,-3.519 -0.094,-1.305 -0.774,-1.336 -0.774,-1.336 0,0 -0.683,0.031 -0.777,1.336 0,0 -0.152,1.582 -0.234,3.519 l -1.223,0.868 c 0,-0.282 -0.059,-0.536 -0.148,-0.704 -0.082,0.024 -0.164,0.04 -0.254,0.04 -0.09,0 -0.176,-0.016 -0.258,-0.04 -0.09,0.172 -0.145,0.43 -0.145,0.719 0,0.192 0.024,0.363 0.063,0.512 l -0.973,0.691 c -0.012,-0.242 -0.066,-0.457 -0.144,-0.601 -0.082,0.023 -0.168,0.035 -0.258,0.035 -0.086,0 -0.172,-0.012 -0.254,-0.035 -0.09,0.168 -0.149,0.429 -0.149,0.719 0,0.152 0.016,0.292 0.047,0.421 l -1,0.711 c 0,0 -0.406,0.215 -0.437,0.649 -0.028,0.437 -0.028,0.683 0.496,0.652 l 4.609,-1.527 c 0.075,2.258 0.356,4.039 0.356,4.039 l -1.426,1.246 0.215,0.398 1.894,-0.371 1.891,0.371 0.219,-0.398 -1.43,-1.246 c 0,0 0.281,-1.781 0.356,-4.039 l 4.609,1.527 c 0.527,0.031 0.527,-0.215 0.496,-0.652"
+         style="fill:#000070;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         transform="scale(1.3333333)"
+         clip-path="url(#clipPath385)"
+         id="path428" />
+    </g>
+  </g>
+</svg>
