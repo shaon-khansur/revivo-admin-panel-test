@@ -1,0 +1,29 @@
+<div id="chart" *ngIf="!isLoading">
+    <div id="loader" class="loader" *ngIf="isLoading"></div>
+    <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [plotOptions]="chartOptions.plotOptions"
+        [xaxis]="chartOptions.xaxis"
+        [fill]="chartOptions.fill"
+        [dataLabels]="chartOptions.dataLabels"
+        [title]="chartOptions.title"
+    ></apx-chart>
+    <apx-chart
+        [series]="chartOptionsPrev.series"
+        [chart]="chartOptionsPrev.chart"
+        [plotOptions]="chartOptionsPrev.plotOptions"
+        [xaxis]="chartOptionsPrev.xaxis"
+        [fill]="chartOptionsPrev.fill"
+        [dataLabels]="chartOptionsPrev.dataLabels"
+        [title]="chartOptionsPrev.title"
+    ></apx-chart>
+    <apx-chart
+        [series]="chartOptionsPrev2.series"
+        [chart]="chartOptionsPrev2.chart"
+        [dataLabels]="chartOptionsPrev2.dataLabels"
+        [plotOptions]="chartOptionsPrev2.plotOptions"
+        [xaxis]="chartOptionsPrev2.xaxis"
+        [title]="chartOptionsPrev2.title"
+    ></apx-chart>
+</div>
