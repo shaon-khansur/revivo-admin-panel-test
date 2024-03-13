@@ -382,7 +382,7 @@ export class DealMiningStatusComponent implements OnInit {
 
                 const todayStatusData = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDate && item?.status === true
+                        item?.today === targetDate && item?.status === true && item?.count > 0
                 );
                 const totalTrueStatus = todayStatusData.reduce(
                     (sum, item) => sum + 1,
@@ -400,7 +400,7 @@ export class DealMiningStatusComponent implements OnInit {
                 const todayProgressData = this.miningdata.filter(
                     (item: any) =>
                         item?.today === targetDatePrevProg &&
-                        item?.status === true
+                        item?.status === true  && item?.count > 0
                 );
                 const totalProgressStatus = todayProgressData.reduce(
                     (sum, item) => sum + 1,
@@ -420,7 +420,7 @@ export class DealMiningStatusComponent implements OnInit {
                 const todayProgressData2 = this.miningdata.filter(
                     (item: any) =>
                         item?.today === targetDatePrevProg2 &&
-                        item?.status === true
+                        item?.status === true  && item?.count > 0
                 );
                 const totalProgressStatus2 = todayProgressData2.reduce(
                     (sum, item) => sum + 1,
