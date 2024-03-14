@@ -1,0 +1,71 @@
+<div id="chart" *ngIf="!isLoading">
+    <div id="loader" class="loader" *ngIf="isLoading"></div>
+    <div class="radial-chart">
+        <div class="single-chart">
+            <apx-chart
+                [series]="progressBarChartOptions.series"
+                [chart]="progressBarChartOptions.chart"
+                [plotOptions]="progressBarChartOptions.plotOptions"
+                [dataLabels]="progressBarChartOptions.dataLabels"
+                [labels]="progressBarChartOptions.labels"
+                [stroke]="progressBarChartOptions.stroke"
+                [fill]="progressBarChartOptions.fill"
+            ></apx-chart>
+            <h1>Today</h1>
+        </div>
+        <div class="single-chart">
+            <apx-chart
+                [series]="progressBarChartOptionsPrev.series"
+                [chart]="progressBarChartOptionsPrev.chart"
+                [plotOptions]="progressBarChartOptionsPrev.plotOptions"
+                [dataLabels]="progressBarChartOptionsPrev.dataLabels"
+                [labels]="progressBarChartOptionsPrev.labels"
+                [stroke]="progressBarChartOptionsPrev.stroke"
+                [fill]="progressBarChartOptionsPrev.fill"
+            ></apx-chart>
+            <h1>Previous Day</h1>
+        </div>
+        <div class="single-chart">
+            <apx-chart
+                [series]="progressBarChartOptionsPrev2.series"
+                [chart]="progressBarChartOptionsPrev2.chart"
+                [plotOptions]="progressBarChartOptionsPrev2.plotOptions"
+                [dataLabels]="progressBarChartOptionsPrev2.dataLabels"
+                [labels]="progressBarChartOptionsPrev2.labels"
+                [stroke]="progressBarChartOptionsPrev2.stroke"
+                [fill]="progressBarChartOptionsPrev2.fill"
+            ></apx-chart>
+            <h1>Before Yesterday</h1>
+        </div>
+    </div>
+
+    <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [plotOptions]="chartOptions.plotOptions"
+        [xaxis]="chartOptions.xaxis"
+        [fill]="chartOptions.fill"
+        [dataLabels]="chartOptions.dataLabels"
+        [title]="chartOptions.title"
+        [subtitle]="chartOptions.subtitle"
+    ></apx-chart>
+    <apx-chart
+        [series]="chartOptionsPrev.series"
+        [chart]="chartOptionsPrev.chart"
+        [plotOptions]="chartOptionsPrev.plotOptions"
+        [xaxis]="chartOptionsPrev.xaxis"
+        [fill]="chartOptionsPrev.fill"
+        [dataLabels]="chartOptionsPrev.dataLabels"
+        [title]="chartOptionsPrev.title"
+        [subtitle]="chartOptionsPrev.subtitle"
+    ></apx-chart>
+    <apx-chart
+        [series]="chartOptionsPrev2.series"
+        [chart]="chartOptionsPrev2.chart"
+        [dataLabels]="chartOptionsPrev2.dataLabels"
+        [plotOptions]="chartOptionsPrev2.plotOptions"
+        [xaxis]="chartOptionsPrev2.xaxis"
+        [title]="chartOptionsPrev2.title"
+        [subtitle]="chartOptionsPrev2.subtitle"
+    ></apx-chart>
+</div>

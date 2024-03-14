@@ -1,0 +1,21 @@
+/* deal-mining-status.component.scss */
+
+.apexcharts-subtitle {
+    float: right;
+  }
+  .radial-chart{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .single-chart{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1{
+    font-size: large;
+    font-weight: 500;
+  }
+  

@@ -38,6 +38,7 @@ import { AddFlightCommissionComponent } from '../add-flight-commission/add-fligh
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { DealcomissionComponent } from '../../deals/deal-settings/dealcomission/dealcomission.component';
 import { FareFamilyDetailsComponent } from '../../fare-family/fare-family-details/fare-family-details.component';
+import { DealMiningStatusComponent } from '../../deal-mining-status/deal-mining-status.component';
 
 @Component({
     selector: 'app-flight-commision',
@@ -61,7 +62,8 @@ import { FareFamilyDetailsComponent } from '../../fare-family/fare-family-detail
         MatSelectModule,
         MatTableModule,
         DealcomissionComponent,
-        FareFamilyDetailsComponent
+        FareFamilyDetailsComponent,
+        DealMiningStatusComponent
     ],
     templateUrl: './flight-commision.component.html',
     styleUrls: ['./flight-commision.component.scss'],
@@ -71,7 +73,7 @@ export class FlightCommisionComponent {
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
     panels: any[] = [];
-    selectedPanel: string = 'fareFamily';
+    selectedPanel: string = 'miningStatus';
     flightsCommissionsData: CommissionData[];
 
     displayedColumns: string[] = [
@@ -120,6 +122,12 @@ export class FlightCommisionComponent {
                 icon: 'heroicons_outline:clipboard-document-list',
                 title: 'Alp Fare Family',
                 description: 'Manage your Fare Family Options',
+            },
+            {
+                id: 'miningStatus',
+                icon: 'heroicons_outline:clipboard-document-list',
+                title: 'Alp Deal Mining Status',
+                description: 'Monitoring your Deal Mining Status',
             },
         ];
     }
