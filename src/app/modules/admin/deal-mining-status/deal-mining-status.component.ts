@@ -278,7 +278,7 @@ export class DealMiningStatusComponent implements OnInit {
         this.miningService.getMiningStatus().subscribe({
             next: (response) => {
                 this.isLoading = false;
-                this.miningdata = response[0]?.miningStatus;
+                this.miningdata = response;
 
                 // today's total sum and data
 
@@ -380,15 +380,19 @@ export class DealMiningStatusComponent implements OnInit {
 
                 // Today's progress
 
-                const todayStatusData = this.miningdata.filter(
+                const todayTotalDeals = this.miningdata.filter(
+                    (item: any) =>
+                        item?.today === targetDate
+                ).length;
+                
+                const todaySuccessfulDeals = this.miningdata.filter(
                     (item: any) =>
                         item?.today === targetDate && item?.status === true && item?.count > 0
-                );
-                const totalTrueStatus = todayStatusData.reduce(
-                    (sum, item) => sum + 1,
-                    0
-                );
-                this.progressBarChartOptions.series = [totalTrueStatus];
+                ).length;
+                const todaySuccessPercentage = todayTotalDeals > 0 ? (todaySuccessfulDeals / todayTotalDeals) * 100 : 0;
+                this.progressBarChartOptions.series = [todaySuccessPercentage.toFixed(2)];
+
+                
 
                 // yesterday progress
                 const currentDateProgPrev = new Date();
@@ -396,39 +400,51 @@ export class DealMiningStatusComponent implements OnInit {
                 const targetDatePrevProg = currentDateProgPrev
                     .toISOString()
                     .split('T')[0];
+                    
 
-                const todayProgressData = this.miningdata.filter(
+                const previousDayTotalDeals = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDatePrevProg &&
-                        item?.status === true  && item?.count > 0
-                );
-                const totalProgressStatus = todayProgressData.reduce(
-                    (sum, item) => sum + 1,
-                    0
-                );
-                this.progressBarChartOptionsPrev.series = [totalProgressStatus];
+                        item?.today === targetDatePrevProg
+                ).length;
+                console.log(previousDayTotalDeals);
+
+                const previousDaySuccessfulDeals = this.miningdata.filter(
+                    (item: any) =>
+                        item?.today === targetDatePrevProg && item?.status === true && item?.count > 0
+                ).length;
+                console.log(previousDaySuccessfulDeals);
+
+
+                const previousSuccessPercentage = previousDayTotalDeals > 0 ? (previousDaySuccessfulDeals / previousDayTotalDeals) * 100 : 0;
+                
+                
+                this.progressBarChartOptionsPrev.series = [previousSuccessPercentage.toFixed(2)];
 
                 // the day before yesterday progress
                 const currentDateProgPrev2 = new Date();
-                currentDateProgPrev2.setDate(
-                    currentDateProgPrev2.getDate() - 2
-                );
+                currentDateProgPrev2.setDate(currentDateProgPrev2.getDate() - 2);
                 const targetDatePrevProg2 = currentDateProgPrev2
                     .toISOString()
                     .split('T')[0];
+                    
 
-                const todayProgressData2 = this.miningdata.filter(
+                const previousDayTotalDeals2 = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDatePrevProg2 &&
-                        item?.status === true  && item?.count > 0
-                );
-                const totalProgressStatus2 = todayProgressData2.reduce(
-                    (sum, item) => sum + 1,
-                    0
-                );
-                this.progressBarChartOptionsPrev2.series = [
-                    totalProgressStatus2,
-                ];
+                        item?.today === targetDatePrevProg2
+                ).length;
+                console.log(previousDayTotalDeals2);
+
+                const previousDaySuccessfulDeals2 = this.miningdata.filter(
+                    (item: any) =>
+                        item?.today === targetDatePrevProg2 && item?.status === true && item?.count > 0
+                ).length;
+                console.log(previousDaySuccessfulDeals2);
+
+
+                const previousSuccessPercentage2 = previousDayTotalDeals2 > 0 ? (previousDaySuccessfulDeals2 / previousDayTotalDeals2) * 100 : 0;
+                
+                
+                this.progressBarChartOptionsPrev2.series = [previousSuccessPercentage2.toFixed(2)];
 
                 // Trigger change detection manually
                 this.cdr.detectChanges();
