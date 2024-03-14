@@ -278,7 +278,12 @@ export class DealMiningStatusComponent implements OnInit {
         this.miningService.getMiningStatus().subscribe({
             next: (response) => {
                 this.isLoading = false;
-                this.miningdata = response;
+                this.miningdata = response.sort((a, b) => {
+                    // Assuming response contains a date field named "date"
+                    const dateA = new Date(a.date).getTime();
+                    const dateB = new Date(b.date).getTime();
+                    return dateA - dateB;
+                })
 
                 // today's total sum and data
 
