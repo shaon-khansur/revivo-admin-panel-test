@@ -278,7 +278,12 @@ export class DealMiningStatusComponent implements OnInit {
         this.miningService.getMiningStatus().subscribe({
             next: (response) => {
                 this.isLoading = false;
-                this.miningdata = response;
+                this.miningdata = response.sort((a, b) => {
+                    // Assuming response contains a date field named "date"
+                    const dateA = new Date(a.date).getTime();
+                    const dateB = new Date(b.date).getTime();
+                    return dateA - dateB;
+                })
 
                 // today's total sum and data
 
@@ -387,7 +392,7 @@ export class DealMiningStatusComponent implements OnInit {
                 
                 const todaySuccessfulDeals = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDate && item?.status === true && item?.count > 0
+                        item?.today === targetDate && item?.status === true 
                 ).length;
                 const todaySuccessPercentage = todayTotalDeals > 0 ? (todaySuccessfulDeals / todayTotalDeals) * 100 : 0;
                 this.progressBarChartOptions.series = [todaySuccessPercentage.toFixed(2)];
@@ -410,7 +415,7 @@ export class DealMiningStatusComponent implements OnInit {
 
                 const previousDaySuccessfulDeals = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDatePrevProg && item?.status === true && item?.count > 0
+                        item?.today === targetDatePrevProg && item?.status === true
                 ).length;
                 console.log(previousDaySuccessfulDeals);
 
@@ -436,7 +441,7 @@ export class DealMiningStatusComponent implements OnInit {
 
                 const previousDaySuccessfulDeals2 = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDatePrevProg2 && item?.status === true && item?.count > 0
+                        item?.today === targetDatePrevProg2 && item?.status === true
                 ).length;
                 console.log(previousDaySuccessfulDeals2);
 
