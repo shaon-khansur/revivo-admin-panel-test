@@ -415,7 +415,7 @@ export class DealMiningStatusComponent implements OnInit {
 
                 const previousDaySuccessfulDeals = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDatePrevProg && item?.status === true && 
+                        item?.today === targetDatePrevProg && item?.status === true
                 ).length;
                 console.log(previousDaySuccessfulDeals);
 
@@ -441,7 +441,7 @@ export class DealMiningStatusComponent implements OnInit {
 
                 const previousDaySuccessfulDeals2 = this.miningdata.filter(
                     (item: any) =>
-                        item?.today === targetDatePrevProg2 && item?.status === true 
+                        item?.today === targetDatePrevProg2 && item?.status === true
                 ).length;
                 console.log(previousDaySuccessfulDeals2);
 
