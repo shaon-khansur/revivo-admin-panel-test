@@ -23,6 +23,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { catchError, concatMap, filter, forkJoin, from, map, of, toArray } from 'rxjs';
 
 @Component({
     selector: 'app-orders',
@@ -70,9 +71,22 @@ export class OrdersComponent implements OnInit {
         private _fuseConfirmationDialog: FuseConfirmationService
     ) {}
     ngOnInit(): void {
-        this.amaFlightOrderService.getAllOrders().subscribe({
+        this.getFlightOrders();
+    }
+
+    getFlightOrders(): void {
+        this.amaFlightOrderService.getAllOrders().pipe(
+            concatMap(res => from(res.data)),
+            // map((order: any) => {
+            //     if (order.oneWay == false && order.orderComplete === true) {
+            //         order['order'] = [order.inFlightOrder.data, order.outFlightOrder.data]
+            //     }
+            // }),
+            filter((el: {orderComplete: boolean}) => el?.orderComplete == true),
+            toArray(),
+        ).subscribe({
             next: (response) => {
-                this.amaFlightOrderData = response.data;
+                this.amaFlightOrderData = response;
                 this.dataSource = this.amaFlightOrderData;
                 console.log('amaFlightOrders', this.amaFlightOrderData);
             },
@@ -80,19 +94,70 @@ export class OrdersComponent implements OnInit {
     }
 
     getPnr(element) {
-        if (element.order.associatedRecords.length > 1) {
-            const sorted = element.order.associatedRecords
-                .sort((a, b) => {
-                    return a.flightOfferId - b.flightOfferId;
-                })
-                .map((el) => el.reference);
-            return sorted;
+        if (element.oneWay == false && element.flightType != "RT") {
+            let outPNR: any[] = [];
+            let inPNR: any[] = [];
+            //two way flights
+            if (element.order.outFlightOrder.data.associatedRecords.length > 1) {
+                const sorted = element.order.associatedRecords
+                    .sort((a, b) => {
+                        return a.flightOfferId - b.flightOfferId;
+                    })
+                    .map((el) => el.reference);
+                outPNR = sorted;
+            } else {
+                const sorted = element.order.outFlightOrder.data.associatedRecords.map(
+                    (el) => el.reference
+                );
+                outPNR = sorted;
+            }
+
+            if (element.order.inFlightOrder.data.associatedRecords.length > 1) {
+                const sorted = element.order.associatedRecords
+                    .sort((a, b) => {
+                        return a.flightOfferId - b.flightOfferId;
+                    })
+                    .map((el) => el.reference);
+                inPNR = sorted;
+            } else {
+                const sorted = element.order.inFlightOrder.data.associatedRecords.map(
+                    (el) => el.reference
+                );
+                inPNR = sorted;
+            }
+
+            return {outbound: outPNR, inbound: inPNR}
+        } else if (element.oneWay == false && element.flightType === "RT") {
+            if (element.order.associatedRecords.length > 1) {
+                const sorted = element.order.associatedRecords
+                    .sort((a, b) => {
+                        return a.flightOfferId - b.flightOfferId;
+                    })
+                    .map((el) => el.reference);
+                return {round: sorted};
+            } else {
+                const sorted = element.order.associatedRecords.map(
+                    (el) => el.reference
+                );
+                return {round: sorted}
+            }
         } else {
-            const sorted = element.order.associatedRecords.map(
-                (el) => el.reference
-            );
-            return sorted;
+            //One way flights
+            if (element.order.associatedRecords.length > 1) {
+                const sorted = element.order.associatedRecords
+                    .sort((a, b) => {
+                        return a.flightOfferId - b.flightOfferId;
+                    })
+                    .map((el) => el.reference);
+                return {outbound: sorted};
+            } else {
+                const sorted = element.order.associatedRecords.map(
+                    (el) => el.reference
+                );
+                return {outbound: sorted};
+            }
         }
+
     }
 
     edit(data) {
@@ -115,19 +180,55 @@ export class OrdersComponent implements OnInit {
 
         confirmation.afterClosed().subscribe((result) => {
             if (result === 'confirmed') {
-                this.amaFlightOrderService
-                    .deleteAmadeusFlightOrder({
+                if (data.oneWay === true) {
+                    this.amaFlightOrderService.deleteAmadeusFlightOrder({
                         id: data.id,
                         amadeusOrderId: data.order.id,
                     } as OrderIDS)
                     .subscribe({
                         next: (res) => {
+                            this.getFlightOrders();
                             console.log('d-->', res);
                         },
                         error: (err) => {
                             console.log('err-->', err);
                         },
                     });
+                } else if (data.oneWay === false && data.flightType !== "RT") {
+                    forkJoin([
+                        this.amaFlightOrderService.deleteAmadeusFlightOrder({
+                            id: data.id,
+                            amadeusOrderId: data.order.outFlightOrder.data.id,
+                        } as OrderIDS).pipe(catchError(e => of('outFlightOrder Error'))),
+
+                        this.amaFlightOrderService.deleteAmadeusFlightOrder({
+                            id: data.id,
+                            amadeusOrderId: data.order.inFlightOrder.data.id,
+                        } as OrderIDS).pipe(catchError(e => of('inFlightOrder Error')))
+                    ]).subscribe({
+                        next: (res) => {
+                            this.getFlightOrders();
+                            console.log('d-->', res);
+                        },
+                        error: (err) => {
+                            console.log('err-->', err);
+                        },
+                    });
+                } else {
+                    this.amaFlightOrderService.deleteAmadeusFlightOrder({
+                        id: data.id,
+                        amadeusOrderId: data.order.id,
+                    } as OrderIDS)
+                    .subscribe({
+                        next: (res) => {
+                            this.getFlightOrders();
+                            console.log('d-->', res);
+                        },
+                        error: (err) => {
+                            console.log('err-->', err);
+                        },
+                    });
+                }
             }
         });
     }
