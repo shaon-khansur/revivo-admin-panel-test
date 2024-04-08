@@ -100,9 +100,6 @@ export class OrdersComponent implements OnInit {
             //two way flights
             if (element.order.outFlightOrder.data.associatedRecords.length > 1) {
                 const sorted = element.order.associatedRecords
-                    .sort((a, b) => {
-                        return a.flightOfferId - b.flightOfferId;
-                    })
                     .map((el) => el.reference);
                 outPNR = sorted;
             } else {
@@ -113,10 +110,7 @@ export class OrdersComponent implements OnInit {
             }
 
             if (element.order.inFlightOrder.data.associatedRecords.length > 1) {
-                const sorted = element.order.associatedRecords
-                    .sort((a, b) => {
-                        return a.flightOfferId - b.flightOfferId;
-                    })
+                const sorted = element.order.inFlightOrder.data.associatedRecords
                     .map((el) => el.reference);
                 inPNR = sorted;
             } else {
@@ -130,9 +124,6 @@ export class OrdersComponent implements OnInit {
         } else if (element.oneWay == false && element.flightType === "RT") {
             if (element.order.associatedRecords.length > 1) {
                 const sorted = element.order.associatedRecords
-                    .sort((a, b) => {
-                        return a.flightOfferId - b.flightOfferId;
-                    })
                     .map((el) => el.reference);
                 return {round: sorted};
             } else {
@@ -145,9 +136,6 @@ export class OrdersComponent implements OnInit {
             //One way flights
             if (element.order.associatedRecords.length > 1) {
                 const sorted = element.order.associatedRecords
-                    .sort((a, b) => {
-                        return a.flightOfferId - b.flightOfferId;
-                    })
                     .map((el) => el.reference);
                 return {outbound: sorted};
             } else {
