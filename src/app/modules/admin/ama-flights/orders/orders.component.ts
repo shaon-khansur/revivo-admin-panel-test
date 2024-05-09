@@ -57,6 +57,7 @@ export class OrdersComponent implements OnInit {
         'inbound',
         'pnr',
         'flightMode',
+        'isDelete',
         'date',
         'returnDate',
         'provider',
@@ -99,7 +100,7 @@ export class OrdersComponent implements OnInit {
             let inPNR: any[] = [];
             //two way flights
             if (element.order.outFlightOrder.data.associatedRecords.length > 1) {
-                const sorted = element.order.associatedRecords
+                const sorted = element.order.outFlightOrder.data.associatedRecords
                     .map((el) => el.reference);
                 outPNR = sorted;
             } else {

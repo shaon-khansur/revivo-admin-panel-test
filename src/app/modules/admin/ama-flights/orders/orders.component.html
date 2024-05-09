@@ -34,6 +34,11 @@
             <td mat-cell *matCellDef="let element">{{ element.outboundFlight.flightMode ? element.outboundFlight.flightMode : 'N/A' }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="isDelete">
+            <th mat-header-cell *matHeaderCellDef>Deleted</th>
+            <td mat-cell *matCellDef="let element">{{ (element.hasOwnProperty('isDelete')) ? element.isDelete : 'N/A' }}</td>
+        </ng-container>
+
         <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Out Date</th>
             <td mat-cell *matCellDef="let element">{{ element.outboundFlight.date }}</td>
