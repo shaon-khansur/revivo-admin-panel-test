@@ -1,0 +1,38 @@
+<div class="w-full">
+    <form [formGroup]="fareFamilyCommissionForm" class="flex flex-col">
+        <mat-form-field class="example-full-width">
+            <mat-label>Type</mat-label>
+            <input
+                matInput
+                type="text"
+                aria-label="type"
+                placeholder="Type"
+                formControlName="type"
+            />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Amount</mat-label>
+            <input
+                matInput
+                type="number"
+                aria-label="amount"
+                placeholder="Type amount"
+                formControlName="amount"
+            />
+        </mat-form-field>
+    </form>
+    <div class="space-x-4">
+        <button
+            (click)="save()"
+            color="primary"
+            mat-raised-button
+            [disabled]="fareFamilyCommissionForm.invalid"
+        >
+            Create
+        </button>
+        <button (click)="close()" color="secondary" mat-raised-button>
+            Close
+        </button>
+    </div>
+</div>

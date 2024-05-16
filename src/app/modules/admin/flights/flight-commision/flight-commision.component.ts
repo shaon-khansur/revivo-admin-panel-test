@@ -39,6 +39,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { DealcomissionComponent } from '../../deals/deal-settings/dealcomission/dealcomission.component';
 import { FareFamilyDetailsComponent } from '../../fare-family/fare-family-details/fare-family-details.component';
 import { DealMiningStatusComponent } from '../../deal-mining-status/deal-mining-status.component';
+import { FareFamilyCommissionComponent } from '../fare-family-commission/fare-family-commission.component';
 
 @Component({
     selector: 'app-flight-commision',
@@ -63,7 +64,8 @@ import { DealMiningStatusComponent } from '../../deal-mining-status/deal-mining-
         MatTableModule,
         DealcomissionComponent,
         FareFamilyDetailsComponent,
-        DealMiningStatusComponent
+        DealMiningStatusComponent,
+        FareFamilyCommissionComponent
     ],
     templateUrl: './flight-commision.component.html',
     styleUrls: ['./flight-commision.component.scss'],
@@ -110,6 +112,12 @@ export class FlightCommisionComponent {
                 icon: 'heroicons_outline:clipboard-document-list',
                 title: 'Flight Commission',
                 description: 'Manage your Flight commission',
+            },
+            {
+                id: 'fare-family-commission',
+                icon: 'heroicons_outline:clipboard-document-list',
+                title: 'Fare Family Commission',
+                description: 'Manage your Fare family commission',
             },
             {
                 id: 'dealCommission',
