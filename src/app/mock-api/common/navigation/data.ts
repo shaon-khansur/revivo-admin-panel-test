@@ -84,13 +84,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:fire',
                 link : '/deals/manage',
             },
-            // {
-            //     id   : 'deals.deal-settings',
-            //     title: 'Deal Settings',
-            //     type : 'basic',
-            //     icon : 'heroicons_outline:cog-8-tooth',
-            //     link : '/deals/deal-settings',
-            // },
+            {
+                id   : 'deals.deal-order',
+                title: 'Deal Order List',
+                type : 'basic',
+                icon : 'heroicons_outline:cog-8-tooth',
+                link : '/deals/deal-order',
+            },
             {
                 id   : 'deals.destination-manage',
                 title: 'Manage Destination',
