@@ -27,7 +27,7 @@ export class OrderListComponent implements OnInit {
         'amount',
         'action',
     ];
-    dataSource = new MatTableDataSource<any>([]); // Initialize with empty data
+    dataSource = new MatTableDataSource<any>([]);
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,13 +50,15 @@ export class OrderListComponent implements OnInit {
         );
     }
     openModal(element: any) {
-        const dialogRef = this.dialog.open(OrderDetailsComponent, {
-            width: '400px',
-            data: element,
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log('The dialog was closed');
+        this.orderData.getDealOrderDataById(element.id).subscribe(data => {
+            const dialogRef = this.dialog.open(OrderDetailsComponent, {
+                width: '500px',
+                data: data
+            });
+            dialogRef.afterClosed().subscribe((result) => {
+                console.log('The dialog was closed');
+            });
         });
     }
+    
 }

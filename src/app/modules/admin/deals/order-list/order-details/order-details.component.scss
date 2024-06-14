@@ -1,0 +1,46 @@
+.order-details-container {
+    position: relative;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    
+    & img{
+        height: 100%;
+        background-size: cover;
+    }
+}
+h1{
+    font-size: 16px; 
+    font-weight: bold;
+    margin: 10px 0;
+}
+p.amount{
+    text-align: end;
+}
+p span{
+    font-size: 13px; 
+    font-weight: bold;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.order-id {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 20px; 
+    font-weight: bold;
+    text-align: center;
+}

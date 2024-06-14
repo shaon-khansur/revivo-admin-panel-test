@@ -14,4 +14,8 @@ export class OrderListServiceService {
     const url = `${environment.baseUrl}createDealOrderSave`;
     return this.http.get(url);
   }
+  getDealOrderDataById(id:number): Observable<any> {
+    const url = `${environment.baseUrl}createDealOrderSave/${id}`;
+    return this.http.get(url);
+  }
 }
