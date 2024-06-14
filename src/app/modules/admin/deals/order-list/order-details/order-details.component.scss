@@ -44,3 +44,8 @@ p span{
     font-weight: bold;
     text-align: center;
 }
+
+.modal-content {
+    max-height: 80vh; 
+    overflow-y: auto; 
+}

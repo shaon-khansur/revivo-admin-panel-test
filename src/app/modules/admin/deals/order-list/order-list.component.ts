@@ -22,7 +22,6 @@ export class OrderListComponent implements OnInit {
         'packageName',
         'hotel',
         'rooms',
-        'roomType',
         'address',
         'amount',
         'action',
@@ -39,7 +38,19 @@ export class OrderListComponent implements OnInit {
     ngOnInit() {
         this.orderData.getDealOrderData().subscribe(
             (response) => {
-                this.orderDataList = response;
+                this.orderDataList = response.sort((a, b) => {
+                    const isStringA = typeof a.orderId === 'string' && a.orderId.startsWith('F');
+                    const isStringB = typeof b.orderId === 'string' && b.orderId.startsWith('F');
+    
+                    if (isStringA && !isStringB) {
+                        return -1;
+                    } else if (!isStringA && isStringB) {
+                        return 1; 
+                    } else {
+                        return 0;
+                    }
+                });
+    
                 this.dataSource.data = this.orderDataList;
                 this.dataSource.paginator = this.paginator;
                 console.log(response);
@@ -49,10 +60,12 @@ export class OrderListComponent implements OnInit {
             }
         );
     }
+    
+    
     openModal(element: any) {
         this.orderData.getDealOrderDataById(element.id).subscribe(data => {
             const dialogRef = this.dialog.open(OrderDetailsComponent, {
-                width: '500px',
+                width: '1000px',
                 data: data
             });
             dialogRef.afterClosed().subscribe((result) => {

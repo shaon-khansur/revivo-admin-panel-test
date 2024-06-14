@@ -1,31 +1,168 @@
-<div class="order-details-container">
-    <div class="image-container">
-        <img src="../../../../../../assets/images/orderbg.jpg" alt="" />
-        <div class="overlay"></div>
+<div class="modal-content">
+    <div class="order-details-container">
+        <div class="image-container">
+            <img src="../../../../../../assets/images/orderbg.jpg" alt="" />
+            <div class="overlay"></div>
+        </div>
+        <div class="order-id">Order id: {{ data.orderId }}</div>
     </div>
-    <div class="order-id">Order id: {{ data.orderId }}</div>
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        "
+    >
+        <div class="order-details">
+            <h1>Customer Info:</h1>
+            <p>
+                <span>Customer Name:</span> {{ data.customers[0].first_name }}
+                {{ data.customers[0].lest_name }}
+            </p>
+            <p><span> email:</span> {{ data.main_customer.email }}</p>
+            <p>
+                <span>phone:</span> (+{{ data.main_customer.phone_code }})
+                {{ data.main_customer.phone }}
+            </p>
+        </div>
+        <div>
+            <h1 style="text-align: right">
+                {{ data.dealsInfo[0].packageName }}
+            </h1>
+            <p>{{ data.dealsInfo[0].start }} - {{ data.dealsInfo[0].end }}</p>
+        </div>
+    </div>
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        "
+    >
+        <!-- flights info -->
+        <div class="order-details">
+            <h1>
+                <span>Flights Info</span>
+            </h1>
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                "
+            >
+                <div>
+                    <p>Outbound</p>
+                    <hr style="margin: 5px 0;">
+                    <p>
+                        <span>Airline Name :</span>
+                        {{ data.flightsData.flightsOut.airlineNameHeb }}
+                    </p>
+                    <p>
+                        <span>Supplier :</span>
+                        {{ data.flightsData.flightsOut.supplier }}
+                    </p>
+                    <p>
+                        <span>Flight Number :</span>
+                        {{ data.flightsData.flightsOut.flightNumber }}
+                    </p>
+                    <p>
+                        <span>Dep City :</span>
+                        {{
+                            data.flightsData.flightsOut.firstItinerary
+                                .depCityHibrew
+                        }}
+                        h
+                    </p>
+                    <p>
+                        <span>Dep Time :</span>
+                        {{ data.flightsData.flightsOut.firstItinerary.depTime }}
+                    </p>
+                    <p>
+                        <span>Arr Time :</span>
+                        {{ data.flightsData.flightsOut.lastItinerary.arrTime }}
+                    </p>
+                    <p>
+                        <span>Dep Day :</span>
+                        {{ data.flightsData.flightsOut.firstItinerary.depDay }}
+                    </p>
+                    <p>
+                        <span>Duration :</span>
+                        {{ data.flightsData.flightsOut.duration }} h
+                    </p>
+                </div>
+                <div>
+                    <p>Inbound</p>
+                    <hr style="margin: 5px 0;">
+                    <p>
+                        <span>Airline Name :</span>
+                        {{ data.flightsData.flightsIn.airlineNameHeb }}
+                    </p>
+                    <p>
+                        <span>Supplier :</span>
+                        {{ data.flightsData.flightsIn.supplier }}
+                    </p>
+                    <p>
+                        <span>Flight Number :</span>
+                        {{ data.flightsData.flightsIn.flightNumber }}
+                    </p>
+                    <p>
+                        <span>Dep City :</span>
+                        {{
+                            data.flightsData.flightsIn.firstItinerary
+                                .depCityHibrew
+                        }}
+                        h
+                    </p>
+                    <p>
+                        <span>Dep Time :</span>
+                        {{ data.flightsData.flightsIn.firstItinerary.depTime }}
+                    </p>
+                    <p>
+                        <span>Arr Time :</span>
+                        {{ data.flightsData.flightsIn.lastItinerary.arrTime }}
+                    </p>
+                    <p>
+                        <span>Dep Day :</span>
+                        {{ data.flightsData.flightsIn.firstItinerary.depDay }}
+                    </p>
+                    <p>
+                        <span>Duration :</span>
+                        {{ data.flightsData.flightsIn.duration }} h
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- deals info -->
+        <div class="order-details">
+            <h1>
+                <span>Deal Info</span>
+            </h1>
+            <p><span>Hotel Name :</span> {{ data.dealsInfo[0].name }}</p>
+            <p><span>Address :</span> {{ data.dealsInfo[0].address }}</p>
+
+            <p>
+                <span>Room Type :</span>
+                <ng-container
+                    *ngFor="
+                        let numRoom of data.dealsInfo[0].roomData;
+                        let last = last
+                    "
+                >
+                    {{ numRoom.selectedRoom.roomType }} ({{
+                        numRoom.numberOfRoom
+                    }}-{{ numRoom.category }}){{ !last ? "," : "" }}
+                </ng-container>
+            </p>
+
+            <p><span>Total Rooms :</span> {{ data.dealsInfo[0].rooms }}</p>
+            <p>
+                <span>Service length :</span> {{ data.dealsInfo[0].duration }}
+            </p>
+            <p><span>Meals :</span> {{ data.dealsInfo[0].meal }}</p>
+        </div>
+    </div>
+    <hr />
+    <p class="amount">Total Amount: {{ data.amount }}</p>
 </div>
-<div class="order-details">
-    <h1>Customer Info:</h1>
-    <p>
-        <span>Customer Name:</span> {{ data.customers[0].first_name }}
-        {{ data.customers[0].lest_name }}
-    </p>
-    <p><span> email:</span> {{ data.main_customer.email }}</p>
-    <p>
-        <span>phone:</span> (+{{ data.main_customer.phone_code }})
-        {{ data.main_customer.phone }}
-    </p>
-    <h1>
-        <span>{{ data.dealsInfo[0].packageName }}</span>
-    </h1>
-    <p><span>Hotel Name :</span> {{ data.dealsInfo[0].name }}</p>
-    <p><span>Address :</span> {{ data.dealsInfo[0].address }}</p>
-    <p><span>Room Type :</span> {{ data.dealsInfo[0].roomType }}</p>
-    <p><span>Total Rooms :</span> {{ data.dealsInfo[0].rooms }}</p>
-    <p><span>Service length :</span> {{ data.dealsInfo[0].duration }}</p>
-    <p><span>Meals :</span> {{ data.dealsInfo[0].meal }}</p>
-    <p><span>Date :</span> {{ data.dealsInfo[0].start }} - {{ data.dealsInfo[0].end }}</p>
-</div>
-<hr />
-<p class="amount">Total Amount: {{ data.amount }}</p>
