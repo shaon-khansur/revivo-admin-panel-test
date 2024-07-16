@@ -88,10 +88,7 @@ export class UploadComponent {
                     } else if (event.type === HttpEventType.Response) {
                         console.log('Upload complete:', event.body);
                     }
-                    setTimeout(() => {
-                        this.progress = 0;
-                        this.selectedFile = null!;
-                    }, 5000);
+                    this.resetForm();
                 },
                 (error: HttpErrorResponse) => {
                     if (error.error instanceof ErrorEvent) {
@@ -109,6 +106,16 @@ export class UploadComponent {
                 }
             );
         }
+    }
+
+    resetForm(): void {
+        setTimeout(() => {
+            this.progress = 0;
+            this.selectedFile = null;
+            this.updateDropAreaText('Drag a file here or browse for a file to upload.');
+            const inputElement = this.fileInput.nativeElement as HTMLInputElement;
+            inputElement.value = '';
+        }, 5000);
     }
 
     updateDropAreaText(text: string): void {
