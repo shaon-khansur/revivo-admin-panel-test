@@ -1,0 +1,47 @@
+<div class="upload-container mat-elevation-z3">
+    <h1>Submit Your File</h1>
+
+    <div class="icon-container">
+        <mat-icon>insert_drive_file</mat-icon>
+        <mat-icon>description</mat-icon>
+        <mat-icon>attach_file</mat-icon>
+    </div>
+
+    <div
+        class="file-drop-area"
+        (click)="triggerFileInput()"
+        (drop)="onFileDrop($event)"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+    >
+        <p>
+            Drag a file here or
+            <span class="browse-text" (click)="triggerFileInput($event)"
+                >browse</span
+            >
+            for a file to upload.
+        </p>
+        <input
+            type="file"
+            hidden
+            (change)="onFileSelected($event)"
+            accept="application/pdf"
+            #fileInput
+        />
+    </div>
+
+    <div *ngIf="selectedFile" style="width: 100%; margin-top: 20px;">
+        <div class="progress-container">
+            <mat-progress-bar
+                mode="indeterminate"
+                [value]="progress"
+            ></mat-progress-bar>
+            <div class="progress-bar" [style.width.%]="progress">
+                {{ progress }}%
+            </div>
+        </div>
+        <button mat-raised-button color="primary" (click)="uploadFile()">
+            Upload
+        </button>
+    </div>
+</div>

@@ -67,7 +67,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:fire',
                 link : '/data-management/site-settings',
-            }
+            },
+            {
+                id   : 'site-settings.flightCommission',
+                title: 'Revivo Updates',
+                type : 'basic',
+                icon : 'heroicons_outline:arrow-path',
+                link : '/data-management/revivo-update',
+            },
         ]
     },
     {
