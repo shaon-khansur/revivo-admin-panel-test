@@ -14,8 +14,7 @@ export class DealsettingsService {
         return this.http.get(url);
     }
     saveDealSettings(formData: any): Observable<any> {
-        console.log('service form', formData);
-        const url = `${environment.baseUrl}siteSetting?commission1=${formData.commission1}&commission2=${formData.commission2}&dealFee=${formData.dealFee}`;
+        const url = `${environment.baseUrl}siteSetting?commission1=${formData.commission1}&commission2=${formData.commission2}&dealFee=${formData.dealFee}&extraFee=${formData.extraFee}`;
         return this.http.put(url, formData);
-    }    
+    }
 }

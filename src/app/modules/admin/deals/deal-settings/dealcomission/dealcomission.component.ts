@@ -64,6 +64,9 @@ export class DealcomissionComponent implements OnInit {
             dealFee: [
                 (this.dealSettings && this.dealSettings[0]?.dealsFee) || 0,
             ],
+            extraFee: [
+                (this.dealSettings && this.dealSettings[0]?.extraFee) || 0,
+            ]
         });
     }
 
@@ -78,6 +81,9 @@ export class DealcomissionComponent implements OnInit {
     get dealFee(): FormControl {
         return this.form.get('dealFee') as FormControl;
     }
+    get extraFee(): FormControl {
+        return this.form.get('extraFee') as FormControl;
+    }
 
     onSave(): void {
         if (this.form.valid) {
@@ -85,12 +91,11 @@ export class DealcomissionComponent implements OnInit {
                 commission1: parseInt(this.form.value.commission1, 10),
                 commission2: parseInt(this.form.value.commission2, 10),
                 dealFee: parseInt(this.form.value.dealFee, 10),
+                extraFee: parseInt(this.form.value.extraFee, 10),
             };
-            console.log('formdata before post', formData);
 
             this.dealService.saveDealSettings(formData).subscribe(
                 (response) => {
-                    console.log('form response', response);
                     this._fuseConfirmationService.open({
                         title: 'Deal Settings updated.',
                         message: 'Successfully updated deal settings',
