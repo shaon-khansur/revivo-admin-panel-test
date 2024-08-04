@@ -99,7 +99,7 @@ export class DealMiningStatusComponent implements OnInit {
         // Update the cumulative success percentage count
         this.cumulativeSuccessPercentage += successPercentage / 100;
         progressBarOptions.labels = [
-            `${this.cumulativeSuccessPercentage.toFixed(1)} times`,
+            `${this.cumulativeSuccessPercentage.toFixed(2)} times`,
         ];
 
         if (daysAgo === 0) {
