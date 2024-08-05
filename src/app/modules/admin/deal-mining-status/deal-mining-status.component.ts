@@ -64,7 +64,17 @@ export class DealMiningStatusComponent implements OnInit {
             },
         });
     }
-    private cumulativeSuccessPercentage: number = 0; // Add this as a class property to store the cumulative count
+    private cumulativeSuccessPercentage: number = 0;
+    cumulativeSuccessTime: string = '00:00';
+
+    private formatTime(date: Date): string {
+        let hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+    }
 
     private processDataForDate(
         daysAgo: number,
@@ -95,6 +105,10 @@ export class DealMiningStatusComponent implements OnInit {
         const successPercentage =
             totalDeals > 0 ? (successfulDeals / totalDeals) * 100 : 0;
         progressBarOptions.series = [successPercentage.toFixed(2)];
+
+        if (successPercentage === 100) {
+            this.cumulativeSuccessTime = this.formatTime(new Date());
+        }
 
         // Update the cumulative success percentage count
         this.cumulativeSuccessPercentage += successPercentage / 100;
