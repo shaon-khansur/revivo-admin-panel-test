@@ -12,7 +12,7 @@
                 [fill]="progressBarChartOptions.fill"
             ></apx-chart>
             <h1>Today</h1>
-            <p>Last full mining On : {{ cumulativeSuccessTime }}</p>
+            <p>Last full mining On: {{ lastFullMiningTimes[0] || '00:00' }}</p>
         </div>
         <div class="single-chart">
             <apx-chart
@@ -25,7 +25,7 @@
                 [fill]="progressBarChartOptionsPrev.fill"
             ></apx-chart>
             <h1>Previous Day</h1>
-            <p>Last full mining On : {{ cumulativeSuccessTime }}</p>
+            <p>Last full mining On: {{ lastFullMiningTimes[1] || '00:00' }}</p>
         </div>
         <div class="single-chart">
             <apx-chart
@@ -38,7 +38,7 @@
                 [fill]="progressBarChartOptionsPrev2.fill"
             ></apx-chart>
             <h1>Before Yesterday</h1>
-            <p>Last full mining On : {{ cumulativeSuccessTime }}</p>
+            <p>Last full mining On: {{ lastFullMiningTimes[2] || '00:00' }}</p>
         </div>
     </div>
 

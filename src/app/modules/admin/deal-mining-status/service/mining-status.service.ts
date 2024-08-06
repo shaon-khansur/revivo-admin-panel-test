@@ -14,4 +14,9 @@ export class MiningStatusService {
             `${environment.baseUrl}dealMining/getMiningStatus`
         );
     }
+    getStatusTiming(): Observable<any> {
+        return this.http.get<any[]>(
+            `${environment.baseUrl}alpMiningData/miningStatusTime`
+        );
+    }
 }
