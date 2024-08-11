@@ -12,10 +12,12 @@ import { CommonModule, DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { DestinationListComponent } from '../destination-list/destination-list.component';
 import {
+    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -121,7 +123,13 @@ export class DestinationDetailsComponent {
             avatar: [''],
             name: ['', [Validators.required]],
             countryName: ['', [Validators.required]],
-            destinationId: ['', [Validators.required]],
+            destinationId: [
+                '',
+                [
+                  Validators.required,
+                  this.noSlashValidator
+                ]
+              ],
             hotelStar: ['', [Validators.required]],
             price: ['', [Validators.required]],
             unTitle: ['', [Validators.required]],
@@ -171,6 +179,11 @@ export class DestinationDetailsComponent {
 
                 console.log(this.destination);
             });
+    }
+
+    noSlashValidator(control: AbstractControl): ValidationErrors | null {
+        const hasSlash = control.value?.includes('/');
+        return hasSlash ? { 'hasSlash': true } : null;
     }
 
     addChip(event: MatChipInputEvent): void {
