@@ -1,6 +1,8 @@
 
 export interface Destination
 {
+    countryName: any;
+    destinationId: any;
     airportCode: string[];
     cityNames: string[];
     dealDestination: string[];
