@@ -18,7 +18,7 @@ export class HotelService {
   }
 
   // Method to get a hotel by ID
-  getHotelById(id: string): Observable<any> {
+  getHotelById(id: any): Observable<any> {
     const url = `${this.baseUrl}hotelData/${id}`; // URL with ID appended
     return this.http.get(url);
   }
