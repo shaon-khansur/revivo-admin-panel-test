@@ -43,7 +43,8 @@ import {
     tap,
   } from 'rxjs';
   import { HotelService } from '../hotel.service';
-  import { HotelDetailsComponent } from '../hotel/hotel-details/hotel-details.component';
+  import { HotelDetailsComponent } from '../hotel-details/hotel-details.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   
   @Component({
     selector: 'app-hotel-list',
@@ -57,6 +58,7 @@ import {
       MatSidenavModule,
       MatButtonModule,
       MatFormFieldModule,
+      MatPaginatorModule,
       MatIconModule,
       MatInputModule,
       AsyncPipe,
@@ -70,6 +72,8 @@ import {
   })
   export class HotelListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
     hotelData$: Observable<any[]>; // Consider using a Hotel type here
     filteredHotelData$: Observable<any[]>; // Consider using a Hotel type here
   
@@ -91,13 +95,6 @@ import {
     ) {}
   
     ngOnInit(): void {
-      // Fetch hotels initially
-      this.hotelService.getAllHotels().subscribe({
-        next: (hotels) => {
-          console.log('Hotels Data:', hotels);
-        },
-        error: (err) => console.error('Error fetching hotels:', err),
-      });
   
       this.hotelData$ = this.hotelService.getAllHotels().pipe(
         tap(hotels => {
