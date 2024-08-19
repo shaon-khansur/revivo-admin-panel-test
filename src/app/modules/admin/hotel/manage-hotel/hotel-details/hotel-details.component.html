@@ -1,1 +1,450 @@
-<p>hotel-details works!</p>
+<div class="flex flex-col w-full">
+    <!-- View mode -->
+    <ng-container *ngIf="!editMode">
+        <!-- Header -->
+        <div
+            class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
+        >
+            <!-- Background -->
+            <ng-container
+                *ngIf="hotel?.thumbnail ? hotel?.thumbnail : ''"
+            >
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    [src]="
+                        hotel?.thumbnail ? hotel?.thumbnail : ''
+                    "
+                />
+            </ng-container>
+            <!-- Close button -->
+            <div
+                class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+            >
+                <a
+                    mat-icon-button
+                    color="primary"
+                    [matTooltip]="'Close'"
+                    [routerLink]="['../']"
+                >
+                    <mat-icon
+                        class="text-white"
+                        [svgIcon]="'heroicons_outline:x-mark'"
+                    ></mat-icon>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div
+            class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0"
+        >
+            <div class="w-full max-w-3xl">
+                <!-- Avatar and actions -->
+                <div class="flex flex-auto items-end -mt-16">
+                    
+                    <!-- Actions -->
+                    <div class="flex items-center ml-auto mb-1">
+                        <button
+                            mat-stroked-button
+                            color="primary"
+                            (click)="toggleEditMode(true)"
+                        >
+                            <mat-icon
+                                class="icon-size-5"
+                                color="primary"
+                                [svgIcon]="'heroicons_solid:pencil-square'"
+                            ></mat-icon>
+                            <span class="ml-2">Edit</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Name -->
+                <div class="mt-3 text-4xl font-bold truncate">
+                    {{ hotel?.HotelName }}
+                </div>
+
+                <div class="flex flex-col mt-4 pt-6 border-t space-y-4">
+                    <!-- Reduced space-y value -->
+                    <!-- Name -->
+                    <ng-container *ngIf="hotel?.HotelName">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Hotel Name:</div>
+                            <div class="ml-2 leading-6">
+                                {{ hotel?.HotelName }}
+                            </div>
+                            <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="hotel?.HotelLocation">
+                        <div class="flex sm:items-center">
+                            <div class="font-bold ml-6">Address:</div>
+                            <div class="ml-2 leading-6">
+                                {{ hotel?.HotelLocation?.Address?.street }}
+                            </div>
+                            <!-- Adjusted margin -->
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Edit mode -->
+    <ng-container *ngIf="editMode">
+        <!-- Header -->
+        <div
+            class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
+        >
+            <!-- Background -->
+            <ng-container
+                *ngIf="destination?.background ? destination?.background : ''"
+            >
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    [src]="
+                        destination?.background ? destination?.background : ''
+                    "
+                />
+            </ng-container>
+            <!-- Close button -->
+            <div
+                class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+            >
+                <a
+                    mat-icon-button
+                    [matTooltip]="'Close'"
+                    [routerLink]="['../']"
+                >
+                    <mat-icon
+                        class="text-white"
+                        [svgIcon]="'heroicons_outline:x-mark'"
+                    ></mat-icon>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact form -->
+        <div
+            class="relative flex flex-col flex-auto items-center px-6 sm:px-12"
+        >
+            <div class="w-full max-w-3xl">
+                <form [formGroup]="form">
+
+                    <!-- Name -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'name'"
+                                [placeholder]="'Name'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Country Name</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'countryName'"
+                                [placeholder]="'Country Name'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Destination Id</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'destinationId'"
+                                [placeholder]="
+                                    'Destination Id (should be unique)'
+                                "
+                                [spellcheck]="false"
+                            />
+
+                            <mat-error
+                                *ngIf="
+                                    form
+                                        .get('destinationId')
+                                        .hasError('required')
+                                "
+                            >
+                                Destination ID is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="
+                                    form
+                                        .get('destinationId')
+                                        .hasError('hasSlash')
+                                "
+                            >
+                                Destination ID cannot contain a slash (/).
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field class="w-full">
+                            <mat-label>Airport codes*</mat-label>
+                            <mat-chip-grid
+                                #chipGrid
+                                aria-label="Enter Airport codes"
+                            >
+                                <mat-chip-row
+                                    *ngFor="let code of airportCodes"
+                                    (removed)="removeChip(code)"
+                                    [editable]="true"
+                                    (edited)="editChip(code, $event)"
+                                    [aria-description]="
+                                        'press enter to edit ' + code
+                                    "
+                                >
+                                    {{ code }}
+                                    <button
+                                        matChipRemove
+                                        [attr.aria-label]="'remove ' + code"
+                                    >
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                                <input
+                                    placeholder="Airport codes..."
+                                    [matChipInputFor]="chipGrid"
+                                    [matChipInputSeparatorKeyCodes]="
+                                        separatorKeysCodes
+                                    "
+                                    [matChipInputAddOnBlur]="addOnBlur"
+                                    (matChipInputTokenEnd)="addChip($event)"
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field class="w-full">
+                            <mat-label>City Names*</mat-label>
+                            <mat-chip-grid
+                                #cityNameGrid
+                                aria-label="Enter CityName"
+                            >
+                                <mat-chip-row
+                                    *ngFor="let code of cityNames"
+                                    (removed)="removeCityName(code)"
+                                    [editable]="true"
+                                    (edited)="editCityName(code, $event)"
+                                    [aria-description]="
+                                        'press enter to edit ' + code
+                                    "
+                                >
+                                    {{ code }}
+                                    <button
+                                        matChipRemove
+                                        [attr.aria-label]="'remove ' + code"
+                                    >
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                                <input
+                                    placeholder="City name..."
+                                    [matChipInputFor]="cityNameGrid"
+                                    [matChipInputSeparatorKeyCodes]="
+                                        separatorKeysCodes
+                                    "
+                                    [matChipInputAddOnBlur]="addOnBlur"
+                                    (matChipInputTokenEnd)="addCityName($event)"
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field class="w-full">
+                            <mat-label>Deal Destination*</mat-label>
+                            <mat-chip-grid
+                                #dealDestinationGrid
+                                aria-label="Enter Deal Destination"
+                            >
+                                <mat-chip-row
+                                    *ngFor="let code of dealDestination"
+                                    (removed)="removedealDestination(code)"
+                                    [editable]="true"
+                                    (edited)="editdealDestination(code, $event)"
+                                    [aria-description]="
+                                        'press enter to edit ' + code
+                                    "
+                                >
+                                    {{ code }}
+                                    <button
+                                        matChipRemove
+                                        [attr.aria-label]="'remove ' + code"
+                                    >
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                                <input
+                                    placeholder="Deal Destination..."
+                                    [matChipInputFor]="dealDestinationGrid"
+                                    [matChipInputSeparatorKeyCodes]="
+                                        separatorKeysCodes
+                                    "
+                                    [matChipInputAddOnBlur]="addOnBlur"
+                                    (matChipInputTokenEnd)="
+                                        adddealDestination($event)
+                                    "
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field class="flex-auto w-full mt-8">
+                        <mat-label>Hotel Star</mat-label>
+                        <mat-select
+                            formControlName="hotelStar"
+                            placeholder="Select minimum hotel star"
+                        >
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="4">4</mat-option>
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="6">6</mat-option>
+                            <mat-option value="7">7</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Price -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Price</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'price'"
+                                [placeholder]="'Price'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <!-- UnTitle -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Discount Price</mat-label>
+                            <input
+                                matInput
+                                [formControlName]="'unTitle'"
+                                [placeholder]="'Discount Price'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <!-- discount -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Discount</mat-label>
+                            <input
+                                matInput
+                                type="number"
+                                [formControlName]="'discount'"
+                                [placeholder]="'Discount'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <!-- remark -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Remark</mat-label>
+                            <textarea
+                                matInput
+                                formControlName="remark"
+                                placeholder="Remark"
+                                rows="3"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Description</mat-label>
+                            <textarea
+                                matInput
+                                formControlName="description"
+                                placeholder="Description"
+                                rows="5"
+                            ></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mt-8">
+                        <mat-checkbox
+                            [formControl]="form.get('active')"
+                            [color]="'primary'"
+                            [labelPosition]="'after'"
+                        >
+                            Active Status
+                        </mat-checkbox>
+                    </div>
+
+                    <!-- Actions -->
+                    <div
+                        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+                    >
+                        <!-- Delete -->
+                        <button
+                            mat-button
+                            [color]="'warn'"
+                            [matTooltip]="'Delete'"
+                            (click)="deleteDestination()"
+                        >
+                            Delete
+                        </button>
+                        <!-- Cancel -->
+                        <button
+                            class="ml-auto"
+                            mat-button
+                            [matTooltip]="'Cancel'"
+                            (click)="toggleEditMode(false)"
+                        >
+                            Cancel
+                        </button>
+                        <!-- Save -->
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="form.invalid"
+                            [matTooltip]="'Save'"
+                            (click)="updateDestination()"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</div>

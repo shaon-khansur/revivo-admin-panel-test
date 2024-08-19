@@ -18,7 +18,7 @@ const hotelResolver = (
     const hotelService = inject(HotelService);
     const router = inject(Router);
 
-    const hotelId = route.paramMap.get('id'); // Make sure this matches the route parameter
+    const hotelId = route.paramMap.get('hotelID'); // Ensure this matches the route parameter
     console.log(hotelId);
 
     if (!hotelId) {
@@ -50,7 +50,7 @@ const canDeactivateHotelDetails = (
         return true;
     }
 
-    if (nextRoute.paramMap.has('id')) {
+    if (nextRoute.paramMap.has('hotelID')) {
         return true;
     }
 
@@ -71,7 +71,7 @@ export default [
                 },
                 children: [
                     {
-                        path: ':id',
+                        path: ':hotelID',
                         component: HotelDetailsComponent,
                         resolve: {
                             hotel: hotelResolver,

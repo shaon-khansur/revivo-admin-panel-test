@@ -35,8 +35,10 @@ import {
 } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import {
+    catchError,
     map,
     Observable,
+    of,
     startWith,
     Subject,
     switchMap,
@@ -106,6 +108,10 @@ export class HotelListComponent implements OnInit, OnDestroy {
             tap((hotels) => {
                 this.hotelsCount = hotels.length;
                 this._changeDetectorRef.markForCheck();
+            }),
+            catchError(err => {
+                console.error('Error fetching hotels:', err);
+                return [];
             })
         );
 
@@ -114,17 +120,6 @@ export class HotelListComponent implements OnInit, OnDestroy {
             switchMap((searchTerm) => this.filterHotels(searchTerm)),
             tap((hotels) => this.updateFilteredCount(hotels))
         );
-
-        // Handle route parameters to set the selected hotel
-        this._activatedRoute.params.subscribe((params) => {
-            const hotelId = +params['hotelID']; // Ensure the ID is correctly parsed
-            if (hotelId) {
-                this.hotelService.getHotelById(hotelId).subscribe((hotel) => {
-                    this.selectedHotel = hotel;
-                    this._changeDetectorRef.markForCheck();
-                });
-            }
-        });
 
         this.matDrawer.openedChange.subscribe((opened) => {
             if (!opened) {
