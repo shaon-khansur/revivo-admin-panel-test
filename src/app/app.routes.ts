@@ -103,6 +103,7 @@ export const appRoutes: Route[] = [
             ], canActivate: [supportDashboardGuard]},
 
             {path: 'data-management', loadChildren: () => import('app/modules/admin/flights/flights.routes')},
+            {path: 'hotel', loadChildren: () => import('app/modules/admin/hotel/hotel.routes')},
 
             {path: 'deals', loadChildren: () => import('app/modules/admin/deals/deals.routes')},
             {path: 'deals/destinations', loadChildren: () => import('app/modules/admin/deals/destination/destination.routes')},

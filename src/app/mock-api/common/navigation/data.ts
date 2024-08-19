@@ -116,6 +116,23 @@ export const defaultNavigation: FuseNavigationItem[] = [
         ],
     },
     {
+        id      : 'hotel',
+        title   : 'Hotel',
+        subtitle: 'Manage Hotel',
+        type    : 'group',
+        icon    : 'heroicons_outline:building-office-2',
+        children: [
+            {
+                id   : 'hotel.manage',
+                title: 'Hotel List',
+                type : 'basic',
+                icon : 'heroicons_outline:building-office-2',
+                link : '/hotel/hotel-list',
+            }
+
+        ],
+    },
+    {
         id      : 'supports',
         title   : 'Supports',
         subtitle: 'System support',
