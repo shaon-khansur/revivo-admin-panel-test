@@ -38,7 +38,7 @@ export class HotelService {
         );
     }
 
-    updateAirline(data): Observable<any> {
+    updateHotel(data): Observable<any> {
         return this.http.put(
             `${environment.baseUrl}hotelData/${data.id}`,
             data.value

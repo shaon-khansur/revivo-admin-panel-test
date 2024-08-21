@@ -141,12 +141,14 @@ export class HotelListComponent implements OnInit {
             .subscribe((values) => {
                 if (values) {
                     this.hotelService
-                        .updateAirline({ id: hotel.id, value: values })
+                        .updateHotel({ id: hotel.id, value: values })
                         .subscribe({
                             next: (res) => {
                                 const index = this.allHotel.findIndex(
                                     (el) => el.id === res.updatedAirline.id
                                 );
+                                console.log(res);
+                                
                                 this.allHotel[index] = res.updatedAirline;
                                 this.dataSource = new MatTableDataSource(
                                     this.allHotel
