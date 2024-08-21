@@ -48,7 +48,6 @@ export class HotelListComponent implements OnInit {
     hotelList: any;
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
     displayedColumns: string[] = [
         'Thumbnail',
         'hotelName',
@@ -60,7 +59,7 @@ export class HotelListComponent implements OnInit {
     allHotel: any[] = [];
     page: number = 1;
     pageSize: number = 10;
-    resultsLength: number = 1;
+    resultsLength: number = 0;
 
     searchInputControl = new FormControl('');
     constructor(
@@ -89,9 +88,9 @@ export class HotelListComponent implements OnInit {
             .subscribe((value) => {
                 this.hotelService
                     .getAllHotels({
-                        page: 1,
+                        page: 1, // Reset to page 1 when a search is performed
                         hotelName: value?.toLowerCase(),
-                        pageSize: 10,
+                        pageSize: this.pageSize,
                     })
                     .subscribe({
                         next: (response) => {
@@ -100,26 +99,26 @@ export class HotelListComponent implements OnInit {
                                 this.allHotel
                             );
                             this.resultsLength = response.metadata.totalItems;
+                            this.paginator.firstPage(); // Reset paginator to the first page
                         },
                     });
             });
     }
 
     ngAfterViewInit(): void {
-        this.paginator.pageIndex = 1;
-        this.resultsLength = 1;
+        this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
+        this.resultsLength = 0;
         this.cdr.detectChanges();
     }
 
     onPageChange(event: PageEvent): void {
-        this.page = event.pageIndex;
+        this.page = event.pageIndex + 1; // Add 1 to align with 1-based indexing
         this.pageSize = event.pageSize;
 
-        // console.log('page event', event);
         this.hotelService
             .getAllHotels({
-                page: event.pageIndex,
-                hotelName: '',
+                page: this.page,
+                hotelName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
             })
             .subscribe({
@@ -147,7 +146,6 @@ export class HotelListComponent implements OnInit {
                                 const index = this.allHotel.findIndex(
                                     (el) => el.id === res.updatedAirline.id
                                 );
-                                console.log(res);
                                 
                                 this.allHotel[index] = res.updatedAirline;
                                 this.dataSource = new MatTableDataSource(

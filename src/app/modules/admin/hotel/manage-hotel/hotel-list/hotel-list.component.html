@@ -34,7 +34,8 @@
         <div
             class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
         >
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+           <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" >
                 <!-- Name Column -->
                 <ng-container matColumnDef="Thumbnail">
                     <th mat-header-cell *matHeaderCellDef>Hotel Image</th>
@@ -92,6 +93,7 @@
                     *matRowDef="let row; columns: displayedColumns"
                 ></tr>
             </table>
+           </div>
             <mat-paginator
                 [length]="resultsLength"
                 [pageSizeOptions]="[10, 15, 20, 100]"
