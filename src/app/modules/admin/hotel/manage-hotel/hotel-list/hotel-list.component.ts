@@ -54,6 +54,7 @@ export class HotelListComponent implements OnInit {
     allHotel: any[] = [];
 
     page: number = 0;
+    pageSize: number = 10;
     resultsLength: number = 0;
 
     searchInputControl = new FormControl('');
@@ -65,7 +66,11 @@ export class HotelListComponent implements OnInit {
 
     ngOnInit(): void {
         this.hotelService
-            .getAllHotels({ page: this.page, hotelName: '' })
+            .getAllHotels({
+                page: this.page,
+                hotelName: '',
+                pageSize: this.pageSize,
+            })
             .subscribe({
                 next: (response) => {
                     this.allHotel = response.allData;
@@ -81,6 +86,7 @@ export class HotelListComponent implements OnInit {
                     .getAllHotels({
                         page: 1,
                         hotelName: value?.toLowerCase(),
+                        pageSize: 10,
                     })
                     .subscribe({
                         next: (response) => {
@@ -104,11 +110,16 @@ export class HotelListComponent implements OnInit {
 
     onPageChange(event: PageEvent): void {
         this.page = event.pageIndex;
+         this.pageSize = event.pageSize;
         console.log(this.page);
 
         // console.log('page event', event);
         this.hotelService
-            .getAllHotels({ page: event.pageIndex, hotelName: '' })
+            .getAllHotels({
+                page: event.pageIndex,
+                hotelName: '',
+                pageSize: this.pageSize,
+            })
             .subscribe({
                 next: (response) => {
                     this.allHotel = response.allData;

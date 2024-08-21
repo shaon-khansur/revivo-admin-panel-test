@@ -89,9 +89,9 @@
             </table>
             <mat-paginator
                 [length]="resultsLength"
-                [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]"
                 (page)="onPageChange($event)"
-                aria-label="Select page of GitHub search results"
+                aria-label="Select page of Hotel results"
             ></mat-paginator>
         </div>
     </div>

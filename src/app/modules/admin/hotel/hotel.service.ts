@@ -9,7 +9,11 @@ import { environment } from 'environments/environment';
 export class HotelService {
     constructor(private http: HttpClient) {}
 
-    getAllHotels(data: { page: number; hotelName: string }): Observable<{
+    getAllHotels(data: {
+        page: number;
+        hotelName: string;
+        pageSize: number;
+    }): Observable<{
         allData: any[];
         metadata: {
             totalItems: number;
@@ -30,7 +34,7 @@ export class HotelService {
                 hasPrevPage: boolean;
             };
         }>(
-            `${environment.baseUrl}hotelData?hotelName=${data.hotelName}&page=${data.page}`
+            `${environment.baseUrl}hotelData?hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`
         );
     }
 
