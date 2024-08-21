@@ -95,8 +95,6 @@ export class HotelListComponent implements OnInit {
                                 this.allHotel
                             );
                             this.resultsLength = response.metadata.totalItems;
-                            // this.dataSource.sort = this.sort;
-                            // this.dataSource.paginator = this.paginator;
                         },
                     });
             });
@@ -111,7 +109,6 @@ export class HotelListComponent implements OnInit {
     onPageChange(event: PageEvent): void {
         this.page = event.pageIndex;
          this.pageSize = event.pageSize;
-        console.log(this.page);
 
         // console.log('page event', event);
         this.hotelService
