@@ -38,12 +38,17 @@
                 <!-- Name Column -->
                 <ng-container matColumnDef="Thumbnail">
                     <th mat-header-cell *matHeaderCellDef>Hotel Name</th>
-                    <td mat-cell *matCellDef="let element" style="display: flex; gap: 10px; align-items: center;">
-                        <div style="width: 100px; height: 50px;">
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="display: flex; gap: 10px; align-items: center"
+                    >
+                        <div style="width: 100px; height: 50px; padding: 3px">
                             <img
                                 [src]="element?.thumbnail"
                                 alt="logo"
                                 srcset=""
+                                style="height: 100%; border-radius: 3px"
                             />
                         </div>
                         {{ element?.HotelName }}
