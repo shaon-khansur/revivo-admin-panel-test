@@ -4,22 +4,40 @@ import { Observable } from 'rxjs';
 import { environment } from 'environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class HotelService {
-  private baseUrl = `${environment.baseUrl}`; // Base URL from environment
+    constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {}
+    getAllHotels(data: { page: number; hotelName: string }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // console.log('data', data);
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(
+            `${environment.baseUrl}hotelData?hotelName=${data.hotelName}&page=${data.page}`
+        );
+    }
 
-  // Method to get all hotels
-  getAllHotels(): Observable<any> {
-    const url = `${this.baseUrl}hotelData`;
-    return this.http.get(url);
-  }
-
-  // Method to get a hotel by ID
-  getHotelById(id: any): Observable<any> {
-    const url = `${this.baseUrl}hotelData/${id}`; // URL with ID appended
-    return this.http.get(url);
-  }
+    updateAirline(data): Observable<any> {
+        return this.http.put(
+            `${environment.baseUrl}hotelData/${data.id}`,
+            data.value
+        );
+    }
 }
