@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -49,22 +49,18 @@ export class HotelListComponent implements OnInit {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-    displayedColumns: string[] = [
-        'Thumbnail',
-        'cityName',
-        'cityCode',
-        'view'
-    ];
+    displayedColumns: string[] = ['Thumbnail', 'cityName', 'cityCode', 'view'];
 
-    allAirlines: any[] = [];
+    allHotel: any[] = [];
 
-    page: number = 1;
-    resultsLength: number = 1;
+    page: number = 0;
+    resultsLength: number = 0;
 
     searchInputControl = new FormControl('');
     constructor(
         private hotelService: HotelService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private cdr: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -72,8 +68,8 @@ export class HotelListComponent implements OnInit {
             .getAllHotels({ page: this.page, hotelName: '' })
             .subscribe({
                 next: (response) => {
-                    this.allAirlines = response.allData;
-                    this.dataSource = new MatTableDataSource(this.allAirlines);
+                    this.allHotel = response.allData;
+                    this.dataSource = new MatTableDataSource(this.allHotel);
                     this.resultsLength = response.metadata.totalItems;
                 },
             });
@@ -88,9 +84,9 @@ export class HotelListComponent implements OnInit {
                     })
                     .subscribe({
                         next: (response) => {
-                            this.allAirlines = response.allData;
+                            this.allHotel = response.allData;
                             this.dataSource = new MatTableDataSource(
-                                this.allAirlines
+                                this.allHotel
                             );
                             this.resultsLength = response.metadata.totalItems;
                             // this.dataSource.sort = this.sort;
@@ -101,43 +97,46 @@ export class HotelListComponent implements OnInit {
     }
 
     ngAfterViewInit(): void {
-        this.paginator.pageIndex = 1;
-        this.resultsLength = 1;
+        this.paginator.pageIndex = 0;
+        this.resultsLength = 0;
+        this.cdr.detectChanges();
     }
 
     onPageChange(event: PageEvent): void {
         this.page = event.pageIndex;
+        console.log(this.page);
+
         // console.log('page event', event);
         this.hotelService
             .getAllHotels({ page: event.pageIndex, hotelName: '' })
             .subscribe({
                 next: (response) => {
-                    this.allAirlines = response.allData;
-                    this.dataSource = new MatTableDataSource(this.allAirlines);
+                    this.allHotel = response.allData;
+                    this.dataSource = new MatTableDataSource(this.allHotel);
                     this.resultsLength = response.metadata.totalItems;
                 },
             });
     }
 
-    openDialog(airport): void {
+    openDialog(hotel): void {
         const config = new MatDialogConfig();
         config.width = '600px';
-        config.data = airport;
+        config.data = hotel;
         this.dialog
             .open(HotelDetailsComponent, config)
             .afterClosed()
             .subscribe((values) => {
                 if (values) {
                     this.hotelService
-                        .updateAirline({ id: airport.id, value: values })
+                        .updateAirline({ id: hotel.id, value: values })
                         .subscribe({
                             next: (res) => {
-                                const index = this.allAirlines.findIndex(
+                                const index = this.allHotel.findIndex(
                                     (el) => el.id === res.updatedAirline.id
                                 );
-                                this.allAirlines[index] = res.updatedAirline;
+                                this.allHotel[index] = res.updatedAirline;
                                 this.dataSource = new MatTableDataSource(
-                                    this.allAirlines
+                                    this.allHotel
                                 );
                             },
                         });
