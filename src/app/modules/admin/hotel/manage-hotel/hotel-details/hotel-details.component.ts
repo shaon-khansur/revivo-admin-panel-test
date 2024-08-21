@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
     selector: 'app-hotel-details',
@@ -21,6 +22,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
         MatInputModule,
         MatButtonModule,
         MatIconModule,
+        MatSelectModule
     ],
     templateUrl: './hotel-details.component.html',
     styleUrls: ['./hotel-details.component.scss'],

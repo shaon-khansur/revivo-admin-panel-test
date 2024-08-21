@@ -1,0 +1,10 @@
+.hotel-name-header, .hotel-name-cell {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mat-header-cell, .mat-cell {
+    padding: 8px; 
+}

@@ -1,40 +1,71 @@
 <div mat-dialog-content>
     <form
         [formGroup]="form"
-        class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+        class="flex flex-col p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
     >
-        <div class="flex flex-col gt-xs:flex-row">
-            <div class="flex flex-row space-x-7">
-                <div>
-                    <mat-form-field class="flex-auto gt-xs:pl-3">
-                        <mat-label>Hotel Name</mat-label>
-                        <input matInput formControlName="HotelName" />
-                        <mat-icon
-                            class="icon-size-5"
-                            matSuffix
-                            [svgIcon]="'heroicons_solid:user-circle'"
-                        ></mat-icon>
-                    </mat-form-field>
+        <div id="hotel-info" class="flex gap-2 w-full">
+            <div class="hotel-image">
+                <img
+                    [src]="fileString ? fileString : thumbnail"
+                    alt=""
+                    srcset=""
+                />
+                <div class="image-overlay">
+                    <mat-icon style="color: blue;">cloud_upload</mat-icon>
+                    <span style="margin-left: 8px;">Upload</span>
                 </div>
-                <div>
-                    <div>
-                        <img
-                            class="w-26"
-                            [src]="fileString ? fileString : thumbnail"
-                            alt=""
-                            srcset=""
-                        />
-                        <input
-                            type="file"
-                            [multiple]="false"
-                            (change)="uploadThumbnail(avatarFileInput.files)"
-                            [accept]="'image/jpeg, image/png'"
-                            #avatarFileInput
-                        />
-                    </div>
-                </div>
+                <input
+                    type="file"
+                    [multiple]="false"
+                    (change)="uploadThumbnail(avatarFileInput.files)"
+                    [accept]="'image/jpeg, image/png'"
+                    #avatarFileInput
+                    style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        opacity: 0;
+                        cursor: pointer;
+                    "
+                />
             </div>
+            <div class="flex flex-col w-full h-10">
+                <mat-form-field class="flex-auto">
+                    <mat-label>Hotel Name</mat-label>
+                    <input matInput formControlName="HotelName"/>
+                    <mat-icon
+                        class="icon-size-5"
+                        matSuffix
+                        [svgIcon]="'heroicons_solid:user-circle'"
+                    ></mat-icon>
+                </mat-form-field> 
+            </div>
+            
         </div>
+        <mat-form-field class="flex-auto mt-1">
+            <mat-label>Hotel Rating</mat-label>
+            <mat-select
+                formControlName="HotelRate"
+                placeholder="Select hotel rating"
+            >
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+            <mat-label>Website</mat-label>
+            <input matInput formControlName="Website"/>
+            <mat-icon
+                class="icon-size-5"
+                matSuffix
+                [svgIcon]="'heroicons_solid:user-circle'"
+            ></mat-icon>
+        </mat-form-field>
     </form>
 
     <div mat-dialog-actions [align]="'end'" class="mt-4">

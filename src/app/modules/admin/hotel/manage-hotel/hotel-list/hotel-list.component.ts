@@ -49,10 +49,15 @@ export class HotelListComponent implements OnInit {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-    displayedColumns: string[] = ['Thumbnail', 'cityName', 'cityCode', 'view'];
+    displayedColumns: string[] = [
+        'Thumbnail',
+        'hotelName',
+        'cityName',
+        'cityCode',
+        'view',
+    ];
 
     allHotel: any[] = [];
-
     page: number = 0;
     pageSize: number = 10;
     resultsLength: number = 0;
@@ -108,7 +113,7 @@ export class HotelListComponent implements OnInit {
 
     onPageChange(event: PageEvent): void {
         this.page = event.pageIndex;
-         this.pageSize = event.pageSize;
+        this.pageSize = event.pageSize;
 
         // console.log('page event', event);
         this.hotelService
