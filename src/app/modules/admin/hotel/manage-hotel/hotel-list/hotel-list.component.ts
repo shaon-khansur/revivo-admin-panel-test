@@ -51,6 +51,7 @@ export class HotelListComponent implements OnInit {
     displayedColumns: string[] = [
         'Thumbnail',
         'hotelName',
+        'HotelRate',
         'cityName',
         'cityCode',
         'view',
@@ -104,6 +105,22 @@ export class HotelListComponent implements OnInit {
                     });
             });
     }
+
+    getStars(rate: number): number[] {
+        const fullStars = Math.floor(rate);
+        const hasHalfStar = rate % 1 >= 0.5;
+        const totalStars = 5; // assuming a 5-star rating system
+    
+        return Array(totalStars).fill(0).map((_, index) => {
+          if (index < fullStars) {
+            return 1; // full star
+          } else if (index === fullStars && hasHalfStar) {
+            return 0.5; // half star
+          } else {
+            return 0; // empty star
+          }
+        });
+      }
 
     ngAfterViewInit(): void {
         this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
