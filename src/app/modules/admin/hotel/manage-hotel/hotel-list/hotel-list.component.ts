@@ -58,9 +58,9 @@ export class HotelListComponent implements OnInit {
     ];
 
     allHotel: any[] = [];
-    page: number = 0;
+    page: number = 1;
     pageSize: number = 10;
-    resultsLength: number = 0;
+    resultsLength: number = 1;
 
     searchInputControl = new FormControl('');
     constructor(
@@ -106,8 +106,8 @@ export class HotelListComponent implements OnInit {
     }
 
     ngAfterViewInit(): void {
-        this.paginator.pageIndex = 0;
-        this.resultsLength = 0;
+        this.paginator.pageIndex = 1;
+        this.resultsLength = 1;
         this.cdr.detectChanges();
     }
 
