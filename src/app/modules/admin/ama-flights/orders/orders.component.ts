@@ -24,6 +24,9 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { catchError, concatMap, filter, forkJoin, from, map, of, toArray } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { OrderDetailsComponent } from '../../deals/order-list/order-details/order-details.component';
+import { OrderDetailsVewComponent } from './order-details-vew/order-details-vew.component';
 
 @Component({
     selector: 'app-orders',
@@ -57,6 +60,7 @@ export class OrdersComponent implements OnInit {
         'inbound',
         'pnr',
         'flightMode',
+        'issuance',
         'isDelete',
         'date',
         'returnDate',
@@ -69,7 +73,8 @@ export class OrdersComponent implements OnInit {
     @ViewChild('amaFlightOrderTable') table: MatTable<any[]>;
     constructor(
         private amaFlightOrderService: AmaFlightOrderService,
-        private _fuseConfirmationDialog: FuseConfirmationService
+        private _fuseConfirmationDialog: FuseConfirmationService,
+        private dialog: MatDialog,
     ) {}
     ngOnInit(): void {
         this.getFlightOrders();
@@ -99,48 +104,56 @@ export class OrdersComponent implements OnInit {
             let outPNR: any[] = [];
             let inPNR: any[] = [];
             //two way flights
-            if (element.order.outFlightOrder.data.associatedRecords.length > 1) {
+            if (element.order.outFlightOrder && element.order.outFlightOrder.data.associatedRecords.length > 1) {
                 const sorted = element.order.outFlightOrder.data.associatedRecords
                     .map((el) => el.reference);
                 outPNR = sorted;
             } else {
-                const sorted = element.order.outFlightOrder.data.associatedRecords.map(
-                    (el) => el.reference
-                );
-                outPNR = sorted;
+                if (element.order.outFlightOrder) {
+                    const sorted = element.order.outFlightOrder.data.associatedRecords.map(
+                        (el) => el.reference
+                    );
+                    outPNR = sorted;
+                } else {
+                    outPNR = [];
+                }
             }
 
-            if (element.order.inFlightOrder.data.associatedRecords.length > 1) {
+            if (element.order.inFlightOrder && element.order.inFlightOrder.data.associatedRecords.length > 1) {
                 const sorted = element.order.inFlightOrder.data.associatedRecords
                     .map((el) => el.reference);
                 inPNR = sorted;
             } else {
-                const sorted = element.order.inFlightOrder.data.associatedRecords.map(
-                    (el) => el.reference
-                );
-                inPNR = sorted;
+                if (element.order.inFlightOrder) {
+                    const sorted = element.order.inFlightOrder.data.associatedRecords.map(
+                        (el) => el.reference
+                    );
+                    inPNR = sorted;
+                } else {
+                    inPNR = [];
+                }
             }
 
             return {outbound: outPNR, inbound: inPNR}
         } else if (element.oneWay == false && element.flightType === "RT") {
-            if (element.order.associatedRecords.length > 1) {
-                const sorted = element.order.associatedRecords
+            if (element.order.data.associatedRecords.length > 1) {
+                const sorted = element.order.data.associatedRecords
                     .map((el) => el.reference);
                 return {round: sorted};
             } else {
-                const sorted = element.order.associatedRecords.map(
+                const sorted = element.order.data.associatedRecords.map(
                     (el) => el.reference
                 );
                 return {round: sorted}
             }
         } else {
             //One way flights
-            if (element.order.associatedRecords.length > 1) {
-                const sorted = element.order.associatedRecords
+            if (element.order.data.associatedRecords.length > 1) {
+                const sorted = element.order.data.associatedRecords
                     .map((el) => el.reference);
                 return {outbound: sorted};
             } else {
-                const sorted = element.order.associatedRecords.map(
+                const sorted = element.order.data.associatedRecords.map(
                     (el) => el.reference
                 );
                 return {outbound: sorted};
@@ -154,6 +167,7 @@ export class OrdersComponent implements OnInit {
     }
 
     delete(data) {
+        console.log('data', data)
         const confirmation = this._fuseConfirmationDialog.open({
             title: 'Delete data',
             message:
@@ -220,5 +234,16 @@ export class OrdersComponent implements OnInit {
                 }
             }
         });
+    }
+
+
+    showIssuance(element): void {
+
+
+        this.dialog.open(OrderDetailsVewComponent, {data: element, width: "600px"}).afterClosed().subscribe({
+            next: (data) => {
+                console.log(data)
+            }
+        })
     }
 }
