@@ -14,10 +14,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { SubscriberDrawerComponent } from '../subscriber/subscriber-drawer/subscriber-drawer.component';
 import { SupportTicketsService } from './support-tickets.service';
 import { groupBy } from 'lodash';
 import { debounceTime } from 'rxjs';
+import { SupportTicketsDetailsComponent } from './support-tickets-details/support-tickets-details.component';
 
 @Component({
     selector: 'app-support-tickets',
@@ -35,7 +35,7 @@ import { debounceTime } from 'rxjs';
         FormsModule,
         MatInputModule,
         MatSidenavModule,
-        SubscriberDrawerComponent,
+        SupportTicketsDetailsComponent
     ],
     providers: [DatePipe],
     templateUrl: './support-tickets.component.html',
@@ -51,7 +51,7 @@ export class SupportTicketsComponent implements OnInit {
     page: number = 1;
     pageSize: number = 10;
     resultsLength: number = 0;
-    selectedSubscriber: any;
+    supportTicket: any;
     drawerMode: 'side' | 'over';
 
     searchInputControl = new FormControl('');
@@ -72,7 +72,7 @@ export class SupportTicketsComponent implements OnInit {
 
         this.matDrawer.openedChange.subscribe((opened) => {
             if (!opened) {
-                this.selectedSubscriber = null;
+                this.supportTicket = null;
                 this.cdr.markForCheck();
             }
         });
@@ -97,16 +97,20 @@ export class SupportTicketsComponent implements OnInit {
                         ...supporter,
                         Date: new Date(supporter.Date),
                     }));
+    
+                    // Group supporters by date
                     const groupedByDate = groupBy(allSupporter, (supporter) =>
                         supporter.Date.toDateString()
                     );
-                    this.allSupporter = Object.keys(groupedByDate).map(
-                        (date) => ({
+    
+                    // Sort dates in descending order and map to the desired format
+                    this.allSupporter = Object.keys(groupedByDate)
+                        .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
+                        .map((date) => ({
                             date,
                             supporter: groupedByDate[date],
-                        })
-                    );
-
+                        }));
+    
                     // Set the data source
                     this.dataSource.data = this.allSupporter;
                     this.resultsLength = response.metadata.totalItems;
@@ -114,6 +118,7 @@ export class SupportTicketsComponent implements OnInit {
                 },
             });
     }
+    
 
     onPageChange(event: PageEvent): void {
         this.page = event.pageIndex + 1; // Add 1 to align with 1-based indexing
@@ -126,7 +131,7 @@ export class SupportTicketsComponent implements OnInit {
     }
 
     onNameClick(subscriber: any): void {
-        this.selectedSubscriber = subscriber;
+        this.supportTicket = subscriber;
         this.matDrawer.open();
         this.updateStatus(subscriber.id);
     }

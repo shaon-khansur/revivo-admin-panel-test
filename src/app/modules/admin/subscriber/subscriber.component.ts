@@ -84,6 +84,7 @@ export class SubscriberComponent implements OnInit {
     }
 
     // In the loadSubscribers method, after grouping by date:
+
     loadSubscribers(searchValue: string = ''): void {
         this.hotelService
             .getAllSubscriber({
@@ -99,15 +100,22 @@ export class SubscriberComponent implements OnInit {
                             Date: new Date(subscriber.Date),
                         })
                     );
+
+                    // Group by date
                     const groupedByDate = groupBy(allSubscriber, (subscriber) =>
                         subscriber.Date.toDateString()
                     );
-                    this.allSubscriber = Object.keys(groupedByDate).map(
-                        (date) => ({
+
+                    // Get the dates and sort them in descending order
+                    this.allSubscriber = Object.keys(groupedByDate)
+                        .sort(
+                            (a, b) =>
+                                new Date(b).getTime() - new Date(a).getTime()
+                        )
+                        .map((date) => ({
                             date,
                             subscribers: groupedByDate[date],
-                        })
-                    );
+                        }));
 
                     // Set the data source
                     this.dataSource.data = this.allSubscriber;

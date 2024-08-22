@@ -21,12 +21,12 @@
     <div class="relative flex flex-col flex-auto items-center"></div>
 
     <!-- Name -->
-    <div class="flex flex-col mt-4 pt-6 border-t space-y-5 ml-6">
+    <div class="flex flex-col mt-4 pt-6 border-t space-y-5 mx-8">
         <!-- Name -->
-        <ng-container *ngIf="supportTicket?.Name">
+        <ng-container *ngIf="supportTicket?.FirtsName">
             <div class="flex sm:items-center">
                 <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
-                <div class="ml-6 leading-6">{{ supportTicket?.Name }}</div>
+                <div class="ml-6 leading-6">{{ supportTicket?.FirtsName }} {{supportTicket.LastName}}</div>
             </div>
         </ng-container>
 
@@ -35,6 +35,12 @@
             <div class="flex sm:items-center">
                 <mat-icon [svgIcon]="'heroicons_outline:envelope'"></mat-icon>
                 <div class="ml-6 leading-6">{{ supportTicket?.Email }}</div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="supportTicket?.Message">
+            <div class="flex sm:items-center">
+                <mat-icon [svgIcon]="'heroicons_outline:chat-bubble-left-right'"></mat-icon>
+                <div class="ml-6 leading-6">{{ supportTicket?.Message }}</div>
             </div>
         </ng-container>
 
