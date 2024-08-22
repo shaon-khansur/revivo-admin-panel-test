@@ -112,7 +112,7 @@ export class SubscriberComponent implements OnInit {
                     // Set the data source
                     this.dataSource.data = this.allSubscriber;
                     this.resultsLength = response.metadata.totalItems;
-                    this.paginator.firstPage();
+                    this.paginator?.firstPage();
                 },
             });
     }
