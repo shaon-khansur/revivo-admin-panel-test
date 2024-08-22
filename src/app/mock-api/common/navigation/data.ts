@@ -36,6 +36,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:user-group',
                 link : '/user-management/users',
             },
+            {
+                id   : 'user-management.subscriber',
+                title: 'Subscriber',
+                type : 'basic',
+                icon : 'heroicons_outline:hand-thumb-up',
+                link : '/user-management/subscriber',
+            },
         ],
     },
     {
