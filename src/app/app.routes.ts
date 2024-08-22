@@ -14,6 +14,7 @@ import { CreateOrderErrorComponent } from './modules/supports/create-order-error
 import { AirportComponent } from './modules/settings/airport/airport.component';
 import { AirlineComponent } from './modules/settings/airline/airline.component';
 import { SubscriberComponent } from './modules/admin/subscriber/subscriber.component';
+import { SupportTicketsComponent } from './modules/admin/support-tickets/support-tickets.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -143,6 +144,10 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/users/users.routes'),
                     },
                     { path: 'subscriber', component: SubscriberComponent },
+                    {
+                        path: 'support-tickets',
+                        component: SupportTicketsComponent,
+                    },
                 ],
                 canActivate: [adminGuard],
             },

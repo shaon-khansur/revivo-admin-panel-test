@@ -43,6 +43,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:hand-thumb-up',
                 link : '/user-management/subscriber',
             },
+            {
+                id   : 'user-management.support-tickets',
+                title: 'Support-Tickets',
+                type : 'basic',
+                icon : 'heroicons_outline:chat-bubble-left-ellipsis',
+                link : '/user-management/support-tickets',
+            },
         ],
     },
     {
