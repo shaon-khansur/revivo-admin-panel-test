@@ -31,7 +31,7 @@ export class SupportTicketsService {
         });
 
         // Build the complete URL
-        const url = `${environment.baseUrl}subscriber?${params.toString()}`;
+        const url = `${environment.baseUrl}supportTicket?${params.toString()}`;
 
         // Perform the HTTP GET request
         return this.http
@@ -59,12 +59,12 @@ export class SupportTicketsService {
     }
 
     updateStatus(id: string): Observable<any> {
-        return this.http.patch(`${environment.baseUrl}subscriber/${id}`, {
+        return this.http.patch(`${environment.baseUrl}supportTicket/${id}`, {
             Read: true,
         });
     }
 
     deleteSupporter(id): Observable<any> {
-        return this.http.delete(`${environment.baseUrl}subscriber/${id}`);
+        return this.http.delete(`${environment.baseUrl}supportTicket/${id}`);
     }
 }
