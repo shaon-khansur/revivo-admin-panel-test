@@ -78,9 +78,10 @@ export class HotelListComponent implements OnInit {
             })
             .subscribe({
                 next: (response) => {
+                    console.log(response)
                     this.allHotel = response.allData;
                     this.dataSource = new MatTableDataSource(this.allHotel);
-                    this.resultsLength = response.metadata.totalItems;
+                    this.resultsLength = response.metadata?.totalItems;
                 },
             });
 
