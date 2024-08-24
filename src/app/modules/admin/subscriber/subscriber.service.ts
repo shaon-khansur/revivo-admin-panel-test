@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 
@@ -7,6 +7,9 @@ import { environment } from 'environments/environment';
     providedIn: 'root',
 })
 export class SubscriberService {
+    static getSelectedChannel(userType: any) {
+        throw new Error('Method not implemented.');
+    }
     constructor(private http: HttpClient) {}
 
     getAllSubscriber(data: {
@@ -67,4 +70,14 @@ export class SubscriberService {
     deleteSubscriber(id): Observable<any> {
         return this.http.delete(`${environment.baseUrl}subscriber/${id}`);
     }
+    getSelectedChannel(channel: string): Observable<any> {
+        const params = new HttpParams().set('channel', channel);
+        return this.http.get<any>(
+            `${environment.baseUrl}subscriber/allUserMail`,
+            { params }
+        );
+    }
+    sendEmails(payload: { emails: string[], message: string }): Observable<any> {
+        return this.http.post(`${environment.baseUrl}subscriber/sendEmails`, payload);
+      }
 }

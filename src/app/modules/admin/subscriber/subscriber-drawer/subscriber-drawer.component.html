@@ -26,7 +26,7 @@
         <ng-container *ngIf="subscriber?.Name">
             <div class="flex sm:items-center">
                 <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
-                <div class="ml-6 leading-6">{{ subscriber?.Name }}</div>
+                <div class="ml-6 leading-6">{{ subscriber?.Name }} ({{subscriber.Channel[0]}})</div>
             </div>
         </ng-container>
 

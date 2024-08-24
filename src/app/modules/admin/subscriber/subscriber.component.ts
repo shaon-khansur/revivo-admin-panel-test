@@ -4,7 +4,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {
     MatPaginator,
     MatPaginatorModule,
@@ -18,6 +18,8 @@ import { debounceTime } from 'rxjs';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { SubscriberDrawerComponent } from './subscriber-drawer/subscriber-drawer.component';
 import { groupBy } from 'lodash';
+import { inject } from '@angular/core';
+import { SendMailComponent } from './send-mail/send-mail.component';
 
 @Component({
     selector: 'app-subscriber',
@@ -45,6 +47,7 @@ export class SubscriberComponent implements OnInit {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
+    readonly dialog = inject(MatDialog);
     displayedColumns: string[] = ['name'];
 
     allSubscriber: any[] = [];
@@ -169,5 +172,16 @@ export class SubscriberComponent implements OnInit {
                 console.error('Error updating status:', error);
             }
         );
+    }
+
+    openDialog(
+        enterAnimationDuration: string,
+        exitAnimationDuration: string
+    ): void {
+        this.dialog.open(SendMailComponent, {
+            width: '50%',
+            enterAnimationDuration,
+            exitAnimationDuration,
+        });
     }
 }
