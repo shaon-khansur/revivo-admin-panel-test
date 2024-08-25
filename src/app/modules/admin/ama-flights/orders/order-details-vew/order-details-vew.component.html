@@ -1,0 +1,229 @@
+<div class="modal-content">
+    <div class="order-details-container">
+        <div class="image-container">
+            <img src="../../../../../../assets/images/orderbg.jpg" alt="" />
+            <div class="overlay"></div>
+        </div>
+        <div class="order-id">Issuance</div>
+    </div>
+    <hr style="margin: 5px 0" />
+    <h1>
+        Flight Type:
+        {{
+            data.flightType === "oneway"
+                ? "OW"
+                : data.flightType === "RT"
+                ? "RT"
+                : data.flightType === "twoway"
+                ? "2-OW"
+                : ""
+        }}
+    </h1>
+    <ng-container *ngIf="data.issuance && data.flightType === 'twoway'">
+        <ng-container *ngTemplateOutlet="twoway"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="data.issuance && data.flightType === 'RT'">
+        <ng-container *ngTemplateOutlet="RT"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="data.issuance && data.flightType === 'oneway'">
+        <ng-container *ngTemplateOutlet="oneway"></ng-container>
+    </ng-container>
+</div>
+
+<ng-template #twoway>
+    <div class="order-details">
+
+        <h1>Provider</h1>
+        <p><span>Outbound provider:</span> {{ data.outboundDataProvider }}</p>
+        <p><span>Inbound provider:</span> {{ data.inboundDataProvider }}</p>
+    </div>
+
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        "
+    >
+        <div class="order-details">
+            <h1>
+                <span>Issuance Info</span>
+            </h1>
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                "
+            >
+                <div>
+                    <p>Outbound Issuance</p>
+
+                    <ng-contaniner
+                        *ngFor="
+                            let ticket of data.outboundIssuanceData.data.tickets
+                        "
+                    >
+                        <hr style="margin: 5px 0" />
+                        <p>
+                            <span> Traveler Name:</span>
+                            {{ getOutboundTravelerName(ticket) }}
+                        </p>
+                        <p>
+                            <span> Document Number:</span>
+                            {{ ticket.documentNumber }}
+                        </p>
+                        <p>
+                            <span> Document Status:</span>
+                            {{ ticket.documentStatus }}
+                        </p>
+                        <p>
+                            <span> Document Type:</span>
+                            {{ ticket.documentType }}
+                        </p>
+                    </ng-contaniner>
+                </div>
+                <div>
+                    <p>Inbound Issuance</p>
+
+                    <ng-contaniner
+                        *ngFor="
+                            let ticket of data.inboundIssuanceData.data.tickets
+                        "
+                    >
+                        <hr style="margin: 5px 0" />
+                        <p>
+                            <span> Traveler Name:</span>
+                            {{ getInboundTravelerName(ticket) }}
+                        </p>
+                        <p>
+                            <span> Document Number:</span>
+                            {{ ticket.documentNumber }}
+                        </p>
+                        <p>
+                            <span> Document Status:</span>
+                            {{ ticket.documentStatus }}
+                        </p>
+                        <p>
+                            <span> Document Type:</span>
+                            {{ ticket.documentType }}
+                        </p>
+                    </ng-contaniner>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #RT>
+    <div class="order-details">
+        <h1>Provider</h1>
+        <p><span>Roundtrip provider:</span> {{ data.dataProvider }}</p>
+    </div>
+
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        "
+    >
+        <div class="order-details">
+            <h1>
+                <span>Roundtrip Issuance Info</span>
+            </h1>
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                "
+            >
+                <div>
+                    <p>Roundtrip Issuance</p>
+
+                    <ng-contaniner
+                        *ngFor="
+                            let ticket of data.outboundIssuanceData.data.tickets
+                        "
+                    >
+                        <hr style="margin: 5px 0" />
+                        <p>
+                            <span> Traveler Name:</span>
+                            {{ getRTTravelerName(ticket) }}
+                        </p>
+                        <p>
+                            <span> Document Number:</span>
+                            {{ ticket.documentNumber }}
+                        </p>
+                        <p>
+                            <span> Document Status:</span>
+                            {{ ticket.documentStatus }}
+                        </p>
+                        <p>
+                            <span> Document Type:</span>
+                            {{ ticket.documentType }}
+                        </p>
+                    </ng-contaniner>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #oneway>
+    <div class="order-details">
+        <h1>Provider</h1>
+        <p><span>Outbound provider:</span> {{ data.dataProvider }}</p>
+    </div>
+
+    <div
+        style="
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        "
+    >
+        <div class="order-details">
+            <h1>
+                <span>Outbound Issuance Info</span>
+            </h1>
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                "
+            >
+                <div>
+                    <p>Outbound Issuance</p>
+
+                    <ng-contaniner
+                        *ngFor="
+                            let ticket of data.outboundIssuanceData.data.tickets
+                        "
+                    >
+                        <hr style="margin: 5px 0" />
+                        <p>
+                            <span> Traveler Name:</span>
+                            {{ getOutboundTravelerName(ticket) }}
+                        </p>
+                        <p>
+                            <span> Document Number:</span>
+                            {{ ticket.documentNumber }}
+                        </p>
+                        <p>
+                            <span> Document Status:</span>
+                            {{ ticket.documentStatus }}
+                        </p>
+                        <p>
+                            <span> Document Type:</span>
+                            {{ ticket.documentType }}
+                        </p>
+                    </ng-contaniner>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
