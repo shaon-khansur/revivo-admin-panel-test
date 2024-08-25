@@ -66,9 +66,6 @@ export class SendMailComponent implements OnDestroy {
                         // Call the sendEmails method and handle the response
                         this.emailService.sendEmails(payload).subscribe({
                             next: (response) => {
-                                console.log(
-                                    'Email sent successfully'
-                                );
                                 this.dialogRef.close();
                             },
                             error: (error) => {
@@ -83,7 +80,7 @@ export class SendMailComponent implements OnDestroy {
         }
     }
     onClose(): void {
-      this.dialogRef.close();
+        this.dialogRef.close();
     }
     ngOnDestroy() {
         if (this.subscription) {
