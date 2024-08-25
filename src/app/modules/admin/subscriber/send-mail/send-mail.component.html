@@ -1,0 +1,33 @@
+<form [formGroup]="sendMailForm" (ngSubmit)="onSubmit()">
+    <div class="w-full">
+        <mat-form-field class="w-full">
+            <mat-label>Channel</mat-label>
+            <mat-select formControlName="userType">
+                <mat-option value="" disabled>Select User Type</mat-option>
+                <mat-option value="guest">Guest</mat-option>
+                <mat-option value="customer">Customer</mat-option>
+                <mat-option value="newsletter">Newsletter</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+            <mat-label>Message</mat-label>
+            <textarea matInput formControlName="message"></textarea>
+        </mat-form-field>
+
+        <div class="flex justify-between">
+            <!-- Close Button -->
+            <button mat-button type="button" (click)="onClose()">Close</button>
+
+            <!-- Submit Button -->
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="sendMailForm.invalid"
+            >
+                Send Mail
+            </button>
+        </div>
+    </div>
+</form>

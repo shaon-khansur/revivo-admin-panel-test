@@ -36,6 +36,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:user-group',
                 link : '/user-management/users',
             },
+            {
+                id   : 'user-management.subscriber',
+                title: 'Subscriber',
+                type : 'basic',
+                icon : 'heroicons_outline:hand-thumb-up',
+                link : '/user-management/subscriber',
+            },
+            {
+                id   : 'user-management.support-tickets',
+                title: 'Support-Tickets',
+                type : 'basic',
+                icon : 'heroicons_outline:chat-bubble-left-ellipsis',
+                link : '/user-management/support-tickets',
+            },
         ],
     },
     {
@@ -111,6 +125,23 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:building-office',
                 link : '/deals/destinations',
+            }
+
+        ],
+    },
+    {
+        id      : 'hotel',
+        title   : 'Hotel',
+        subtitle: 'Manage Hotel',
+        type    : 'group',
+        icon    : 'heroicons_outline:building-office-2',
+        children: [
+            {
+                id   : 'hotel.manage',
+                title: 'Hotel List',
+                type : 'basic',
+                icon : 'heroicons_outline:building-office-2',
+                link : '/hotel/hotel-list',
             }
 
         ],

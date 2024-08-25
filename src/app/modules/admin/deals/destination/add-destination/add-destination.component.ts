@@ -12,10 +12,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import {
+    AbstractControl,
     FormBuilder,
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
+    ValidationErrors,
     Validators,
 } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -86,7 +88,13 @@ export class AddDestinationComponent implements OnInit {
         this.form = this.fb.group({
             name: [null, Validators.required],
             countryName: [null, Validators.required],
-            destinationId: [null],
+            destinationId: [
+                '',
+                [
+                  Validators.required,
+                  this.noSlashValidator
+                ]
+              ],
             hotelStar: [null],
             avatar: [null],
             index: [
@@ -107,6 +115,12 @@ export class AddDestinationComponent implements OnInit {
             ],
         });
     }
+
+    noSlashValidator(control: AbstractControl): ValidationErrors | null {
+        const hasSlash = control.value?.includes('/');
+        return hasSlash ? { 'hasSlash': true } : null;
+    }
+    
 
     addChip(event: any): void {
         const input = event.input;

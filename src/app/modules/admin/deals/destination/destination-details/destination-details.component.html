@@ -352,6 +352,25 @@
                                 "
                                 [spellcheck]="false"
                             />
+
+                            <mat-error
+                                *ngIf="
+                                    form
+                                        .get('destinationId')
+                                        .hasError('required')
+                                "
+                            >
+                                Destination ID is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="
+                                    form
+                                        .get('destinationId')
+                                        .hasError('hasSlash')
+                                "
+                            >
+                                Destination ID cannot contain a slash (/).
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="mt-8">

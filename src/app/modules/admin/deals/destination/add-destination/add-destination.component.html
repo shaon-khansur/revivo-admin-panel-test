@@ -72,14 +72,21 @@
                     Name field is required
                 </mat-error>
             </mat-form-field>
-            <mat-form-field class="flex-auto">
+            <mat-form-field class="flex-auto mt-1">
                 <input
-                    matInput
-                    formControlName="destinationId"
-                    placeholder="Destination Id (should be unique)"
+                  matInput
+                  formControlName="destinationId"
+                  placeholder="Destination ID"
                 />
-            </mat-form-field>
-            <mat-form-field class="flex-auto">
+                <mat-error *ngIf="form.get('destinationId').hasError('required')">
+                  Destination ID is required
+                </mat-error>
+                <mat-error *ngIf="form.get('destinationId').hasError('hasSlash')">
+                  Destination ID cannot contain a slash (/).
+                </mat-error>
+              </mat-form-field>
+              
+            <mat-form-field class="flex-auto mt-1">
                 <input
                     matInput
                     formControlName="countryName"
@@ -87,7 +94,7 @@
                 />
             </mat-form-field>
 
-            <mat-form-field class="flex-auto">
+            <mat-form-field class="flex-auto mt-1">
                 <mat-select
                     formControlName="hotelStar"
                     placeholder="Select minimum hotel star"
@@ -157,7 +164,10 @@
                 </mat-chip-grid>
             </mat-form-field>
             <mat-form-field class="flex-auto">
-                <mat-chip-grid #dealDestinationGrid aria-label="Enter Deal Destination">
+                <mat-chip-grid
+                    #dealDestinationGrid
+                    aria-label="Enter Deal Destination"
+                >
                     <mat-chip-row
                         *ngFor="let chip of dealDestination; let i = index"
                         (removed)="removedealDestination(i)"
@@ -195,17 +205,17 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
-                <input matInput formControlName="price" placeholder="Discount Price" />
+                <input
+                    matInput
+                    formControlName="price"
+                    placeholder="Discount Price"
+                />
                 <mat-error *ngIf="form.get('price').hasError('required')">
                     Discount Price field is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="flex-auto">
-                <input
-                    matInput
-                    formControlName="unTitle"
-                    placeholder="Price"
-                />
+                <input matInput formControlName="unTitle" placeholder="Price" />
                 <mat-error *ngIf="form.get('unTitle').hasError('required')">
                     Price field is required
                 </mat-error>

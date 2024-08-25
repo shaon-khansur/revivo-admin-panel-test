@@ -1,0 +1,99 @@
+<div class="flex flex-col w-full">
+    <!-- View mode -->
+
+    <div class="relative w-full px-8 sm:px-12">
+        <!-- Close button -->
+        <div
+            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+        >
+            <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Close"
+                (click)="closeDrawer()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="relative flex flex-col flex-auto items-center"></div>
+
+    <!-- Name -->
+    <div class="flex flex-col mt-4 pt-6 border-t space-y-5 ml-6">
+        <!-- Name -->
+        <ng-container *ngIf="subscriber?.Name">
+            <div class="flex sm:items-center">
+                <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+                <div class="ml-6 leading-6">{{ subscriber?.Name }} ({{subscriber.Channel[0]}})</div>
+            </div>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container *ngIf="subscriber?.Email">
+            <div class="flex sm:items-center">
+                <mat-icon [svgIcon]="'heroicons_outline:envelope'"></mat-icon>
+                <div class="ml-6 leading-6">{{ subscriber?.Email }}</div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="subscriber?.UserIp">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:circle-stack'"
+                ></mat-icon>
+                <div class="ml-6 leading-6">{{ subscriber?.UserIp }}</div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="subscriber?.Browser">
+            <div class="flex sm:items-center">
+                <mat-icon [svgIcon]="'heroicons_outline:globe-alt'"></mat-icon>
+                <div class="ml-6 leading-6">{{ subscriber?.Browser }}</div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="subscriber?.BrowserVersion">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:server-stack'"
+                ></mat-icon>
+                <div class="ml-6 leading-6">
+                    {{ subscriber?.BrowserVersion }}
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="subscriber?.Date">
+            <div class="flex sm:items-center">
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:calendar-days'"
+                ></mat-icon>
+                <div class="ml-6 leading-6">
+                    {{ datePipe.transform(subscriber.Date, "dd-MM-yyyy") }}
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="subscriber?.Time">
+            <div class="flex sm:items-center">
+                <mat-icon [svgIcon]="'heroicons_outline:clock'"></mat-icon>
+                <div class="ml-6 leading-6">{{ subscriber?.Time }}</div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Delete button -->
+    <div class="flex justify-end mt-6 mr-6">
+        <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Delete"
+            (click)="deleteSubscriber()"
+            class="flex items-center bg-slate-200 p-4 rounded-lg border-neutral-400"
+        >
+            <mat-icon
+                [svgIcon]="'heroicons_outline:trash'"
+                class="text-red-500 mr-2"
+            ></mat-icon>
+            Remove Subscriber
+        </button>
+    </div>
+</div>
