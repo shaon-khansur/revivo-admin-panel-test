@@ -2,13 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HotelService } from '../../hotel.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    FormArray,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { EditFacilityComponent } from './edit-facility/edit-facility.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-hotel-details',
@@ -21,7 +28,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
         MatButtonModule,
         MatIconModule,
         MatSelectModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatDialogModule,
     ],
     templateUrl: './hotel-details.component.html',
     styleUrls: ['./hotel-details.component.scss'],
@@ -35,13 +43,14 @@ export class HotelDetailsComponent implements OnInit {
         private fb: FormBuilder,
         private hotelService: HotelService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
             const id = params['id'];
-            
+
             // Initialize the form group
             this.form = this.fb.group({
                 id: [''],
@@ -72,7 +81,7 @@ export class HotelDetailsComponent implements OnInit {
                 }),
                 Website: [''],
             });
-    
+
             if (id) {
                 this.hotelService.getHotelById(id).subscribe(
                     (hotel) => {
@@ -88,15 +97,28 @@ export class HotelDetailsComponent implements OnInit {
                             HotelLocation: {
                                 CityCode: hotel.HotelLocation?.CityCode || '',
                                 CityName: hotel.HotelLocation?.CityName || '',
-                                CountryName: hotel.HotelLocation?.CountryName || '',
-                                Description: hotel.HotelLocation?.Description || '',
+                                CountryName:
+                                    hotel.HotelLocation?.CountryName || '',
+                                Description:
+                                    hotel.HotelLocation?.Description || '',
                                 Address: {
-                                    zipcode: hotel.HotelLocation?.Address?.zipcode || '',
-                                    phone: hotel.HotelLocation?.Address?.phone || '',
-                                    street: hotel.HotelLocation?.Address?.street || '',
-                                    house_number: hotel.HotelLocation?.Address?.house_number || '',
-                                    fax: hotel.HotelLocation?.Address?.fax || '',
-                                    email: hotel.HotelLocation?.Address?.email || '',
+                                    zipcode:
+                                        hotel.HotelLocation?.Address?.zipcode ||
+                                        '',
+                                    phone:
+                                        hotel.HotelLocation?.Address?.phone ||
+                                        '',
+                                    street:
+                                        hotel.HotelLocation?.Address?.street ||
+                                        '',
+                                    house_number:
+                                        hotel.HotelLocation?.Address
+                                            ?.house_number || '',
+                                    fax:
+                                        hotel.HotelLocation?.Address?.fax || '',
+                                    email:
+                                        hotel.HotelLocation?.Address?.email ||
+                                        '',
                                 },
                                 latitude: hotel.HotelLocation?.latitude || '',
                                 longitude: hotel.HotelLocation?.longitude || '',
@@ -112,7 +134,6 @@ export class HotelDetailsComponent implements OnInit {
             }
         });
     }
-    
 
     get facilities(): FormArray {
         return this.form.get('HotelFacilities') as FormArray;
@@ -184,6 +205,28 @@ export class HotelDetailsComponent implements OnInit {
         reader.readAsDataURL(file);
     }
 
+    openEditFacility(index: number): void {
+        const facilityControl = this.facilities.at(index);
+
+        const dialogRef = this.dialog.open(EditFacilityComponent, {
+            width: '400px',
+            data: {
+                FacilityTitle: facilityControl.get('FacilityTitle').value,
+                FacilityCode: facilityControl.get('FacilityCode').value,
+                FacilityType: facilityControl.get('FacilityType').value,
+                Url: facilityControl.get('Url').value,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.action === 'save' && result?.data) {
+                this.facilities.at(index).patchValue(result.data);
+            } else if (result?.action === 'delete') {
+                this.removeFacility(index);
+            }
+        });
+    }
+
     update(): void {
         if (this.form.valid) {
             const updatedHotel = this.form.value;
@@ -200,8 +243,25 @@ export class HotelDetailsComponent implements OnInit {
     }
 
     addFacility(): void {
-        this.facilities.push(this.createFacilityGroup());
+        const dialogRef = this.dialog.open(EditFacilityComponent, {
+            width: '400px',
+            data: {
+                FacilityTitle: '',
+                FacilityCode: '',
+                FacilityType: '',
+                Url: '',
+            },
+        });
+    
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.action === 'save' && result?.data) {
+                this.facilities.push(
+                    this.fb.group(result.data)
+                );
+            }
+        });
     }
+    
 
     removeFacility(index: number): void {
         if (this.facilities.length > 1) {

@@ -5,18 +5,19 @@
     </div>
 
     <form [formGroup]="form">
-        <div id="hotel-info" class="lg:flex gap-2 w-full">
+        <div id="hotel-info" class="lg:flex gap-5 w-full">
             <div
                 class="hotel-image relative flex flex-col items-center justify-center"
             >
-                <img
-                    [src]="fileString ? fileString : thumbnail"
-                    alt="Hotel Thumbnail"
-                    class="object-cover w-full h-[150px] lg:h-full"
-                />
-                <div
-                    class="image-overlay"
-                >
+                <ng-container *ngIf="fileString ? fileString : thumbnail">
+                    <img
+                        [src]="fileString ? fileString : thumbnail"
+                        alt="Hotel Thumbnail"
+                        loading="lazy"
+                        class="object-cover lg:w-[600px] h-[150px] lg:h-full"
+                    />
+                </ng-container>
+                <div class="image-overlay">
                     <mat-icon class="text-white">cloud_upload</mat-icon>
                     <span class="ml-2 text-white">Upload</span>
                 </div>
@@ -29,7 +30,7 @@
                     class="absolute inset-0 opacity-0 cursor-pointer"
                 />
             </div>
-            <div class="flex flex-col w-full">
+            <div class="flex flex-col w-full mt-3 lg:mt-0">
                 <mat-form-field class="flex-auto">
                     <mat-label>Hotel Name</mat-label>
                     <input matInput formControlName="HotelName" />
@@ -50,7 +51,9 @@
                         <mat-icon
                             class="icon-size-5"
                             matSuffix
-                            [svgIcon]="'heroicons_solid:building-office-2'"
+                            [svgIcon]="
+                                'heroicons_solid:clipboard-document-list'
+                            "
                         ></mat-icon>
                     </mat-form-field>
                 </div>
@@ -67,91 +70,84 @@
                         <mat-option value="5">5</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <div formGroupName="HotelLocation" class="flex gap-5">
+                    <mat-form-field class="flex-auto">
+                        <mat-label>City Code</mat-label>
+                        <input matInput formControlName="CityCode" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>City Name</mat-label>
+                        <input matInput formControlName="CityName" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Country Name</mat-label>
+                        <input matInput formControlName="CountryName" />
+                    </mat-form-field>
+                </div>
             </div>
         </div>
 
         <div class="w-full">
-    
-            <!-- <div formGroupName="HotelLocation">
-    
-                <mat-form-field class="flex-auto">
-                    <mat-label>Address - Zipcode</mat-label>
-                    <input matInput formControlName="Address.zipcode" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Address - Phone</mat-label>
-                    <input matInput formControlName="Address.phone" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Address - Street</mat-label>
-                    <input matInput formControlName="Address.street" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Address - House Number</mat-label>
-                    <input matInput formControlName="Address.house_number" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Address - Fax</mat-label>
-                    <input matInput formControlName="Address.fax" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Address - Email</mat-label>
-                    <input matInput formControlName="Address.email" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Latitude</mat-label>
-                    <input matInput formControlName="latitude" />
-                </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Longitude</mat-label>
-                    <input matInput formControlName="longitude" />
-                </mat-form-field>
-            </div> -->
-    
-            <div formArrayName="HotelFacilities">
-               <div class="my-5"> <mat-label class="text-lg font-bold">Facilities :</mat-label></div>
-                <mat-accordion>
-                    <mat-expansion-panel *ngFor="let facility of facilities.controls; let i = index" [formGroupName]="i">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{ facility.get('FacilityTitle').value || 'Facility ' + (i + 1) }}
-                            </mat-panel-title>
-                            <mat-panel-description class="flex justify-end">
-                                <button
-                                    type="button"
-                                    mat-button
-                                    color="warn"
-                                    (click)="removeFacility(i)"
-                                >
-                                    Remove Facility
-                                </button>
-                            </mat-panel-description>
-                        </mat-expansion-panel-header>
-                
-                        <div class="flex gap-2 flex-wrap">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Facility Title</mat-label>
-                                <input matInput formControlName="FacilityTitle" />
-                            </mat-form-field>
-                
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Facility Code</mat-label>
-                                <input matInput formControlName="FacilityCode" />
-                            </mat-form-field>
-                
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Facility Type</mat-label>
-                                <input matInput formControlName="FacilityType" />
-                            </mat-form-field>
-                
-                            <mat-form-field class="flex-auto">
-                                <mat-label>URL</mat-label>
-                                <input matInput formControlName="Url" />
-                            </mat-form-field>
-                        </div>
-                    </mat-expansion-panel>
-                </mat-accordion>
-                
+            <div formGroupName="HotelLocation">
+                <div class="my-5">
+                    <h1 class="text-lg font-bold">Address :</h1>
+                </div>
+                <div formGroupName="Address" class="flex gap-5">
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Zipcode</mat-label>
+                        <input matInput formControlName="zipcode" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Phone</mat-label>
+                        <input matInput formControlName="phone" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Street</mat-label>
+                        <input matInput formControlName="street" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>House Number</mat-label>
+                        <input matInput formControlName="house_number" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Fax</mat-label>
+                        <input matInput formControlName="fax" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" />
+                    </mat-form-field>
+                </div>
+                <div class="flex gap-5">
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Latitude</mat-label>
+                        <input matInput formControlName="latitude" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-auto">
+                        <mat-label>Longitude</mat-label>
+                        <input matInput formControlName="longitude" />
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="my-5">
+                <h1 class="text-lg font-bold">Facilities:</h1>
+            </div>
+            <div formArrayName="HotelFacilities" class="flex flex-wrap gap-2">
+                <div
+                    *ngFor="let facility of facilities.controls; let i = index"
+                >
+                    <button
+                        mat-button
+                        (click)="openEditFacility(i)"
+                        class="facilityChip"
+                    >
+                        {{
+                            facility.get("FacilityTitle").value ||
+                                "Facility " + (i + 1)
+                        }}
+                    </button>
+                </div>
                 <div class="w-full py-5">
                     <button
                         type="button"
@@ -163,7 +159,7 @@
                     </button>
                 </div>
             </div>
-    
+
             <div mat-dialog-actions [align]="'end'" class="mt-4">
                 <button
                     (click)="update()"
