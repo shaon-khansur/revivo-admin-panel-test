@@ -1,7 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
+
+interface HotelData {
+    id: string;
+    value: {
+      HotelRate: number;
+      HotelName: string;
+      thumbnail?: string;
+      Website?: string;
+      file?: any; // Adjust this type based on your file structure
+      Description?: string;
+      AboutHotel?: string;
+      HotelFacilities?: string[];
+    };
+  }
 
 @Injectable({
     providedIn: 'root',
@@ -38,10 +52,20 @@ export class HotelService {
         );
     }
 
-    updateHotel(data): Observable<any> {
-        return this.http.put(
-            `${environment.baseUrl}hotelData/${data.id}`,
-            data.value
+    updateHotel(data: HotelData): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/${data.id}`;
+        console.log(data);
+        
+    
+        return this.http.put(url, data).pipe(
+          catchError(error => {
+            // Handle the error here
+            console.error('Error updating hotel data:', error);
+            return throwError(() => new Error('Error updating hotel data'));
+          })
         );
+      }
+    getHotelById(id): Observable<any> {
+        return this.http.get(`${environment.baseUrl}hotelData/${id}`);
     }
 }

@@ -1,90 +1,179 @@
-<div mat-dialog-content>
-    <form
-        [formGroup]="form"
-        class="flex flex-col p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
-    >
-        <div id="hotel-info" class="flex gap-2 w-full">
-            <div class="hotel-image">
+<div class="bg-white w-full p-8 pb-4">
+    <div (click)="close()" class="py-5 back-button">
+        <mat-icon class="back-icon">arrow_back</mat-icon>
+        <p class="back-text">Back to Hotel List</p>
+    </div>
+
+    <form [formGroup]="form">
+        <div id="hotel-info" class="lg:flex gap-2 w-full">
+            <div
+                class="hotel-image relative flex flex-col items-center justify-center"
+            >
                 <img
                     [src]="fileString ? fileString : thumbnail"
-                    alt=""
-                    srcset=""
+                    alt="Hotel Thumbnail"
+                    class="object-cover w-full h-[150px] lg:h-full"
                 />
-                <div class="image-overlay">
-                    <mat-icon style="color: rgb(110, 186, 211);">cloud_upload</mat-icon>
-                    <span style="margin-left: 8px;">Upload</span>
+                <div
+                    class="image-overlay"
+                >
+                    <mat-icon class="text-white">cloud_upload</mat-icon>
+                    <span class="ml-2 text-white">Upload</span>
                 </div>
                 <input
                     type="file"
                     [multiple]="false"
-                    (change)="uploadThumbnail(avatarFileInput.files)"
+                    (change)="uploadThumbnail($event.target.files)"
                     [accept]="'image/jpeg, image/png'"
                     #avatarFileInput
-                    style="
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        opacity: 0;
-                        cursor: pointer;
-                        z-index: 999;
-                    "
+                    class="absolute inset-0 opacity-0 cursor-pointer"
                 />
             </div>
-            <div class="flex flex-col w-full h-5">
+            <div class="flex flex-col w-full">
                 <mat-form-field class="flex-auto">
                     <mat-label>Hotel Name</mat-label>
-                    <input matInput formControlName="HotelName"/>
+                    <input matInput formControlName="HotelName" />
                     <mat-icon
                         class="icon-size-5"
                         matSuffix
                         [svgIcon]="'heroicons_solid:building-office-2'"
                     ></mat-icon>
-                </mat-form-field> 
+                </mat-form-field>
+                <div formGroupName="HotelLocation">
+                    <mat-form-field class="flex-auto" class="w-full">
+                        <mat-label>Description</mat-label>
+                        <textarea
+                            matInput
+                            formControlName="Description"
+                            rows="5"
+                        ></textarea>
+                        <mat-icon
+                            class="icon-size-5"
+                            matSuffix
+                            [svgIcon]="'heroicons_solid:building-office-2'"
+                        ></mat-icon>
+                    </mat-form-field>
+                </div>
+                <mat-form-field class="flex-auto mt-1 w-full">
+                    <mat-label>Hotel Rating</mat-label>
+                    <mat-select
+                        formControlName="HotelRate"
+                        placeholder="Select hotel rating"
+                    >
+                        <mat-option value="1">1</mat-option>
+                        <mat-option value="2">2</mat-option>
+                        <mat-option value="3">3</mat-option>
+                        <mat-option value="4">4</mat-option>
+                        <mat-option value="5">5</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            
         </div>
-        <mat-form-field class="flex-auto mt-1">
-            <mat-label>Hotel Rating</mat-label>
-            <mat-select
-                formControlName="HotelRate"
-                placeholder="Select hotel rating"
-            >
-                <mat-option value="1">1</mat-option>
-                <mat-option value="2">2</mat-option>
-                <mat-option value="3">3</mat-option>
-                <mat-option value="4">4</mat-option>
-                <mat-option value="5">5</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="flex-auto">
-            <mat-label>Website</mat-label>
-            <input matInput formControlName="Website"/>
-            <mat-icon
-                class="icon-size-5"
-                matSuffix
-                [svgIcon]="'heroicons_solid:globe-alt'"
-            ></mat-icon>
-        </mat-form-field>
-    </form>
 
-    <div mat-dialog-actions [align]="'end'" class="mt-4">
-        <button
-            color="accent"
-            mat-flat-button
-            mat-dialog-close
-            (click)="close()"
-        >
-            Cancel
-        </button>
-        <button
-            (click)="update()"
-            color="primary"
-            mat-raised-button
-            [disabled]="form.invalid"
-        >
-            Update
-        </button>
-    </div>
+        <div class="w-full">
+    
+            <!-- <div formGroupName="HotelLocation">
+    
+                <mat-form-field class="flex-auto">
+                    <mat-label>Address - Zipcode</mat-label>
+                    <input matInput formControlName="Address.zipcode" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Address - Phone</mat-label>
+                    <input matInput formControlName="Address.phone" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Address - Street</mat-label>
+                    <input matInput formControlName="Address.street" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Address - House Number</mat-label>
+                    <input matInput formControlName="Address.house_number" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Address - Fax</mat-label>
+                    <input matInput formControlName="Address.fax" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Address - Email</mat-label>
+                    <input matInput formControlName="Address.email" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Latitude</mat-label>
+                    <input matInput formControlName="latitude" />
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Longitude</mat-label>
+                    <input matInput formControlName="longitude" />
+                </mat-form-field>
+            </div> -->
+    
+            <div formArrayName="HotelFacilities">
+               <div class="my-5"> <mat-label class="text-lg font-bold">Facilities :</mat-label></div>
+                <mat-accordion>
+                    <mat-expansion-panel *ngFor="let facility of facilities.controls; let i = index" [formGroupName]="i">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{ facility.get('FacilityTitle').value || 'Facility ' + (i + 1) }}
+                            </mat-panel-title>
+                            <mat-panel-description class="flex justify-end">
+                                <button
+                                    type="button"
+                                    mat-button
+                                    color="warn"
+                                    (click)="removeFacility(i)"
+                                >
+                                    Remove Facility
+                                </button>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                
+                        <div class="flex gap-2 flex-wrap">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Facility Title</mat-label>
+                                <input matInput formControlName="FacilityTitle" />
+                            </mat-form-field>
+                
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Facility Code</mat-label>
+                                <input matInput formControlName="FacilityCode" />
+                            </mat-form-field>
+                
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Facility Type</mat-label>
+                                <input matInput formControlName="FacilityType" />
+                            </mat-form-field>
+                
+                            <mat-form-field class="flex-auto">
+                                <mat-label>URL</mat-label>
+                                <input matInput formControlName="Url" />
+                            </mat-form-field>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                
+                <div class="w-full py-5">
+                    <button
+                        type="button"
+                        mat-button
+                        class="navy-blue-button w-full"
+                        (click)="addFacility()"
+                    >
+                        Add Facility
+                    </button>
+                </div>
+            </div>
+    
+            <div mat-dialog-actions [align]="'end'" class="mt-4">
+                <button
+                    (click)="update()"
+                    color="primary"
+                    mat-raised-button
+                    [disabled]="form.invalid"
+                >
+                    Update
+                </button>
+            </div>
+        </div>
+    </form>
 </div>

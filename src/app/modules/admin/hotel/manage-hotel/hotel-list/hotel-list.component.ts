@@ -1,29 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HotelService } from '../../hotel.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import {
-    MatPaginator,
-    MatPaginatorModule,
-    PageEvent,
-} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
-import {
-    MatDialog,
-    MatDialogConfig,
-    MatDialogModule,
-} from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCommonModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { debounceTime } from 'rxjs';
-import { HotelDetailsComponent } from '../hotel-details/hotel-details.component';
 
 @Component({
     selector: 'app-hotel-list',
@@ -40,6 +28,7 @@ import { HotelDetailsComponent } from '../hotel-details/hotel-details.component'
         ReactiveFormsModule,
         FormsModule,
         MatInputModule,
+        RouterModule,  // <-- Add this line to import RouterModule
     ],
     templateUrl: './hotel-list.component.html',
     styleUrls: ['./hotel-list.component.scss'],
@@ -66,6 +55,7 @@ export class HotelListComponent implements OnInit {
     constructor(
         private hotelService: HotelService,
         private dialog: MatDialog,
+        private router: Router,
         private cdr: ChangeDetectorRef
     ) {}
 
@@ -149,29 +139,6 @@ export class HotelListComponent implements OnInit {
     }
 
     openDialog(hotel): void {
-        const config = new MatDialogConfig();
-        config.width = '600px';
-        config.data = hotel;
-        this.dialog
-            .open(HotelDetailsComponent, config)
-            .afterClosed()
-            .subscribe((values) => {
-                if (values) {
-                    this.hotelService
-                        .updateHotel({ id: hotel.id, value: values })
-                        .subscribe({
-                            next: (res) => {
-                                const index = this.allHotel.findIndex(
-                                    (el) => el.id === res.updatedAirline.id
-                                );
-                                
-                                this.allHotel[index] = res.updatedAirline;
-                                this.dataSource = new MatTableDataSource(
-                                    this.allHotel
-                                );
-                            },
-                        });
-                }
-            });
+        this.router.navigate(['hotel', hotel.id]); 
     }
 }
