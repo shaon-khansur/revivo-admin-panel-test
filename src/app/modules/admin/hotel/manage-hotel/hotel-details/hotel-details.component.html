@@ -70,19 +70,25 @@
                         <mat-option value="5">5</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div formGroupName="HotelLocation" class="flex gap-5">
-                    <mat-form-field class="flex-auto">
-                        <mat-label>City Code</mat-label>
-                        <input matInput formControlName="CityCode" />
+                <div class="flex gap-5 flex-wrap">
+                    <mat-form-field class="">
+                        <mat-label>City Hebrew</mat-label>
+                        <input matInput formControlName="cityHeb" />
                     </mat-form-field>
-                    <mat-form-field class="flex-auto">
-                        <mat-label>City Name</mat-label>
-                        <input matInput formControlName="CityName" />
-                    </mat-form-field>
-                    <mat-form-field class="flex-auto">
-                        <mat-label>Country Name</mat-label>
-                        <input matInput formControlName="CountryName" />
-                    </mat-form-field>
+                    <div formGroupName="HotelLocation" class="flex flex-wrap gap-5">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>City Code</mat-label>
+                            <input matInput formControlName="CityCode" />
+                        </mat-form-field>
+                        <mat-form-field class="flex-auto">
+                            <mat-label>City Name</mat-label>
+                            <input matInput formControlName="CityName" />
+                        </mat-form-field>
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Country Name</mat-label>
+                            <input matInput formControlName="CountryName" />
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,7 +98,7 @@
                 <div class="my-5">
                     <h1 class="text-lg font-bold">Address :</h1>
                 </div>
-                <div formGroupName="Address" class="flex gap-5">
+                <div formGroupName="Address" class="flex flex-wrap gap-5">
                     <mat-form-field class="flex-auto">
                         <mat-label>Zipcode</mat-label>
                         <input matInput formControlName="zipcode" />

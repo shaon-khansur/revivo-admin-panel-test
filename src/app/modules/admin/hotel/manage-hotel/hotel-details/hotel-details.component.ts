@@ -55,6 +55,7 @@ export class HotelDetailsComponent implements OnInit {
             this.form = this.fb.group({
                 id: [''],
                 HotelName: [''],
+                cityHeb: [''],
                 thumbnail: [''],
                 HotelRate: [''],
                 file: this.fb.group({
@@ -90,6 +91,7 @@ export class HotelDetailsComponent implements OnInit {
                         this.form.patchValue({
                             id: id,
                             HotelName: hotel.HotelName,
+                            cityHeb: hotel.cityHeb,
                             thumbnail: hotel.thumbnail,
                             AboutHotel: hotel.AboutHotel,
                             HotelRate: hotel.HotelRate,
@@ -252,16 +254,13 @@ export class HotelDetailsComponent implements OnInit {
                 Url: '',
             },
         });
-    
+
         dialogRef.afterClosed().subscribe((result) => {
             if (result?.action === 'save' && result?.data) {
-                this.facilities.push(
-                    this.fb.group(result.data)
-                );
+                this.facilities.push(this.fb.group(result.data));
             }
         });
     }
-    
 
     removeFacility(index: number): void {
         if (this.facilities.length > 1) {
