@@ -80,7 +80,7 @@ export class HotelDetailsComponent implements OnInit {
                     latitude: [''],
                     longitude: [''],
                 }),
-                HotelRemarks: this.fb.array([]),  // Initialize HotelRemarks as FormArray
+                HotelRemarks: this.fb.array([]), // Initialize HotelRemarks as FormArray
                 Website: [''],
             });
 
@@ -303,11 +303,10 @@ export class HotelDetailsComponent implements OnInit {
     addRemark(): void {
         this.hotelRemarks.push(this.createHotelRemarkGroup());
     }
-    
+
     removeRemark(index: number): void {
         if (this.hotelRemarks.length > 1) {
             this.hotelRemarks.removeAt(index);
         }
     }
-    
 }
