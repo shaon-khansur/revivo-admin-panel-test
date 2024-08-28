@@ -255,17 +255,15 @@
                     />
                     <div class="absolute top-0 right-0 p-2">
                         <button
-                            *ngIf="
-                                !image
-                                    .get('Url')
-                                    .value.includes('http://www.alp.co.il')
-                            "
+                            *ngIf="!image.get('Url').value.includes('http://www.alp.co.il')"
                             mat-icon-button
                             (click)="openEditHotelImage(i)"
+                            style="background-color: black; color: white; border-radius: 50%;"
                         >
                             <mat-icon>edit</mat-icon>
                         </button>
                     </div>
+                    
                 </div>
                 <div class="w-full py-5">
                     <button
