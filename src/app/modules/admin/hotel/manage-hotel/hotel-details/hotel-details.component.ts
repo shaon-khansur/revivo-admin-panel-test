@@ -80,6 +80,7 @@ export class HotelDetailsComponent implements OnInit {
                     latitude: [''],
                     longitude: [''],
                 }),
+                HotelRemarks: this.fb.array([]),  // Initialize HotelRemarks as FormArray
                 Website: [''],
             });
 
@@ -93,7 +94,6 @@ export class HotelDetailsComponent implements OnInit {
                             HotelName: hotel.HotelName,
                             cityHeb: hotel.cityHeb,
                             thumbnail: hotel.thumbnail,
-                            AboutHotel: hotel.AboutHotel,
                             HotelRate: hotel.HotelRate,
                             Website: hotel.Website,
                             HotelLocation: {
@@ -128,6 +128,8 @@ export class HotelDetailsComponent implements OnInit {
                         });
                         // Set facilities
                         this.setFacilities(hotel.HotelFacilities || []);
+                        // Set hotel remarks
+                        this.setHotelRemarks(hotel.HotelRemarks || []);
                     },
                     (error) => {
                         console.error('Error fetching hotel:', error);
@@ -141,6 +143,10 @@ export class HotelDetailsComponent implements OnInit {
         return this.form.get('HotelFacilities') as FormArray;
     }
 
+    get hotelRemarks(): FormArray {
+        return this.form.get('HotelRemarks') as FormArray;
+    }
+
     // Helper method to create a facility form group
     private createFacilityGroup(): FormGroup {
         return this.fb.group({
@@ -148,6 +154,14 @@ export class HotelDetailsComponent implements OnInit {
             FacilityCode: [''],
             FacilityType: [''],
             Url: [''],
+        });
+    }
+
+    // Helper method to create a hotel remark form group
+    private createHotelRemarkGroup(): FormGroup {
+        return this.fb.group({
+            FreeText: [''],
+            RemarkType: [''],
         });
     }
 
@@ -169,6 +183,25 @@ export class HotelDetailsComponent implements OnInit {
         // Ensure at least one facility input group is present
         if (this.facilities.length === 0) {
             this.facilities.push(this.createFacilityGroup());
+        }
+    }
+
+    // Set hotel remarks in the form array based on the data retrieved
+    private setHotelRemarks(remarks: any[]): void {
+        this.hotelRemarks.clear(); // Clear existing remarks
+
+        remarks.forEach((remark) => {
+            this.hotelRemarks.push(
+                this.fb.group({
+                    FreeText: [remark.FreeText || ''],
+                    RemarkType: [remark.RemarkType || ''],
+                })
+            );
+        });
+
+        // Ensure at least one remark input group is present
+        if (this.hotelRemarks.length === 0) {
+            this.hotelRemarks.push(this.createHotelRemarkGroup());
         }
     }
 
@@ -267,4 +300,14 @@ export class HotelDetailsComponent implements OnInit {
             this.facilities.removeAt(index);
         }
     }
+    addRemark(): void {
+        this.hotelRemarks.push(this.createHotelRemarkGroup());
+    }
+    
+    removeRemark(index: number): void {
+        if (this.hotelRemarks.length > 1) {
+            this.hotelRemarks.removeAt(index);
+        }
+    }
+    
 }
