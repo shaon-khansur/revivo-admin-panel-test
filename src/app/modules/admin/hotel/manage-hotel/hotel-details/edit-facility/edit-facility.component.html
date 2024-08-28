@@ -1,0 +1,31 @@
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <div class="flex gap-2 flex-wrap">
+            <mat-form-field class="flex-auto">
+                <mat-label>Facility Title</mat-label>
+                <input matInput formControlName="FacilityTitle" />
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>Facility Code</mat-label>
+                <input matInput formControlName="FacilityCode" />
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>Facility Type</mat-label>
+                <input matInput formControlName="FacilityType" />
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>URL</mat-label>
+                <input matInput formControlName="Url" />
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="onSave()">Save</button>
+    <button mat-button color="warn" (click)="onDelete()">Delete</button>
+</div>

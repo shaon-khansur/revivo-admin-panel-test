@@ -17,15 +17,13 @@ button[mat-stroked-button] .mat-icon {
         position: relative;
         & img {
             display: block;
-            height: 100px;
-            width: 150px;
         }
         & .image-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 30px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -37,3 +35,44 @@ button[mat-stroked-button] .mat-icon {
         }
     }
 }
+
+/* hotel-details.component.scss */
+
+.back-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #192749;
+}
+
+.back-icon {
+    font-size: 24px; /* Adjust icon size as needed */
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.back-text {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.facilityChip{
+    border: 1px solid #060769 !important;
+}
+
+.navy-blue-button {
+    border: 1px solid #060769 !important;
+    
+    /* Optionally add hover effects */
+    &:hover {
+        background-color: #060769; /* Slightly darker navy on hover */
+        color: #f0f0f0;
+    }
+
+    /* Ensure button retains Material Design styles */
+    mat-button {
+        font-weight: 500;
+    }
+}
+
+
