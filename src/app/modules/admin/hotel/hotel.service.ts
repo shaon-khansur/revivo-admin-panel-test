@@ -68,4 +68,7 @@ export class HotelService {
     getHotelById(id): Observable<any> {
         return this.http.get(`${environment.baseUrl}hotelData/${id}`);
     }
+    getHotelImage(file): Observable<any> {
+        return this.http.post(`${environment.baseUrl}UploadImage`, file);
+    }
 }

@@ -175,7 +175,9 @@
                                 </mat-action-row>
                             </mat-expansion-panel-header>
 
-                            <div class="flex flex-wrap gap-5 md:flex-row flex-col">
+                            <div
+                                class="flex flex-wrap gap-5 md:flex-row flex-col"
+                            >
                                 <mat-form-field class="flex-auto">
                                     <mat-label>Remark Type</mat-label>
                                     <input
@@ -191,7 +193,6 @@
                                     ></textarea>
                                 </mat-form-field>
                             </div>
-                            
                         </mat-expansion-panel>
                     </div>
                 </mat-accordion>
@@ -236,7 +237,48 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Hotel Images Section -->
+            <div class="my-5">
+                <h1 class="text-lg font-bold">Hotel Images:</h1>
+            </div>
+            <div formArrayName="HotelImages" class="flex flex-wrap gap-2">
+                <div
+                    *ngFor="let image of hotelImages.controls; let i = index"
+                    class="relative"
+                >
+                    <img
+                        [src]="image.get('Url').value"
+                        alt="Hotel Image"
+                        class="object-cover w-[150px] h-[100px]"
+                    />
+                    <div class="absolute top-0 right-0 p-2">
+                        <button
+                            *ngIf="
+                                !image
+                                    .get('Url')
+                                    .value.includes('http://www.alp.co.il')
+                            "
+                            mat-icon-button
+                            (click)="openEditHotelImage(i)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="w-full py-5">
+                    <button
+                        type="button"
+                        mat-button
+                        class="navy-blue-button w-full"
+                        (click)="addImage()"
+                    >
+                        Add Image
+                    </button>
+                </div>
+            </div>
         </div>
+
         <div mat-dialog-actions class="mt-4 flex justify-end">
             <button
                 (click)="update()"
