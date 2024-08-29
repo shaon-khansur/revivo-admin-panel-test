@@ -154,6 +154,9 @@ export class HotelDetailsComponent implements OnInit {
     get hotelImages(): FormArray {
         return this.form.get('HotelImages') as FormArray;
     }
+    get hotelCityCode(): FormArray {
+        return this.form.get('HotelLocation.CityCode') as FormArray;
+    }
 
     // Helper method to create a facility form group
     private createFacilityGroup(): FormGroup {
@@ -301,7 +304,7 @@ export class HotelDetailsComponent implements OnInit {
 
     openEditHotelImage(index: number): void {
         const imageControl = this.hotelImages.at(index);
-    
+
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
@@ -310,7 +313,7 @@ export class HotelDetailsComponent implements OnInit {
                 ImageType: imageControl.get('ImageType').value,
             },
         });
-    
+
         dialogRef.afterClosed().subscribe((result) => {
             if (result?.action === 'save' && result?.data) {
                 this.hotelImages.at(index).patchValue(result.data);
@@ -319,7 +322,6 @@ export class HotelDetailsComponent implements OnInit {
             }
         });
     }
-    
 
     update(): void {
         if (this.form.valid) {

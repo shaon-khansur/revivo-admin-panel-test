@@ -12,6 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { debounceTime } from 'rxjs';
+import { _MatSlideToggleRequiredValidatorModule, MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 
 @Component({
     selector: 'app-hotel-list',
@@ -28,7 +30,9 @@ import { debounceTime } from 'rxjs';
         ReactiveFormsModule,
         FormsModule,
         MatInputModule,
-        RouterModule,  // <-- Add this line to import RouterModule
+        RouterModule,
+        _MatSlideToggleRequiredValidatorModule,
+        MatSlideToggleModule,
     ],
     templateUrl: './hotel-list.component.html',
     styleUrls: ['./hotel-list.component.scss'],
@@ -43,6 +47,7 @@ export class HotelListComponent implements OnInit {
         'HotelRate',
         'cityName',
         'cityCode',
+        'isKosher',
         'view',
     ];
 
@@ -140,5 +145,50 @@ export class HotelListComponent implements OnInit {
 
     openDialog(hotel): void {
         this.router.navigate(['hotel', hotel.id]); 
+    }
+
+    toggleKosher(hotelId: string, isKosher: boolean) {
+        this.hotelService.toggleKosherStatus(hotelId, isKosher).subscribe({
+            next: (response) => {
+                console.log('Kosher status updated successfully', response);
+                if (response.success) {
+                    this.refreshHotelList();
+                } else {
+                    console.error('Failed to update kosher status:', response.message);
+                }
+            },
+            error: (error) => {
+                console.error('Error updating kosher status:', error);
+                // Log more detailed error information
+                if (error.status) {
+                    console.error('HTTP Status:', error.status);
+                }
+                if (error.message) {
+                    console.error('Error Message:', error.message);
+                }
+                if (error.error) {
+                    console.error('API Response Error:', error.error);
+                }
+            }
+        });
+    }
+    
+    
+      refreshHotelList(): void {
+        this.hotelService.getAllHotels({
+            page: this.page,
+            hotelName: this.searchInputControl.value?.toLowerCase() || '',
+            pageSize: this.pageSize,
+        }).subscribe({
+            next: (response) => {
+                this.allHotel = response.allData;
+                this.dataSource = new MatTableDataSource(this.allHotel);
+                this.resultsLength = response.metadata.totalItems;
+                this.paginator.firstPage(); // Optional: Reset paginator to the first page
+            },
+            error: (error) => {
+                console.error('Error fetching hotel list:', error);
+            }
+        });
     }
 }

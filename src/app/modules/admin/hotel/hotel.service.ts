@@ -6,16 +6,16 @@ import { environment } from 'environments/environment';
 interface HotelData {
     id: string;
     value: {
-      HotelRate: number;
-      HotelName: string;
-      thumbnail?: string;
-      Website?: string;
-      file?: any; // Adjust this type based on your file structure
-      Description?: string;
-      AboutHotel?: string;
-      HotelFacilities?: string[];
+        HotelRate: number;
+        HotelName: string;
+        thumbnail?: string;
+        Website?: string;
+        file?: any; // Adjust this type based on your file structure
+        Description?: string;
+        AboutHotel?: string;
+        HotelFacilities?: string[];
     };
-  }
+}
 
 @Injectable({
     providedIn: 'root',
@@ -55,20 +55,25 @@ export class HotelService {
     updateHotel(data: HotelData): Observable<any> {
         const url = `${environment.baseUrl}hotelData/${data.id}`;
         console.log(data);
-        
-    
+
         return this.http.put(url, data).pipe(
-          catchError(error => {
-            // Handle the error here
-            console.error('Error updating hotel data:', error);
-            return throwError(() => new Error('Error updating hotel data'));
-          })
+            catchError((error) => {
+                // Handle the error here
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
         );
-      }
+    }
     getHotelById(id): Observable<any> {
         return this.http.get(`${environment.baseUrl}hotelData/${id}`);
     }
     getHotelImage(file): Observable<any> {
         return this.http.post(`${environment.baseUrl}UploadImage`, file);
+    }
+    toggleKosherStatus(hotelId: string, isKosher: boolean): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/toggleKosherStatus`;
+        const body = { hotelId, isKosher };
+
+        return this.http.post(url, body);
     }
 }
