@@ -150,7 +150,6 @@ export class HotelListComponent implements OnInit {
     toggleKosher(hotelId: string, isKosher: boolean) {
         this.hotelService.toggleKosherStatus(hotelId, isKosher).subscribe({
             next: (response) => {
-                console.log('Kosher status updated successfully', response);
                 if (response.success) {
                     this.refreshHotelList();
                 } else {
