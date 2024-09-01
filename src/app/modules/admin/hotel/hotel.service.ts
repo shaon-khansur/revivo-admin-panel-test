@@ -27,6 +27,56 @@ export class HotelService {
         page: number;
         hotelName: string;
         pageSize: number;
+        kosherStatus?: string | boolean;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`;
+
+        // Add the kosherStatus filter if it is defined
+        if (data.kosherStatus !== undefined && data.kosherStatus !== '') {
+            queryParams += `&status=${data.kosherStatus}`;
+        }
+
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}hotelData?${queryParams}`);
+    }
+
+    updateHotel(data: HotelData): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/${data.id}`;
+        console.log(data);
+
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                // Handle the error here
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
+        );
+    }
+    getHotelById(id): Observable<any> {
+        return this.http.get(`${environment.baseUrl}hotelData/${id}`);
+    }
+    getAllKosherHotels(data: {
+        page: number;
+        hotelName: string;
+        pageSize: number;
     }): Observable<{
         allData: any[];
         metadata: {
@@ -48,12 +98,12 @@ export class HotelService {
                 hasPrevPage: boolean;
             };
         }>(
-            `${environment.baseUrl}hotelData?hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`
+            `${environment.baseUrl}kosherHotelData?hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`
         );
     }
 
-    updateHotel(data: HotelData): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/${data.id}`;
+    updateKosherHotel(data: HotelData): Observable<any> {
+        const url = `${environment.baseUrl}kosherHotelData/${data.id}`;
         console.log(data);
 
         return this.http.put(url, data).pipe(
@@ -64,8 +114,8 @@ export class HotelService {
             })
         );
     }
-    getHotelById(id): Observable<any> {
-        return this.http.get(`${environment.baseUrl}hotelData/${id}`);
+    getKosherHotelById(id): Observable<any> {
+        return this.http.get(`${environment.baseUrl}kosherHotelData/${id}`);
     }
     getHotelImage(file): Observable<any> {
         return this.http.post(`${environment.baseUrl}UploadImage`, file);
