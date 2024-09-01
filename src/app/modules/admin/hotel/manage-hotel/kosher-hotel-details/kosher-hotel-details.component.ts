@@ -226,6 +226,12 @@ export class KosherHotelDetailsComponent {
           this.hotelRemarks.push(this.createHotelRemarkGroup());
       }
   }
+  // Define this function in your component class
+isNewRemark(index: number): boolean {
+    // Logic to determine if the remark is new
+    return !this.hotelRemarks.at(index).get('RemarkType').value;
+}
+
 
   // Set hotel images in the form array based on the data retrieved
   private setHotelImages(images: any[]): void {

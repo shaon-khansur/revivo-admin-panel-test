@@ -86,7 +86,10 @@
                     <mat-label>Country Name</mat-label>
                     <input matInput formControlName="countryName" />
                 </mat-form-field>
-                <div formGroupName="HotelLocation" class="flex flex-wrap gap-5 flex-auto">
+                <div
+                    formGroupName="HotelLocation"
+                    class="flex flex-wrap gap-5 flex-auto"
+                >
                     <mat-form-field class="flex-auto">
                         <mat-label>City Code</mat-label>
                         <input matInput formControlName="CityCode" />
@@ -178,13 +181,26 @@
                             <div
                                 class="flex flex-wrap gap-5 md:flex-row flex-col"
                             >
-                                <mat-form-field class="flex-auto">
-                                    <mat-label>Remark Type</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="RemarkType"
-                                    />
-                                </mat-form-field>
+                                <div class="flex-auto">
+                                    <mat-form-field class="w-full">
+                                        <mat-label>Remark Type</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="RemarkType"
+                                        />
+                                    </mat-form-field>
+                                    <ng-container
+                                        *ngIf="
+                                            isNewRemark(i) &&
+                                            !remark.get('RemarkType').value
+                                        "
+                                    >
+                                        <small style="color: red">
+                                            *Please write <span class=" font-bold">remark</span> if you want to add about
+                                             hotel
+                                        </small>
+                                    </ng-container>
+                                </div>
                                 <mat-form-field class="flex-auto">
                                     <mat-label>Free Text</mat-label>
                                     <textarea
