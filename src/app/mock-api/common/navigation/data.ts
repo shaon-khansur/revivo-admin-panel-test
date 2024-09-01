@@ -142,6 +142,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:building-office-2',
                 link : '/hotel/hotel-list',
+            },
+            {
+                id   : 'hotel.kosher-hotel',
+                title: 'Kosher-Hotel List',
+                type : 'basic',
+                icon : 'heroicons_outline:building-office-2',
+                link : '/hotel/kosher-hotel-list',
             }
 
         ],

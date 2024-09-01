@@ -59,6 +59,7 @@ export class HotelDetailsComponent implements OnInit {
                 cityHeb: [''],
                 thumbnail: [''],
                 HotelRate: [''],
+                countryName:[''],
                 file: this.fb.group({
                     content: [''],
                     name: [''],
@@ -95,6 +96,7 @@ export class HotelDetailsComponent implements OnInit {
                             id: id,
                             HotelName: hotel.HotelName,
                             cityHeb: hotel.cityHeb,
+                            countryName: hotel.countryName,
                             thumbnail: hotel.thumbnail,
                             HotelRate: hotel.HotelRate,
                             Website: hotel.Website,
@@ -153,6 +155,9 @@ export class HotelDetailsComponent implements OnInit {
 
     get hotelImages(): FormArray {
         return this.form.get('HotelImages') as FormArray;
+    }
+    get hotelCityCode(): FormArray {
+        return this.form.get('HotelLocation.CityCode') as FormArray;
     }
 
     // Helper method to create a facility form group
@@ -301,7 +306,7 @@ export class HotelDetailsComponent implements OnInit {
 
     openEditHotelImage(index: number): void {
         const imageControl = this.hotelImages.at(index);
-    
+
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
@@ -310,7 +315,7 @@ export class HotelDetailsComponent implements OnInit {
                 ImageType: imageControl.get('ImageType').value,
             },
         });
-    
+
         dialogRef.afterClosed().subscribe((result) => {
             if (result?.action === 'save' && result?.data) {
                 this.hotelImages.at(index).patchValue(result.data);
@@ -319,7 +324,6 @@ export class HotelDetailsComponent implements OnInit {
             }
         });
     }
-    
 
     update(): void {
         if (this.form.valid) {
