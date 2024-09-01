@@ -59,6 +59,7 @@ export class HotelDetailsComponent implements OnInit {
                 cityHeb: [''],
                 thumbnail: [''],
                 HotelRate: [''],
+                countryName:[''],
                 file: this.fb.group({
                     content: [''],
                     name: [''],
@@ -95,6 +96,7 @@ export class HotelDetailsComponent implements OnInit {
                             id: id,
                             HotelName: hotel.HotelName,
                             cityHeb: hotel.cityHeb,
+                            countryName: hotel.countryName,
                             thumbnail: hotel.thumbnail,
                             HotelRate: hotel.HotelRate,
                             Website: hotel.Website,

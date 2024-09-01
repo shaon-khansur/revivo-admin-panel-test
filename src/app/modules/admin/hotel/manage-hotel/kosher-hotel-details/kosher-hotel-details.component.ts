@@ -59,6 +59,7 @@ export class KosherHotelDetailsComponent {
               cityHeb: [''],
               thumbnail: [''],
               HotelRate: [''],
+              countryName:[''],
               file: this.fb.group({
                   content: [''],
                   name: [''],
@@ -98,6 +99,7 @@ export class KosherHotelDetailsComponent {
                           thumbnail: hotel.thumbnail,
                           HotelRate: hotel.HotelRate,
                           Website: hotel.Website,
+                          countryName: hotel.countryName,
                           HotelLocation: {
                               CityCode: hotel.HotelLocation?.CityCode || '',
                               CityName: hotel.HotelLocation?.CityName || '',
