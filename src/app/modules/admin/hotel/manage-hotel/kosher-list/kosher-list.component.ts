@@ -152,7 +152,7 @@ export class KosherListComponent {
     }
 
     openDialog(hotel): void {
-        this.router.navigate(['hotel/kosher-hotel-details', hotel.id]);
+        this.router.navigate(['hotel/kosher-hotel-details', hotel.HotelID]);
     }
 
     toggleKosher(hotelId: string, isKosher: boolean) {

@@ -163,7 +163,7 @@ export class HotelListComponent implements OnInit {
     }
 
     openDialog(hotel): void {
-        this.router.navigate(['hotel/hotel-details', hotel.id]); 
+        this.router.navigate(['hotel/hotel-details', hotel.HotelID]); 
     }
       
 
