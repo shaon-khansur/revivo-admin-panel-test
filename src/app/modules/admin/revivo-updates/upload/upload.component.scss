@@ -39,7 +39,7 @@ mat-icon {
 
 .file-drop-area {
   border: 2px dashed #ddd;
-  padding: 40px;
+  padding: 20px;
   border-radius: 10px;
   width: 100%;
   max-width: 400px;
@@ -63,3 +63,10 @@ button{
   transition: width 0.3s ease-in-out;
 }
 
+
+.status{
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+}

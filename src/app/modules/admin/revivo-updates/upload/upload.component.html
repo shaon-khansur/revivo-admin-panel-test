@@ -1,48 +1,59 @@
-<div class="upload-container mat-elevation-z3">
-    <h1>Submit Your File</h1>
-
-    <div class="icon-container">
-        <mat-icon>insert_drive_file</mat-icon>
-        <mat-icon>description</mat-icon>
-        <mat-icon>attach_file</mat-icon>
+<form [formGroup]="uploadForm" class="w-full">
+  <div class="status">
+    <div class="status-toggle">
+      <mat-slide-toggle
+        formControlName="pdfStatus"
+        (change)="updateStatus()"
+      >
+        <span>{{ data.pdfStatus ? "PDF Enabled" : "PDF Disabled" }}</span>
+      </mat-slide-toggle>
     </div>
-
-    <div
-        class="file-drop-area"
-        (click)="triggerFileInput()"
-        (drop)="onFileDrop($event)"
-        (dragover)="onDragOver($event)"
-        (dragleave)="onDragLeave($event)"
-    >
-        <p>
-            Drag a file here or
-            <span class="browse-text" (click)="triggerFileInput($event)"
-                >browse</span
-            >
-            for a file to upload.
-        </p>
-        <input
-            type="file"
-            hidden
-            (change)="onFileSelected($event)"
-            accept="application/pdf"
-            #fileInput
-        />
+    <div class="status-toggle">
+      <mat-slide-toggle
+        formControlName="codeStatus"
+        (change)="updateStatus()"
+      >
+        <span>{{ data.codeStatus ? "HTML Code Enabled" : "HTML Code Disabled" }}</span>
+      </mat-slide-toggle>
     </div>
+  </div>
+  
 
-    <div *ngIf="selectedFile" style="width: 100%; margin-top: 20px">
-        <div class="progress-container">
-            <mat-progress-bar
-            class="smooth-progress-bar"
-                mode="determinate"
-                [value]="progress"
-            ></mat-progress-bar>
-            <div class="progress-bar" [style.width.%]="progress">
-                {{ progress }}%
-            </div>
+    <div class="upload-container mat-elevation-z3">
+        <h1>PDF upload or HTML input</h1>
+
+        <div class="file-drop-area" (click)="triggerFileInput()">
+            <p>
+                <span class="browse-text" (click)="triggerFileInput($event)"
+                    >Browse</span
+                >
+                for a PDF file to upload.
+            </p>
+            <input
+                type="file"
+                hidden
+                (change)="onFileSelected($event)"
+                accept="application/pdf"
+                #fileInput
+            />
         </div>
-        <button mat-raised-button color="primary" (click)="uploadFile()">
-            Upload
-        </button>
+
+        <p>or</p>
+
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Enter HTML Code:</mat-label>
+            <textarea
+                matInput
+                placeholder="Enter your HTML code here..."
+                formControlName="code"
+                rows="3"
+            ></textarea>
+        </mat-form-field>
+
+        <div style="width: 100%; margin-top: 20px">
+            <button mat-raised-button color="primary" (click)="uploadFile()">
+                Upload
+            </button>
+        </div>
     </div>
-</div>
+</form>
