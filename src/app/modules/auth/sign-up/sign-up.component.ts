@@ -120,7 +120,12 @@ export class AuthSignUpComponent implements OnInit {
         // this._authService.createUserWithFirebase(formData).subscribe(res => {
         //     console.log('res', res);
         // })
-        this._authService.createUserWithFirebase(formData).subscribe(
+        const signupData = {
+            name: this.signUpForm.value.name,
+            email: this.signUpForm.value.email,
+            password: this.signUpForm.value.password
+        }
+        this._authService.createUserWithFirebase(signupData).subscribe(
             (response) => {
                 console.log('response', response);
                 // Navigate to the confirmation required page

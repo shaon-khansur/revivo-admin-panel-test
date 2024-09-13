@@ -34,6 +34,11 @@
             <td mat-cell *matCellDef="let element">{{ element.outboundFlight.flightMode ? element.outboundFlight.flightMode : 'N/A' }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="issuance">
+            <th mat-header-cell *matHeaderCellDef>Issuance</th>
+            <td mat-cell *matCellDef="let element">{{ element.issuance !== undefined ? element.issuance : 'N/A'}}</td>
+        </ng-container>
+
         <ng-container matColumnDef="isDelete">
             <th mat-header-cell *matHeaderCellDef>Deleted</th>
             <td mat-cell *matCellDef="let element">{{ (element.hasOwnProperty('isDelete')) ? element.isDelete : 'N/A' }}</td>
@@ -62,11 +67,16 @@
             <th mat-header-cell *matHeaderCellDef>View</th>
             <td mat-cell *matCellDef="let element">
                 <div class="flex flex-row justify-between w-full">
-                    <mat-icon
+
+                    <mat-icon style="cursor: pointer;" *ngIf="element.issuance != undefined && element.issuance"
+                        (click)="showIssuance(element)"
+                        svgIcon='heroicons_solid:eye'
+                    ></mat-icon>
+                    <mat-icon style="cursor: pointer;"
                         (click)="edit(element)"
                         svgIcon="heroicons_outline:pencil-square"
                     ></mat-icon>
-                    <mat-icon
+                    <mat-icon style="cursor: pointer;"
                         (click)="delete(element)"
                         svgIcon="heroicons_outline:trash"
                     ></mat-icon>
