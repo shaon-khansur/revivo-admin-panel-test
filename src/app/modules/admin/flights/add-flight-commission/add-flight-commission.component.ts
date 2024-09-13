@@ -39,8 +39,10 @@ interface CommissionFrom {
     airline: FormControl<string>;
     outboundAirport: FormControl<string>;
     outboundCommission: FormControl<number>;
+    outCommission: FormControl<number>;
     inboundAirport: FormControl<string>;
     inboundCommission: FormControl<number>;
+    inCommission: FormControl<number>;
     provider: FormControl<string>;
     default: FormControl<boolean>;
 }
@@ -95,8 +97,10 @@ export class AddFlightCommissionComponent implements OnInit {
             id: [''],
             airline: ['', Validators.required],
             outboundCommission: [0, Validators.required],
+            outCommission: [0, Validators.required],
             outboundAirport: ['', Validators.required],
             inboundCommission: [0, Validators.required],
+            inCommission: [0, Validators.required],
             inboundAirport: ['', Validators.required],
             default: [false, Validators.required],
             provider: ['', Validators.required],

@@ -81,8 +81,10 @@ export class FlightCommisionComponent {
     displayedColumns: string[] = [
         'airline',
         'outboundCommission',
+        'outCommission',
         'outboundAirport',
         'inboundCommission',
+        'inCommission',
         'inboundAirport',
         'default',
         'provider',
