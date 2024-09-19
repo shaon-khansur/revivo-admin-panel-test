@@ -75,6 +75,16 @@
             <mat-form-field class="flex-auto">
                 <input
                     matInput
+                    formControlName="subName"
+                    placeholder="Sub Name"
+                />
+                <mat-error *ngIf="form.get('subName').hasError('required')">
+                   Sub Name field is required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="flex-auto">
+                <input
+                    matInput
                     formControlName="destinationId"
                     placeholder="Destination Id (should be unique)"
                 />

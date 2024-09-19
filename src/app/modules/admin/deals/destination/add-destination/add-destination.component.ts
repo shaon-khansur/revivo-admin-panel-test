@@ -85,6 +85,7 @@ export class AddDestinationComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.fb.group({
             name: [null, Validators.required],
+            subName: [null, Validators.required],
             countryName: [null, Validators.required],
             destinationId: [null],
             hotelStar: [null],
@@ -225,6 +226,7 @@ export class AddDestinationComponent implements OnInit {
             // Create the destination data including the avatar
             const destinationData = {
                 name: this.form.get('name').value,
+                subName: this.form.get('subName').value,
                 countryName: this.form.get('countryName').value,
                 destinationId: this.form.get('destinationId').value,
                 hotelStar: this.form.get('hotelStar').value,
