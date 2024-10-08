@@ -14,7 +14,7 @@
         "
     >
         <div class="order-details">
-            <h1>Customer Info:</h1>
+            <h1>Main Customer Info:</h1>
             <p>
                 <span>Customer Name:</span> {{ data.customers[0].first_name }}
                 {{ data.customers[0].lest_name }}
@@ -27,9 +27,9 @@
         </div>
         <div>
             <h1 style="text-align: right">
-                {{ data.dealsInfo[0].packageName }}
+                {{ data.dealServices.packageName }}
             </h1>
-            <p>{{ data.dealsInfo[0].start }} - {{ data.dealsInfo[0].end }}</p>
+            <p>{{ data.dealServices.start }} - {{ data.dealServices.end }}</p>
         </div>
     </div>
     <div
@@ -139,14 +139,14 @@
             <h1>
                 <span>Deal Info</span>
             </h1>
-            <p><span>Hotel Name :</span> {{ data.dealsInfo[0].name }}</p>
-            <p><span>Address :</span> {{ data.dealsInfo[0].address }}</p>
+            <p><span>Hotel Name :</span> {{ data.dealServices.name }}</p>
+            <p><span>Address :</span> {{ data.dealServices.address }}</p>
 
             <p>
                 <span>Room Type :</span>
                 <ng-container
                     *ngFor="
-                        let numRoom of data.dealsInfo[0].roomData;
+                        let numRoom of data.dealServices.roomData;
                         let last = last
                     "
                 >
@@ -156,11 +156,11 @@
                 </ng-container>
             </p>
 
-            <p><span>Total Rooms :</span> {{ data.dealsInfo[0].rooms }}</p>
+            <p><span>Total Rooms :</span> {{ data.dealServices.rooms }}</p>
             <p>
-                <span>Service length :</span> {{ data.dealsInfo[0].duration }}
+                <span>Service length :</span> {{ data.dealServices.duration }}
             </p>
-            <p><span>Meals :</span> {{ data.dealsInfo[0].meal }}</p>
+            <p><span>Meals :</span> {{ data.dealServices.meal }}</p>
         </div>
     </div>
     <hr />

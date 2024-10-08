@@ -152,16 +152,12 @@ export const appRoutes: Route[] = [
                 canActivate: [adminGuard],
             },
             {
-                path: 'ama-flight-order',
-                children: [
-                    {
-                        path: 'orders',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/ama-flights/ama-flight-orders.routes'
-                            ),
-                    },
-                ],
+                path: 'order',
+                loadChildren: () =>
+                    import(
+                        'app/modules/admin/ama-flights/ama-flight-orders.routes'
+                    ),
+
                 canActivate: [adminGuard],
             },
 
