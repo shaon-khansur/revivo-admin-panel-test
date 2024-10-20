@@ -80,6 +80,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:briefcase',
                 link : '/order/deal-office-payment',
             },
+            {
+                id   : 'order.office-info',
+                title: 'Office Info',
+                type : 'basic',
+                icon : 'heroicons_outline:briefcase',
+                link : '/order/office-info',
+            },
         ],
     },
     {

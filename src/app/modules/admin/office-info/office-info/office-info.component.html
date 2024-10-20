@@ -1,0 +1,61 @@
+<mat-card class="w-full">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="p-4">
+        <mat-form-field appearance="fill" class="w-full mb-3">
+            <mat-label>Order Expiration Time (Day)</mat-label>
+            <input
+                matInput
+                formControlName="expTime"
+                type="number"
+                required
+                min="1"
+            />
+            <!-- Changed type to number -->
+            <mat-error *ngIf="contactForm.get('expTime').invalid">
+                A valid expiration time is required.
+            </mat-error>
+        </mat-form-field>
+
+        <h2 mat-card-title class="font-bold">Contact Information</h2>
+        <mat-form-field appearance="fill" class="w-full mb-3">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required />
+            <mat-error *ngIf="contactForm.get('email').invalid">
+                Valid email required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full mb-3">
+            <mat-label>WhatsApp</mat-label>
+            <input matInput formControlName="whatsapp" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full mb-3">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" required />
+        </mat-form-field>
+
+        <h3>Office Information</h3>
+        <div formArrayName="officeinformation" class="mb-4 flex">
+            <div
+                *ngFor="let office of officeInformation.controls; let i = index"
+                [formGroupName]="i"
+                class="mb-4"
+            >
+                <div class="office-card">
+                    <button mat-button (click)="openOfficeDialog(i)">
+                        Office {{ i + 1 }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="contactForm.invalid"
+        >
+            Submit
+        </button>
+    </form>
+</mat-card>
