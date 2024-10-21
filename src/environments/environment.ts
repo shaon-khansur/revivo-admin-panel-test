@@ -15,4 +15,16 @@ export const environment = {
         appId: "1:232736160305:web:adfa0e6b83e71ef1acb310",
         measurementId: "G-LFS1NEL6Y8",
       },
+
+    // firebase: {
+    //     projectId: 'revivo-5afd9',
+    //     appId: '1:561970817375:web:f74dd47bac20e041aeaeea',
+    //     databaseURL: 'https://revivo-5afd9-default-rtdb.firebaseio.com',
+    //     storageBucket: 'revivo-5afd9.appspot.com',
+    //     locationId: 'us-central',
+    //     apiKey: 'AIzaSyAnrz9EqB_zH8jGt16vYBa1-Mh9a4K5Yv0',
+    //     authDomain: 'revivo-5afd9.firebaseapp.com',
+    //     messagingSenderId: '561970817375',
+    //     measurementId: 'G-7RLMVYDNEG',
+    // },
 };
