@@ -1,0 +1,37 @@
+<mat-dialog-content>
+    <form [formGroup]="officeForm">
+        <mat-form-field appearance="fill" class="w-full mb-2">
+            <mat-label>Country</mat-label>
+            <!-- Renamed from Office Title -->
+            <input matInput formControlName="title" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full mb-2">
+            <mat-label>Additional Information</mat-label>
+            <!-- Renamed from Title Extra -->
+            <input matInput formControlName="titleExtra" />
+        </mat-form-field>
+
+        <div formArrayName="smallText" class="mb-2">
+            <div *ngFor="let text of smallTextControls.controls; let j = index">
+                <mat-form-field appearance="fill" class="w-full mb-2">
+                    <mat-label>Address {{ j + 1 }}</mat-label>
+                    <!-- Renamed from Small Text -->
+                    <input matInput [formControlName]="j" required />
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button
+        mat-raised-button
+        color="primary"
+        (click)="onSave()"
+        [disabled]="!officeForm.valid"
+    >
+        Save
+    </button>
+</mat-dialog-actions>
