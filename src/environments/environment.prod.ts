@@ -16,7 +16,10 @@ export const environment = {
         measurementId: 'G-7RLMVYDNEG',
     },
 
-    // firebase: {
+
+};
+
+ // firebase: {
     //     apiKey: "AIzaSyBOiKF-Ovna6JFYuSgv2bZv3wsQshDIbic",
     //     authDomain: "revivo-online.firebaseapp.com",
     //     databaseURL: "https://revivo-online-default-rtdb.firebaseio.com",
@@ -26,4 +29,3 @@ export const environment = {
     //     appId: "1:232736160305:web:adfa0e6b83e71ef1acb310",
     //     measurementId: "G-LFS1NEL6Y8",
     //   },
-};
