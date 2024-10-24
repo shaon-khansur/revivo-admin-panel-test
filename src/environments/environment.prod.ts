@@ -4,16 +4,6 @@ export const environment = {
     baseUrl: 'https://app-sggdm7rn4q-uc.a.run.app/api/',
     // baseUrl: 'https://app-x6i4pjdvfq-uc.a.run.app/api/',
     externalUrl: 'https://revivo-group.top-agt.net/api/',
-    // firebase: {
-    //     apiKey: "AIzaSyBOiKF-Ovna6JFYuSgv2bZv3wsQshDIbic",
-    //     authDomain: "revivo-online.firebaseapp.com",
-    //     databaseURL: "https://revivo-online-default-rtdb.firebaseio.com",
-    //     projectId: "revivo-online",
-    //     storageBucket: "revivo-online.appspot.com",
-    //     messagingSenderId: "232736160305",
-    //     appId: "1:232736160305:web:adfa0e6b83e71ef1acb310",
-    //     measurementId: "G-LFS1NEL6Y8",
-    //   },
     firebase: {
         projectId: 'revivo-5afd9',
         appId: '1:561970817375:web:f74dd47bac20e041aeaeea',
@@ -25,4 +15,15 @@ export const environment = {
         messagingSenderId: '561970817375',
         measurementId: 'G-7RLMVYDNEG',
     },
+
+    // firebase: {
+    //     apiKey: "AIzaSyBOiKF-Ovna6JFYuSgv2bZv3wsQshDIbic",
+    //     authDomain: "revivo-online.firebaseapp.com",
+    //     databaseURL: "https://revivo-online-default-rtdb.firebaseio.com",
+    //     projectId: "revivo-online",
+    //     storageBucket: "revivo-online.appspot.com",
+    //     messagingSenderId: "232736160305",
+    //     appId: "1:232736160305:web:adfa0e6b83e71ef1acb310",
+    //     measurementId: "G-LFS1NEL6Y8",
+    //   },
 };
