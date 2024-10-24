@@ -30,7 +30,6 @@ export class DealOfficePaymentComponent implements OnInit {
         'email',
         'phone',
         'bookingTime',
-        'PaymentDate',
         'amount',
         'orderFrom',
         'action',
