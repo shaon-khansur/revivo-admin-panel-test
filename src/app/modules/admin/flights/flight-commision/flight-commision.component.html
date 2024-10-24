@@ -142,10 +142,21 @@
                                         matColumnDef="outboundCommission"
                                     >
                                         <th mat-header-cell *matHeaderCellDef>
-                                            Outbound Commission
+                                            Outbound Fee
                                         </th>
                                         <td mat-cell *matCellDef="let element">
                                             {{ element.outboundCommission }}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container
+                                        matColumnDef="outCommission"
+                                    >
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            Outbound Commission
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.outCommission ? element.outCommission : 'N/A' }}
                                         </td>
                                     </ng-container>
 
@@ -164,10 +175,22 @@
                                         matColumnDef="inboundCommission"
                                     >
                                         <th mat-header-cell *matHeaderCellDef>
-                                            Inbound Commission
+                                            Inbound Fee
                                         </th>
                                         <td mat-cell *matCellDef="let element">
                                             {{ element.inboundCommission }}
+                                            <!-- {{ element.apiError && 'name' in   ?   element.apiError?.message  : 'None'}} -->
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container
+                                        matColumnDef="inCommission"
+                                    >
+                                        <th mat-header-cell *matHeaderCellDef>
+                                            Inbound Commission
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            {{ element.inCommission ? element.inCommission : 'N/A' }}
                                             <!-- {{ element.apiError && 'name' in   ?   element.apiError?.message  : 'None'}} -->
                                         </td>
                                     </ng-container>

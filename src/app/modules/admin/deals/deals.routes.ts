@@ -10,5 +10,4 @@ export default [
     { path: 'manage', component: ManageComponent },
     { path: 'destination-manage', component: DestinationManageComponent },
     { path: 'destination', component: DestinationComponent },
-    { path: 'deal-order', component: OrderListComponent }
 ] as Routes;

@@ -122,6 +122,7 @@ export class DestinationDetailsComponent {
             id: [''],
             avatar: [''],
             name: ['', [Validators.required]],
+            subName: ['', [Validators.required]],
             countryName: ['', [Validators.required]],
             destinationId: [
                 '',

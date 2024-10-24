@@ -56,6 +56,7 @@ import { OrderDetailsVewComponent } from './order-details-vew/order-details-vew.
 export class OrdersComponent implements OnInit {
     amaFlightOrderData: any[] = [];
     displayedColumns: string[] = [
+        'orderTime',
         'outbound',
         'inbound',
         'pnr',
@@ -88,7 +89,7 @@ export class OrdersComponent implements OnInit {
             //         order['order'] = [order.inFlightOrder.data, order.outFlightOrder.data]
             //     }
             // }),
-            filter((el: {orderComplete: boolean}) => el?.orderComplete == true),
+            filter((el: {orderComplete: boolean}) => el?.orderComplete === true  || el?.orderComplete === false),
             toArray(),
         ).subscribe({
             next: (response) => {
