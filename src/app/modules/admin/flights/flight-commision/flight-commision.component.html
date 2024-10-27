@@ -156,7 +156,7 @@
                                             Outbound Commission
                                         </th>
                                         <td mat-cell *matCellDef="let element">
-                                            {{ element.outCommission ? element.outCommission : 'N/A' }}
+                                            {{ element.outCommission }}
                                         </td>
                                     </ng-container>
 
@@ -190,7 +190,7 @@
                                             Inbound Commission
                                         </th>
                                         <td mat-cell *matCellDef="let element">
-                                            {{ element.inCommission ? element.inCommission : 'N/A' }}
+                                            {{ element.inCommission}}
                                             <!-- {{ element.apiError && 'name' in   ?   element.apiError?.message  : 'None'}} -->
                                         </td>
                                     </ng-container>
