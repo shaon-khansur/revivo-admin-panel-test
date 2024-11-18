@@ -24,6 +24,7 @@ import { HotelService } from 'app/modules/admin/hotel/hotel.service';
 import { SupplierService } from '../supplier.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { UpdateComponent } from './supplierUpdate/update/update.component';
+import { SuppierAddComponent } from './supplierUpdate/suppier-add/suppier-add.component';
 
 @Component({
     selector: 'app-supplier-list',
@@ -131,10 +132,34 @@ export class SupplierListComponent {
             });
     }
 
+    createSupplier(): void {
+        const dialogRef = this.dialog.open(SuppierAddComponent, {
+            width: '400px',
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.action === 'save') {
+                this.addSupplier(result.data);
+            }
+        });
+    }
+
+    addSupplier(addSupplier): void {
+      console.log('update', addSupplier);
+
+      this.supplierService.addSupplier(addSupplier).subscribe({
+          next: (response) => {
+              this.refreshSupplierList();
+          },
+          error: (error) => {
+              console.error('Error updating supplier:', error);
+          },
+      });
+  }
+
     openDialog(supplier): void {
         const dialogRef = this.dialog.open(UpdateComponent, {
-            width: '400px', 
-            data: supplier, 
+            width: '400px',
+            data: supplier,
         });
 
         dialogRef.afterClosed().subscribe((result) => {
@@ -145,8 +170,8 @@ export class SupplierListComponent {
     }
 
     updateSupplier(updatedSupplier, id): void {
-      console.log("update", updatedSupplier);
-      
+        console.log('update', updatedSupplier);
+
         this.supplierService.updateSupplier(updatedSupplier, id).subscribe({
             next: (response) => {
                 // After the update is successful, refresh the list

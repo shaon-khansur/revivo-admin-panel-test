@@ -48,7 +48,13 @@ export class SupplierService {
     deleteSupplierById(id): Observable<any> {
         return this.http.delete(`${environment.baseUrl}supplierList/${id}`);
     }
-    updateSupplier(data: SupplierData, id:string): Observable<any> {
+    addSupplier(supplierData: any): Observable<any> {
+        return this.http.post(
+            `${environment.baseUrl}supplierList`,
+            supplierData
+        );
+    }
+    updateSupplier(data: SupplierData, id: string): Observable<any> {
         const url = `${environment.baseUrl}supplierList/${id}`;
         console.log(data);
 

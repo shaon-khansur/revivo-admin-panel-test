@@ -25,6 +25,15 @@
                     [placeholder]="'Search Hotels'"
                 />
             </mat-form-field>
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="createSupplier()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button>
         </div>
     </div>
 
