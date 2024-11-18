@@ -174,7 +174,6 @@ export class SupplierListComponent {
 
         this.supplierService.updateSupplier(updatedSupplier, id).subscribe({
             next: (response) => {
-                // After the update is successful, refresh the list
                 this.refreshSupplierList();
             },
             error: (error) => {
