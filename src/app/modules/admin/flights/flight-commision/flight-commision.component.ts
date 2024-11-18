@@ -75,7 +75,7 @@ export class FlightCommisionComponent {
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = true;
     panels: any[] = [];
-    selectedPanel: string = 'miningStatus';
+    selectedPanel: string = 'commission';
     flightsCommissionsData: CommissionData[];
 
     displayedColumns: string[] = [
