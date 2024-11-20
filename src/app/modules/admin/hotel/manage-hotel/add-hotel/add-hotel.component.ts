@@ -50,7 +50,7 @@ export class AddHotelComponent implements OnInit {
             HotelName: ['', Validators.required],
             HotelRate: ['', Validators.required],
             isKosher: [false],
-            city: ['', Validators.required],
+            cityHeb: ['', Validators.required],
             countryName: ['', Validators.required],
             HotelFacilities: this.fb.array([]),
             HotelImages: this.fb.array([]),
