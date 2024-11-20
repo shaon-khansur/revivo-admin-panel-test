@@ -1,0 +1,243 @@
+<mat-tab-group [(selectedIndex)]="currentTabIndex" class="w-full">
+    <!-- Description Tab -->
+    <mat-tab label="Description">
+        <form [formGroup]="hotelForm">
+            <h2
+                class="text-xl font-semibold mb-5"
+                class="text-xl font-semibold mb-5"
+            >
+                General Information
+            </h2>
+            <mat-form-field class="w-full">
+                <mat-label>Hotel Name</mat-label>
+                <input matInput formControlName="HotelName" />
+            </mat-form-field>
+
+            <div class="sm:flex gap-3">
+                <mat-form-field class="w-full">
+                    <mat-label>Rating</mat-label>
+                    <mat-select formControlName="HotelRate">
+                        <mat-option *ngFor="let rate of ratings" [value]="rate">
+                            {{ rate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>City Hebrew</mat-label>
+                    <input matInput formControlName="city" />
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <mat-label>Country Hebrew</mat-label>
+                    <input matInput formControlName="countryName" />
+                </mat-form-field>
+            </div>
+
+            <!-- Kosher Checkbox -->
+            <mat-checkbox formControlName="isKosher">Kosher Hotel</mat-checkbox>
+
+            <h2
+                class="text-xl font-semibold mb-5"
+                class="text-xl font-semibold mb-5"
+            >
+                Location
+            </h2>
+            <div formGroupName="HotelLocation">
+                <mat-form-field class="w-full">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="Description"></textarea>
+                </mat-form-field>
+                <div class="sm:flex gap-3">
+                    <mat-form-field>
+                        <mat-label>Latitude</mat-label>
+                        <input matInput formControlName="latitude" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Longitude</mat-label>
+                        <input matInput formControlName="longitude" />
+                    </mat-form-field>
+                </div>
+                <div class="sm:flex gap-3">
+                    <mat-form-field>
+                        <mat-label>City Code</mat-label>
+                        <input matInput formControlName="CityCode" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>City Name</mat-label>
+                        <input matInput formControlName="CityName" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Country Code</mat-label>
+                        <input matInput formControlName="CountryName" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Country Name</mat-label>
+                        <input matInput formControlName="CountryCode" />
+                    </mat-form-field>
+                </div>
+                <div formGroupName="Address">
+                    <div class="sm:flex gap-3">
+                        <mat-form-field>
+                            <mat-label>Street</mat-label>
+                            <input matInput formControlName="street" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Zip Code</mat-label>
+                            <input matInput formControlName="zipcode" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>House Number</mat-label>
+                            <input matInput formControlName="house_number" />
+                        </mat-form-field>
+                    </div>
+                    <div class="sm:flex gap-3">
+                        <mat-form-field>
+                            <mat-label>Phone</mat-label>
+                            <input matInput formControlName="phone" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Fax</mat-label>
+                            <input matInput formControlName="fax" />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Email</mat-label>
+                            <input
+                                matInput
+                                type="email"
+                                formControlName="email"
+                            />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="goToNextTab()"
+                >
+                    Next
+                </button>
+            </div>
+        </form>
+    </mat-tab>
+
+    <!-- Images Tab -->
+    <mat-tab label="Images">
+        <form [formGroup]="hotelForm">
+            <div formArrayName="HotelImages">
+                <div
+                    *ngFor="let image of images.controls; let i = index"
+                    [formGroupName]="i"
+                    class="image-row"
+                >
+                    <mat-form-field class="w-full">
+                        <mat-label>Image Title</mat-label>
+                        <input matInput formControlName="ImageTitle" />
+                    </mat-form-field>
+                    <mat-form-field class="w-full">
+                        <mat-label>Image URL</mat-label>
+                        <input matInput formControlName="Url" />
+                    </mat-form-field>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="removeImage(i)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <button mat-raised-button color="primary" (click)="addImage()">
+                    Add Image
+                </button>
+            </div>
+            <div class="flex justify-end">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="goToNextTab()"
+                >
+                    Next
+                </button>
+            </div>
+        </form>
+    </mat-tab>
+
+    <!-- Additional Tab -->
+    <mat-tab label="Additional">
+        <form [formGroup]="hotelForm">
+            <mat-form-field class="w-full">
+                <mat-label>Website</mat-label>
+                <input matInput formControlName="Website" />
+            </mat-form-field>
+            <h2 class="text-xl font-semibold mb-5">Remarks</h2>
+            <div formArrayName="HotelRemarks">
+                <div
+                    *ngFor="let remark of remarks.controls; let i = index"
+                    [formGroupName]="i"
+                    class="remark-row"
+                >
+                    <mat-form-field>
+                        <mat-label>Remark Type</mat-label>
+                        <input matInput formControlName="RemarkType" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Free Text</mat-label>
+                        <textarea
+                            matInput
+                            formControlName="FreeText"
+                        ></textarea>
+                    </mat-form-field>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="removeRemark(i)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <button mat-raised-button color="primary" (click)="addRemark()">
+                    Add Remark
+                </button>
+            </div>
+            <h2 class="text-xl font-semibold mb-5">Facilities</h2>
+            <div formArrayName="HotelFacilities">
+                <div
+                    *ngFor="let facility of facilities.controls; let i = index"
+                    [formGroupName]="i"
+                    class="facility-row"
+                >
+                    <mat-form-field>
+                        <mat-label>Facility Title</mat-label>
+                        <input matInput formControlName="FacilityTitle" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Icon URL</mat-label>
+                        <input matInput formControlName="Url" />
+                    </mat-form-field>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="removeFacility(i)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="addFacility()"
+                >
+                    Add Facility
+                </button>
+            </div>
+
+            <div class="flex justify-end">
+                <button mat-raised-button color="accent" (click)="submitForm()">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </mat-tab>
+</mat-tab-group>
