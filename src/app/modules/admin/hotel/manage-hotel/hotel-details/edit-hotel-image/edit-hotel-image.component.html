@@ -4,6 +4,17 @@
             <mat-label>Image Title</mat-label>
             <input matInput formControlName="ImageTitle" />
         </mat-form-field>
+        <mat-form-field class="mt-1 flex-auto">
+            <mat-label>Image Type</mat-label>
+            <mat-select
+                formControlName="ImageType"
+                placeholder="Select hotel rating"
+            >
+                <mat-option value="MAIN">MAIN</mat-option>
+                <mat-option value="PREVIEW">PREVIEW</mat-option>
+                <mat-option value="HOTEL">HOTEL</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
     <!-- File input -->
@@ -28,7 +39,7 @@
             class="object-cover"
         />
     </div>
-<hr>
+    <hr />
     <div class="flex justify-end mt-5">
         <button mat-button (click)="onCancel()">Cancel</button>
         <button color="primary" mat-raised-button type="submit">Save</button>
