@@ -4,7 +4,6 @@
         <form [formGroup]="hotelForm">
             <h2
                 class="text-xl font-semibold mb-5"
-                class="text-xl font-semibold mb-5"
             >
                 General Information
             </h2>
@@ -37,7 +36,6 @@
             <mat-checkbox formControlName="isKosher">Kosher Hotel</mat-checkbox>
 
             <h2
-                class="text-xl font-semibold mb-5"
                 class="text-xl font-semibold mb-5"
             >
                 Location
@@ -127,37 +125,40 @@
     <mat-tab label="Images">
         <form [formGroup]="hotelForm">
             <div class="my-5">
-                <h1 class="text-lg font-bold">Hotel Images:</h1>
+                <h2 class="text-xl font-semibold mb-5">Hotel Images:</h2>
             </div>
             <div formArrayName="HotelImages" class="flex flex-wrap gap-2">
                 <div
                     *ngFor="let image of images.controls; let i = index"
                     class="relative"
                 >
-                    <img
-                        [src]="image.get('Url').value"
-                        alt="Hotel Image"
-                        class="object-cover w-[150px] h-[100px]"
-                        loading="lazy"
-                    />
-                    <div class="absolute top-0 right-0 p-2">
-                        <button
-                            mat-icon-button
-                            (click)="openEditHotelImage(i)"
-                            style="
-                                background-color: black;
-                                color: white;
-                                border-radius: 50%;
-                            "
-                        >
-                            <mat-icon>edit</mat-icon>
-                        </button>
+                    <div>
+                        <img
+                            [src]="image.get('Url').value"
+                            alt="Hotel Image"
+                            class="object-cover w-[150px] h-[100px]"
+                            loading="lazy"
+                        />
+                        <div class="absolute top-0 right-0 p-2">
+                            <button
+                                mat-icon-button
+                                (click)="openEditHotelImage(i)"
+                                style="
+                                    background-color: black;
+                                    color: white;
+                                    border-radius: 50%;
+                                "
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </div>
+                        <h1 class="text-center bg-gray-600 text-white py-2">{{ image.get("ImageType").value }}</h1>
                     </div>
                 </div>
                 <div class="w-full py-5">
                     <button
                         type="button"
-                        mat-button
+                        mat-stroked-button
                         class="navy-blue-button w-full"
                         (click)="addImage()"
                     >
@@ -167,38 +168,32 @@
             </div>
         </form>
         <div class="flex justify-end">
-            <button
-                mat-raised-button
-                color="primary"
-                (click)="goToNextTab()"
-            >
+            <button mat-raised-button color="primary" (click)="goToNextTab()">
                 Next
             </button>
         </div>
     </mat-tab>
 
     <!-- Additional Tab -->
-    <mat-tab label="Additional">
+    <mat-tab label="Additional Information">
         <form [formGroup]="hotelForm">
             <mat-form-field class="w-full">
-                <mat-label>Website</mat-label>
+                <mat-label class="text-xl font-semibold mb-5">Website</mat-label>
                 <input matInput formControlName="Website" />
             </mat-form-field>
             <h2 class="text-xl font-semibold mb-5">Remarks</h2>
             <div formArrayName="HotelRemarks">
                 <mat-accordion>
                     <div
-                        *ngFor="
-                            let remark of remarks.controls;
-                            let i = index
-                        "
+                        *ngFor="let remark of remarks.controls; let i = index"
                         [formGroupName]="i"
                     >
                         <mat-expansion-panel class="mb-3">
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
                                     {{
-                                        remark.get("RemarkType").value || "Remark " + (i + 1)
+                                        remark.get("RemarkType").value ||
+                                            "Remark " + (i + 1)
                                     }}
                                 </mat-panel-title>
 
@@ -237,7 +232,7 @@
                 <div class="w-full py-5">
                     <button
                         type="button"
-                        mat-button
+                        mat-stroked-button
                         class="navy-blue-button w-full"
                         (click)="addRemark()"
                     >
@@ -251,7 +246,7 @@
                     *ngFor="let facility of facilities.controls; let i = index"
                 >
                     <button
-                        mat-button
+                        mat-stroked-button
                         (click)="openEditFacility(i)"
                         class="facilityChip"
                     >
@@ -264,7 +259,7 @@
                 <div class="w-full py-5">
                     <button
                         type="button"
-                        mat-button
+                        mat-stroked-button
                         class="navy-blue-button w-full"
                         (click)="addFacility()"
                     >
