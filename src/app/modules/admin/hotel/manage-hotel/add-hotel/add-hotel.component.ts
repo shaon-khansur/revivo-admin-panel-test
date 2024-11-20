@@ -41,7 +41,6 @@ import { EditFacilityComponent } from '../hotel-details/edit-facility/edit-facil
 export class AddHotelComponent implements OnInit {
     hotelForm!: FormGroup;
     currentTabIndex = 0;
-    ratings: number[] = [1, 2, 3, 4, 5];
 
     constructor(private fb: FormBuilder, private dialog: MatDialog) {}
 
@@ -74,6 +73,7 @@ export class AddHotelComponent implements OnInit {
             }),
             Website: [''],
             HotelID: [''],
+            source: ['admin'],
         });
     }
 
