@@ -18,6 +18,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { EditFacilityComponent } from '../hotel-details/edit-facility/edit-facility.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FuseCardComponent } from '@fuse/components/card';
 
 @Component({
     selector: 'app-add-hotel',
@@ -34,6 +38,10 @@ import { EditFacilityComponent } from '../hotel-details/edit-facility/edit-facil
         MatExpansionModule,
         MatDialogModule,
         MatIconModule,
+        MatDividerModule,
+        MatMenuModule,
+        MatTooltipModule,
+        FuseCardComponent,
     ],
     templateUrl: './add-hotel.component.html',
     styleUrls: ['./add-hotel.component.scss'],
@@ -41,6 +49,7 @@ import { EditFacilityComponent } from '../hotel-details/edit-facility/edit-facil
 export class AddHotelComponent implements OnInit {
     hotelForm!: FormGroup;
     currentTabIndex = 0;
+    currentTab: string = 'description'; // Default selected tab
 
     constructor(private fb: FormBuilder, private dialog: MatDialog) {}
 
@@ -75,6 +84,9 @@ export class AddHotelComponent implements OnInit {
             HotelID: [''],
             source: ['admin'],
         });
+    }
+    switchTab(tabName: string): void {
+        this.currentTab = tabName;
     }
 
     // -------------------------------------------  image ---------------------------------------

@@ -1,280 +1,461 @@
-<mat-tab-group [(selectedIndex)]="currentTabIndex" class="w-full">
-    <!-- Description Tab -->
-    <mat-tab label="Description">
-        <form [formGroup]="hotelForm">
-            <h2
-                class="text-xl font-semibold mb-5"
+<div class="flex flex-col flex-auto min-w-0">
+    <form [formGroup]="hotelForm">
+        <!-- Header -->
+        <div class="flex flex-col shadow bg-card">
+            <!-- User info -->
+            <div
+                class="flex flex-col flex-0 lg:flex-row items-center w-full max-w-[1920px] mx-auto px-8 lg:h-32 bg-card"
             >
-                General Information
-            </h2>
-            <mat-form-field class="w-full">
-                <mat-label>Hotel Name</mat-label>
-                <input matInput formControlName="HotelName" />
-            </mat-form-field>
-
-            <div class="sm:flex gap-3">
-                <mat-form-field class="w-full">
-                    <mat-label>Rating</mat-label>
-                    <mat-select formControlName="HotelRate" placeholder="Select Hotel Rating">
-                        <mat-option value="1">1</mat-option>
-                        <mat-option value="2">2</mat-option>
-                        <mat-option value="3">3</mat-option>
-                        <mat-option value="4">4</mat-option>
-                        <mat-option value="5">5</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="w-full">
-                    <mat-label>City Hebrew</mat-label>
-                    <input matInput formControlName="cityHeb" />
-                </mat-form-field>
-
-                <mat-form-field class="w-full">
-                    <mat-label>Country Hebrew</mat-label>
-                    <input matInput formControlName="countryName" />
-                </mat-form-field>
-            </div>
-
-            <!-- Kosher Checkbox -->
-            <mat-checkbox formControlName="isKosher">Kosher Hotel</mat-checkbox>
-
-            <h2
-                class="text-xl font-semibold mb-5"
-            >
-                Location
-            </h2>
-            <div formGroupName="HotelLocation">
-                <mat-form-field class="w-full">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput formControlName="Description"></textarea>
-                </mat-form-field>
-                <div class="sm:flex gap-3">
-                    <mat-form-field>
-                        <mat-label>Latitude</mat-label>
-                        <input matInput formControlName="latitude" />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Longitude</mat-label>
-                        <input matInput formControlName="longitude" />
-                    </mat-form-field>
-                </div>
-                <div class="sm:flex gap-3">
-                    <mat-form-field>
-                        <mat-label>City Code</mat-label>
-                        <input matInput formControlName="CityCode" />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>City Name</mat-label>
-                        <input matInput formControlName="CityName" />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Country Code</mat-label>
-                        <input matInput formControlName="CountryName" />
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-label>Country Name</mat-label>
-                        <input matInput formControlName="CountryCode" />
-                    </mat-form-field>
-                </div>
-                <div formGroupName="Address">
-                    <div class="sm:flex gap-3">
-                        <mat-form-field>
-                            <mat-label>Street</mat-label>
-                            <input matInput formControlName="street" />
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Zip Code</mat-label>
-                            <input matInput formControlName="zipcode" />
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>House Number</mat-label>
-                            <input matInput formControlName="house_number" />
-                        </mat-form-field>
-                    </div>
-                    <div class="sm:flex gap-3">
-                        <mat-form-field>
-                            <mat-label>Phone</mat-label>
-                            <input matInput formControlName="phone" />
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Fax</mat-label>
-                            <input matInput formControlName="fax" />
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Email</mat-label>
-                            <input
-                                matInput
-                                type="email"
-                                formControlName="email"
-                            />
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end">
-                <button
-                    mat-raised-button
-                    color="primary"
-                    (click)="goToNextTab()"
-                >
-                    Next
-                </button>
-            </div>
-        </form>
-    </mat-tab>
-
-    <!-- Images Tab -->
-    <mat-tab label="Images">
-        <form [formGroup]="hotelForm">
-            <div class="my-5">
-                <h2 class="text-xl font-semibold mb-5">Hotel Images:</h2>
-            </div>
-            <div formArrayName="HotelImages" class="flex flex-wrap gap-2">
+                <!-- Avatar -->
                 <div
+                    class="rounded-full"
                     *ngFor="let image of images.controls; let i = index"
-                    class="relative"
                 >
-                    <div>
+                    <div *ngIf="image.get('ImageType').value === 'PREVIEW'">
                         <img
                             [src]="image.get('Url').value"
                             alt="Hotel Image"
-                            class="object-cover w-[150px] h-[100px]"
+                            class="w-32 h-32"
                             loading="lazy"
                         />
-                        <div class="absolute top-0 right-0 p-2">
-                            <button
-                                mat-icon-button
-                                (click)="openEditHotelImage(i)"
-                                style="
-                                    background-color: black;
-                                    color: white;
-                                    border-radius: 50%;
-                                "
-                            >
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                        </div>
-                        <h1 class="text-center bg-gray-600 text-white py-2">{{ image.get("ImageType").value }}</h1>
                     </div>
                 </div>
-                <div class="w-full py-5">
-                    <button
-                        type="button"
-                        mat-stroked-button
-                        class="navy-blue-button w-full"
-                        (click)="addImage()"
+
+                <!-- Details -->
+                <div
+                    class="flex flex-col items-center lg:items-start mt-4 lg:mt-0 lg:ml-8"
+                >
+                    <div class="text-lg font-bold leading-none">
+                        {{ hotelForm.get("HotelName").value || "Hotel Name" }}
+                    </div>
+                    <div class="text-secondary">Hotel Address</div>
+                </div>
+
+                <!-- Separator -->
+                <div class="hidden lg:flex h-8 mx-8 border-l-2"></div>
+
+                <!-- Stats -->
+                <div class="flex items-center mt-6 lg:mt-0 space-x-6">
+                    <div class="flex flex-col items-center">
+                        <span class="font-bold"
+                            >{{
+                                hotelForm.get("HotelRate").value || "4"
+                            }}*</span
+                        >
+                        <span class="text-sm font-medium text-secondary"
+                            >Hotel Rating</span
+                        >
+                    </div>
+                </div>
+
+                <!-- Menu -->
+                <div
+                    class="flex items-center mt-8 mb-4 lg:m-0 lg:ml-auto space-x-6"
+                >
+                    <a
+                        (click)="currentTab = 'description'"
+                        [class.font-medium]="currentTab === 'description'"
+                        [class.text-secondary]="currentTab !== 'description'"
+                        >Hotel Description</a
                     >
-                        Add Image
-                    </button>
+                    <a
+                        (click)="currentTab = 'pictures'"
+                        [class.font-medium]="currentTab === 'pictures'"
+                        [class.text-secondary]="currentTab !== 'pictures'"
+                        >Pictures</a
+                    >
+                    <a
+                        (click)="currentTab = 'room'"
+                        [class.font-medium]="currentTab === 'room'"
+                        [class.text-secondary]="currentTab !== 'room'"
+                        >Room Description</a
+                    >
+                    <a
+                        (click)="currentTab = 'activeDeals'"
+                        [class.font-medium]="currentTab === 'activeDeals'"
+                        [class.text-secondary]="currentTab !== 'activeDeals'"
+                        >Active Deals</a
+                    >
+                    <a
+                        (click)="currentTab = 'expiredDeals'"
+                        [class.font-medium]="currentTab === 'expiredDeals'"
+                        [class.text-secondary]="currentTab !== 'expiredDeals'"
+                        >Expired Deals</a
+                    >
                 </div>
             </div>
-        </form>
-        <div class="flex justify-end">
-            <button mat-raised-button color="primary" (click)="goToNextTab()">
-                Next
-            </button>
         </div>
-    </mat-tab>
 
-    <!-- Additional Tab -->
-    <mat-tab label="Additional Information">
-        <form [formGroup]="hotelForm">
-            <mat-form-field class="w-full">
-                <mat-label class="text-xl font-semibold mb-5">Website</mat-label>
-                <input matInput formControlName="Website" />
-            </mat-form-field>
-            <h2 class="text-xl font-semibold mb-5">Remarks</h2>
-            <div formArrayName="HotelRemarks">
-                <mat-accordion>
-                    <div
-                        *ngFor="let remark of remarks.controls; let i = index"
-                        [formGroupName]="i"
-                    >
-                        <mat-expansion-panel class="mb-3">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    {{
-                                        remark.get("RemarkType").value ||
-                                            "Remark " + (i + 1)
-                                    }}
-                                </mat-panel-title>
+        <!-- Main -->
+        <div class="p-4">
+            <div *ngIf="currentTab === 'description'">
+                <!-- Content for Hotel Description -->
+                <div
+                    class="flex flex-auto flex-col lg:flex-row justify-center w-full max-w-[1920px] mx-auto p-6 sm:p-8"
+                >
+                    <!-- Column -->
+                    <div class="flex flex-col items-start lg:mr-8">
+                        <!-- About me -->
+                        <fuse-card class="flex flex-col w-full p-8">
+                            <div class="text-2xl font-semibold leading-tight">
+                                Hotel Info
+                            </div>
+                            <mat-form-field class="w-full mt-3">
+                                <mat-label>Hotel Name</mat-label>
+                                <input
+                                    matInput
+                                    formControlName="HotelName"
+                                    placeholder="Hotel Name"
+                                />
+                            </mat-form-field>
 
-                                <mat-action-row>
+                            <mat-form-field class="w-full">
+                                <mat-label>Rating</mat-label>
+                                <mat-select
+                                    formControlName="HotelRate"
+                                    placeholder="Select Hotel Rating"
+                                >
+                                    <mat-option value="1">1</mat-option>
+                                    <mat-option value="2">2</mat-option>
+                                    <mat-option value="3">3</mat-option>
+                                    <mat-option value="4">4</mat-option>
+                                    <mat-option value="5">5</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </fuse-card>
+
+                        <!-- Gallery -->
+                        <fuse-card
+                            class="flex flex-col max-w-140 w-full my-8 px-8 pt-6 pb-4"
+                        >
+                            <div class="flex items-center justify-between">
+                                <div
+                                    class="text-2xl font-semibold leading-tight"
+                                >
+                                    Gallery
+                                </div>
+                                <div class="-mr-3">
                                     <button
-                                        mat-button
-                                        color="warn"
-                                        (click)="removeRemark(i)"
+                                        mat-icon-button
+                                        [matMenuTriggerFor]="listCard09Menu"
                                     >
-                                        Remove Remark
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="
+                                                'heroicons_solid:ellipsis-vertical'
+                                            "
+                                        ></mat-icon>
                                     </button>
-                                </mat-action-row>
-                            </mat-expansion-panel-header>
-
+                                    <mat-menu #listCard09Menu="matMenu">
+                                        <button
+                                            mat-menu-item
+                                            (click)="addImage()"
+                                        >
+                                            Add image
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                            <p>
+                                Step inside and explore the beauty, comfort, and
+                                luxury that await you at our hotel.
+                            </p>
                             <div
-                                class="flex flex-wrap gap-5 md:flex-row flex-col"
+                                formArrayName="HotelImages"
+                                class="flex flex-wrap justify-center gap-2"
                             >
-                                <mat-form-field class="flex-auto">
-                                    <mat-label>Remark Type</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="RemarkType"
-                                    />
-                                </mat-form-field>
-                                <mat-form-field class="flex-auto">
-                                    <mat-label>Free Text</mat-label>
+                                <div
+                                    *ngFor="
+                                        let image of images.controls;
+                                        let i = index
+                                    "
+                                    class="relative"
+                                >
+                                    <div>
+                                        <img
+                                            [src]="image.get('Url').value"
+                                            alt="Hotel Image"
+                                            class="object-cover w-[150px] h-[100px]"
+                                            loading="lazy"
+                                        />
+                                        <div class="absolute top-0 right-0 p-2">
+                                            <button
+                                                mat-icon-button
+                                                (click)="openEditHotelImage(i)"
+                                                style="
+                                                    background-color: black;
+                                                    color: white;
+                                                    border-radius: 50%;
+                                                "
+                                            >
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                        </div>
+                                        <h1
+                                            class="text-center bg-gray-600 text-white py-2"
+                                        >
+                                            {{ image.get("ImageType").value }}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </fuse-card>
+                    </div>
+
+                    <!-- Column -->
+                    <div class="flex flex-col items-start w-full">
+                        <!-- Create Post -->
+                        <fuse-card class="flex flex-col w-full p-6 sm:p-8 pb-6">
+                            <div formGroupName="HotelLocation">
+                                <mat-form-field class="w-full">
+                                    <mat-label>Description</mat-label>
                                     <textarea
                                         matInput
-                                        formControlName="FreeText"
+                                        formControlName="Description"
                                     ></textarea>
                                 </mat-form-field>
                             </div>
-                        </mat-expansion-panel>
-                    </div>
-                </mat-accordion>
-                <div class="w-full py-5">
-                    <button
-                        type="button"
-                        mat-stroked-button
-                        class="navy-blue-button w-full"
-                        (click)="addRemark()"
-                    >
-                        Add Remark
-                    </button>
-                </div>
-            </div>
-            <h2 class="text-xl font-semibold mb-5">Facilities</h2>
-            <div formArrayName="HotelFacilities" class="flex flex-wrap gap-2">
-                <div
-                    *ngFor="let facility of facilities.controls; let i = index"
-                >
-                    <button
-                        mat-stroked-button
-                        (click)="openEditFacility(i)"
-                        class="facilityChip"
-                    >
-                        {{
-                            facility.get("FacilityTitle").value ||
-                                "Facility " + (i + 1)
-                        }}
-                    </button>
-                </div>
-                <div class="w-full py-5">
-                    <button
-                        type="button"
-                        mat-stroked-button
-                        class="navy-blue-button w-full"
-                        (click)="addFacility()"
-                    >
-                        Add Facility
-                    </button>
-                </div>
-            </div>
+                            <div class="sm:flex gap-3">
+                                <mat-form-field>
+                                    <mat-label>City Code</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CityCode"
+                                    />
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>City Name</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CityName"
+                                    />
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Country Code</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CountryName"
+                                    />
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Country Name</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CountryCode"
+                                    />
+                                </mat-form-field>
+                            </div>
+                            <div formGroupName="Address">
+                                <div class="sm:flex gap-3">
+                                    <mat-form-field>
+                                        <mat-label>Street</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="street"
+                                        />
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Zip Code</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="zipcode"
+                                        />
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>House Number</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="house_number"
+                                        />
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:flex gap-3">
+                                    <mat-form-field>
+                                        <mat-label>Phone</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="phone"
+                                        />
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Fax</mat-label>
+                                        <input matInput formControlName="fax" />
+                                    </mat-form-field>
+                                    <mat-form-field>
+                                        <mat-label>Email</mat-label>
+                                        <input
+                                            matInput
+                                            type="email"
+                                            formControlName="email"
+                                        />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="flex items-center justify-between">
+                                <div
+                                    class="text-2xl font-semibold leading-tight"
+                                >
+                                    Remarks
+                                </div>
+                                <div class="-mr-3">
+                                    <button
+                                        mat-icon-button
+                                        [matMenuTriggerFor]="listCard09Menu2"
+                                    >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="
+                                                'heroicons_solid:ellipsis-vertical'
+                                            "
+                                        ></mat-icon>
+                                    </button>
+                                    <mat-menu #listCard09Menu2="matMenu">
+                                        <button
+                                            mat-menu-item
+                                            (click)="addRemark()"
+                                        >
+                                            Add Remarks
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                            <div formArrayName="HotelRemarks">
+                                <mat-accordion>
+                                    <div
+                                        *ngFor="
+                                            let remark of remarks.controls;
+                                            let i = index
+                                        "
+                                        [formGroupName]="i"
+                                    >
+                                        <mat-expansion-panel class="mb-3">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    {{
+                                                        remark.get("RemarkType")
+                                                            .value ||
+                                                            "Remark " + (i + 1)
+                                                    }}
+                                                </mat-panel-title>
 
-            <div class="flex justify-end">
-                <button mat-raised-button color="accent" (click)="submitForm()">
-                    Submit
-                </button>
+                                                <mat-action-row>
+                                                    <button
+                                                        mat-button
+                                                        color="warn"
+                                                        (click)="
+                                                            removeRemark(i)
+                                                        "
+                                                    >
+                                                        Remove Remark
+                                                    </button>
+                                                </mat-action-row>
+                                            </mat-expansion-panel-header>
+
+                                            <div
+                                                class="flex flex-wrap gap-5 md:flex-row flex-col"
+                                            >
+                                                <mat-form-field
+                                                    class="flex-auto"
+                                                >
+                                                    <mat-label
+                                                        >Remark Type</mat-label
+                                                    >
+                                                    <input
+                                                        matInput
+                                                        formControlName="RemarkType"
+                                                    />
+                                                </mat-form-field>
+                                                <mat-form-field
+                                                    class="flex-auto"
+                                                >
+                                                    <mat-label
+                                                        >Free Text</mat-label
+                                                    >
+                                                    <textarea
+                                                        matInput
+                                                        formControlName="FreeText"
+                                                    ></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </div>
+                                </mat-accordion>
+                            </div>
+                            <hr>
+                            <div class="flex items-center justify-between">
+                              <div
+                                  class="text-2xl font-semibold leading-tight"
+                              >
+                                  Facilities
+                              </div>
+                              <div class="-mr-3">
+                                  <button
+                                      mat-icon-button
+                                      [matMenuTriggerFor]="listCard09Menu3"
+                                  >
+                                      <mat-icon
+                                          class="icon-size-5"
+                                          [svgIcon]="
+                                              'heroicons_solid:ellipsis-vertical'
+                                          "
+                                      ></mat-icon>
+                                  </button>
+                                  <mat-menu #listCard09Menu3="matMenu">
+                                      <button
+                                          mat-menu-item
+                                          (click)="addFacility()"
+                                      >
+                                          Add Facilities
+                                      </button>
+                                  </mat-menu>
+                              </div>
+                          </div>
+                         
+                        <div
+                            formArrayName="HotelFacilities"
+                            class="flex flex-wrap gap-2"
+                        >
+                            <div
+                                *ngFor="
+                                    let facility of facilities.controls;
+                                    let i = index
+                                "
+                            >
+                                <button
+                                    mat-stroked-button
+                                    (click)="openEditFacility(i)"
+                                    class="facilityChip"
+                                >
+                                    {{
+                                        facility.get("FacilityTitle")
+                                            .value || "Facility " + (i + 1)
+                                    }}
+                                </button>
+                            </div>
+                            
+                        </div>
+                           
+                        </fuse-card>
+                    </div>
+                </div>
             </div>
-        </form>
-    </mat-tab>
-</mat-tab-group>
+            <div *ngIf="currentTab === 'pictures'">
+                <!-- Content for Pictures -->
+                <p>Pictures Content goes here...</p>
+            </div>
+            <div *ngIf="currentTab === 'room'">
+                <!-- Content for Room Description -->
+                <p>Room Description Content goes here...</p>
+            </div>
+            <div *ngIf="currentTab === 'activeDeals'">
+                <!-- Content for Active Deals -->
+                <p>Active Deals Content goes here...</p>
+            </div>
+            <div *ngIf="currentTab === 'expiredDeals'">
+                <!-- Content for Expired Deals -->
+                <p>Expired Deals Content goes here...</p>
+            </div>
+        </div>
+    </form>
+</div>
