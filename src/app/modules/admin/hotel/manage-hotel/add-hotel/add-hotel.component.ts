@@ -22,27 +22,29 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseCardComponent } from '@fuse/components/card';
+import { GalleryComponent } from "./gallery/gallery.component";
 
 @Component({
     selector: 'app-add-hotel',
     standalone: true,
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatTabsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        MatExpansionModule,
-        MatDialogModule,
-        MatIconModule,
-        MatDividerModule,
-        MatMenuModule,
-        MatTooltipModule,
-        FuseCardComponent,
-    ],
+    CommonModule,
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatIconModule,
+    MatDividerModule,
+    MatMenuModule,
+    MatTooltipModule,
+    FuseCardComponent,
+    GalleryComponent
+],
     templateUrl: './add-hotel.component.html',
     styleUrls: ['./add-hotel.component.scss'],
 })
@@ -50,6 +52,16 @@ export class AddHotelComponent implements OnInit {
     hotelForm!: FormGroup;
     currentTabIndex = 0;
     currentTab: string = 'description'; // Default selected tab
+    defaultImages = [
+        {
+            Url: 'assets/images/blank_image.jpg',
+            ImageType: 'HOTEL',
+        },
+        {
+            Url: 'assets/images/blank_image.jpg',
+            ImageType: 'HOTEL',
+        },
+    ];
 
     constructor(private fb: FormBuilder, private dialog: MatDialog) {}
 
@@ -93,6 +105,12 @@ export class AddHotelComponent implements OnInit {
     get images(): FormArray {
         return this.hotelForm.get('HotelImages') as FormArray;
     }
+    get previewImages() {
+        return this.images.controls.filter(
+            (image: any) => image.get('ImageType').value === 'PREVIEW'
+        );
+    }
+    
 
     openEditHotelImage(index: number): void {
         const imageControl = this.images.at(index);

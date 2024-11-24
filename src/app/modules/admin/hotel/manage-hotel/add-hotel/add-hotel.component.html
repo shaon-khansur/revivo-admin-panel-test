@@ -7,19 +7,24 @@
                 class="flex flex-col flex-0 lg:flex-row items-center w-full max-w-[1920px] mx-auto px-8 lg:h-32 bg-card"
             >
                 <!-- Avatar -->
-                <div
-                    class="rounded-full"
-                    *ngFor="let image of images.controls; let i = index"
-                >
-                    <div *ngIf="image.get('ImageType').value === 'PREVIEW'">
+                <div *ngIf="previewImages.length > 0; else defaultImage">
+                    <div *ngFor="let image of previewImages">
                         <img
                             [src]="image.get('Url').value"
                             alt="Hotel Image"
-                            class="w-32 h-32"
+                            class="object-cover w-32 h-32"
                             loading="lazy"
                         />
                     </div>
                 </div>
+                <ng-template #defaultImage>
+                    <img
+                        [src]="'assets/images/blank_image.jpg'"
+                        alt="Default Hotel Image"
+                        class="object-cover w-32 h-32"
+                        loading="lazy"
+                    />
+                </ng-template>
 
                 <!-- Details -->
                 <div
@@ -28,7 +33,19 @@
                     <div class="text-lg font-bold leading-none">
                         {{ hotelForm.get("HotelName").value || "Hotel Name" }}
                     </div>
-                    <div class="text-secondary">Hotel Address</div>
+                    <div class="text-secondary">
+                        {{
+                            (hotelForm.get("HotelLocation.Address.street")
+                                ?.value || "") +
+                                (hotelForm.get("HotelLocation.Address.street")
+                                    ?.value &&
+                                hotelForm.get("HotelLocation.CityName")?.value
+                                    ? ", "
+                                    : "") +
+                                hotelForm.get("HotelLocation.CityName")
+                                    ?.value || "Hotel Address"
+                        }}
+                    </div>
                 </div>
 
                 <!-- Separator -->
@@ -53,33 +70,44 @@
                     class="flex items-center mt-8 mb-4 lg:m-0 lg:ml-auto space-x-6"
                 >
                     <a
+                        href="/hotel/hotel-list"
+                        [class.text-secondary]="currentTab !== 'description'"
+                        class="cursor-pointer"
+                        >Hotel List</a
+                    >
+                    <a
                         (click)="currentTab = 'description'"
                         [class.font-medium]="currentTab === 'description'"
                         [class.text-secondary]="currentTab !== 'description'"
+                        class="cursor-pointer"
                         >Hotel Description</a
                     >
                     <a
                         (click)="currentTab = 'pictures'"
                         [class.font-medium]="currentTab === 'pictures'"
                         [class.text-secondary]="currentTab !== 'pictures'"
+                        class="cursor-pointer"
                         >Pictures</a
                     >
                     <a
                         (click)="currentTab = 'room'"
                         [class.font-medium]="currentTab === 'room'"
                         [class.text-secondary]="currentTab !== 'room'"
+                        class="cursor-pointer"
                         >Room Description</a
                     >
                     <a
                         (click)="currentTab = 'activeDeals'"
                         [class.font-medium]="currentTab === 'activeDeals'"
                         [class.text-secondary]="currentTab !== 'activeDeals'"
+                        class="cursor-pointer"
                         >Active Deals</a
                     >
                     <a
                         (click)="currentTab = 'expiredDeals'"
                         [class.font-medium]="currentTab === 'expiredDeals'"
                         [class.text-secondary]="currentTab !== 'expiredDeals'"
+                        class="cursor-pointer"
                         >Expired Deals</a
                     >
                 </div>
@@ -162,7 +190,11 @@
                             </p>
                             <div
                                 formArrayName="HotelImages"
-                                class="flex flex-wrap justify-center gap-2"
+                                class="flex flex-wrap justify-between"
+                                *ngIf="
+                                    images.controls.length > 0;
+                                    else defaultImageTemplate
+                                "
                             >
                                 <div
                                     *ngFor="
@@ -171,7 +203,7 @@
                                     "
                                     class="relative"
                                 >
-                                    <div>
+                                    <div class="my-3">
                                         <img
                                             [src]="image.get('Url').value"
                                             alt="Hotel Image"
@@ -199,6 +231,29 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Default Image Template -->
+                            <ng-template #defaultImageTemplate>
+                                <div
+                                    class="flex flex-wrap justify-between my-5"
+                                >
+                                    <div
+                                        *ngFor="
+                                            let defaultImage of defaultImages;
+                                            let i = index
+                                        "
+                                        class="relative"
+                                    >
+                                        <div>
+                                            <img
+                                                [src]="defaultImage.Url"
+                                                alt="Default Hotel Image"
+                                                class="object-cover w-[150px] h-[100px]"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </fuse-card>
                     </div>
 
@@ -215,7 +270,10 @@
                                     ></textarea>
                                 </mat-form-field>
                             </div>
-                            <div class="sm:flex gap-3">
+                            <div
+                                class="sm:flex gap-3"
+                                formGroupName="HotelLocation"
+                            >
                                 <mat-form-field>
                                     <mat-label>City Code</mat-label>
                                     <input
@@ -245,53 +303,58 @@
                                     />
                                 </mat-form-field>
                             </div>
-                            <div formGroupName="Address">
-                                <div class="sm:flex gap-3">
-                                    <mat-form-field>
-                                        <mat-label>Street</mat-label>
-                                        <input
-                                            matInput
-                                            formControlName="street"
-                                        />
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>Zip Code</mat-label>
-                                        <input
-                                            matInput
-                                            formControlName="zipcode"
-                                        />
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>House Number</mat-label>
-                                        <input
-                                            matInput
-                                            formControlName="house_number"
-                                        />
-                                    </mat-form-field>
-                                </div>
-                                <div class="sm:flex gap-3">
-                                    <mat-form-field>
-                                        <mat-label>Phone</mat-label>
-                                        <input
-                                            matInput
-                                            formControlName="phone"
-                                        />
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>Fax</mat-label>
-                                        <input matInput formControlName="fax" />
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>Email</mat-label>
-                                        <input
-                                            matInput
-                                            type="email"
-                                            formControlName="email"
-                                        />
-                                    </mat-form-field>
+                            <div formGroupName="HotelLocation">
+                                <div formGroupName="Address">
+                                    <div class="sm:flex gap-3">
+                                        <mat-form-field>
+                                            <mat-label>Street</mat-label>
+                                            <input
+                                                matInput
+                                                formControlName="street"
+                                            />
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Zip Code</mat-label>
+                                            <input
+                                                matInput
+                                                formControlName="zipcode"
+                                            />
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>House Number</mat-label>
+                                            <input
+                                                matInput
+                                                formControlName="house_number"
+                                            />
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="sm:flex gap-3">
+                                        <mat-form-field>
+                                            <mat-label>Phone</mat-label>
+                                            <input
+                                                matInput
+                                                formControlName="phone"
+                                            />
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Fax</mat-label>
+                                            <input
+                                                matInput
+                                                formControlName="fax"
+                                            />
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <mat-label>Email</mat-label>
+                                            <input
+                                                matInput
+                                                type="email"
+                                                formControlName="email"
+                                            />
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
+                            <hr />
                             <div class="flex items-center justify-between">
                                 <div
                                     class="text-2xl font-semibold leading-tight"
@@ -382,67 +445,73 @@
                                     </div>
                                 </mat-accordion>
                             </div>
-                            <hr>
+                            <hr />
                             <div class="flex items-center justify-between">
-                              <div
-                                  class="text-2xl font-semibold leading-tight"
-                              >
-                                  Facilities
-                              </div>
-                              <div class="-mr-3">
-                                  <button
-                                      mat-icon-button
-                                      [matMenuTriggerFor]="listCard09Menu3"
-                                  >
-                                      <mat-icon
-                                          class="icon-size-5"
-                                          [svgIcon]="
-                                              'heroicons_solid:ellipsis-vertical'
-                                          "
-                                      ></mat-icon>
-                                  </button>
-                                  <mat-menu #listCard09Menu3="matMenu">
-                                      <button
-                                          mat-menu-item
-                                          (click)="addFacility()"
-                                      >
-                                          Add Facilities
-                                      </button>
-                                  </mat-menu>
-                              </div>
-                          </div>
-                         
-                        <div
-                            formArrayName="HotelFacilities"
-                            class="flex flex-wrap gap-2"
-                        >
-                            <div
-                                *ngFor="
-                                    let facility of facilities.controls;
-                                    let i = index
-                                "
-                            >
-                                <button
-                                    mat-stroked-button
-                                    (click)="openEditFacility(i)"
-                                    class="facilityChip"
+                                <div
+                                    class="text-2xl font-semibold leading-tight"
                                 >
-                                    {{
-                                        facility.get("FacilityTitle")
-                                            .value || "Facility " + (i + 1)
-                                    }}
-                                </button>
+                                    Facilities
+                                </div>
+                                <div class="-mr-3">
+                                    <button
+                                        mat-icon-button
+                                        [matMenuTriggerFor]="listCard09Menu3"
+                                    >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="
+                                                'heroicons_solid:ellipsis-vertical'
+                                            "
+                                        ></mat-icon>
+                                    </button>
+                                    <mat-menu #listCard09Menu3="matMenu">
+                                        <button
+                                            mat-menu-item
+                                            (click)="addFacility()"
+                                        >
+                                            Add Facilities
+                                        </button>
+                                    </mat-menu>
+                                </div>
                             </div>
-                            
-                        </div>
-                           
+                            <div
+                                formArrayName="HotelFacilities"
+                                class="flex flex-wrap gap-2"
+                            >
+                                <div
+                                    *ngFor="
+                                        let facility of facilities.controls;
+                                        let i = index
+                                    "
+                                >
+                                    <button
+                                        mat-stroked-button
+                                        (click)="openEditFacility(i)"
+                                        class="facilityChip"
+                                    >
+                                        {{
+                                            facility.get("FacilityTitle")
+                                                .value || "Facility " + (i + 1)
+                                        }}
+                                    </button>
+                                </div>
+                            </div>
                         </fuse-card>
                     </div>
+                </div>
+                <div mat-dialog-actions class="mb-4 flex justify-end">
+                    <button
+                        (click)="submitForm()"
+                        color="primary"
+                        mat-raised-button
+                    >
+                        Save Hotel
+                    </button>
                 </div>
             </div>
             <div *ngIf="currentTab === 'pictures'">
                 <!-- Content for Pictures -->
-                <p>Pictures Content goes here...</p>
+                <app-gallery [hotelForm]="hotelForm" [images]="images" />
             </div>
             <div *ngIf="currentTab === 'room'">
                 <!-- Content for Room Description -->
