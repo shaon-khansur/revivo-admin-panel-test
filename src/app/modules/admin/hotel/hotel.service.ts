@@ -28,6 +28,7 @@ export class HotelService {
         hotelName: string;
         pageSize: number;
         kosherStatus?: string | boolean;
+        mainStatus?: string | boolean;
     }): Observable<{
         allData: any[];
         metadata: {
@@ -44,6 +45,9 @@ export class HotelService {
         // Add the kosherStatus filter if it is defined
         if (data.kosherStatus !== undefined && data.kosherStatus !== '') {
             queryParams += `&status=${data.kosherStatus}`;
+        }
+        if (data.mainStatus !== undefined && data.mainStatus !== '') {
+            queryParams += `&mainStatus=${data.mainStatus}`;
         }
 
         return this.http.get<{
@@ -123,6 +127,12 @@ export class HotelService {
     toggleKosherStatus(hotelId: string, isKosher: boolean): Observable<any> {
         const url = `${environment.baseUrl}hotelData/toggleKosherStatus`;
         const body = { hotelId, isKosher };
+
+        return this.http.post(url, body);
+    }
+    toggleMainStatus(hotelId: string, isMain: boolean): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/toggleMainStatus`;
+        const body = { hotelId, isMain };
 
         return this.http.post(url, body);
     }
