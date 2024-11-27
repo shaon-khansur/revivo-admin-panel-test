@@ -105,13 +105,13 @@ export class OrdersComponent implements OnInit {
             let outPNR: any[] = [];
             let inPNR: any[] = [];
             //two way flights
-            if (element.order.outFlightOrder && element.order.outFlightOrder.data.associatedRecords.length > 1) {
-                const sorted = element.order.outFlightOrder.data.associatedRecords
+            if (element.order?.outFlightOrder && element.order?.outFlightOrder.data.associatedRecords.length > 1) {
+                const sorted = element.order?.outFlightOrder.data.associatedRecords
                     .map((el) => el.reference);
                 outPNR = sorted;
             } else {
-                if (element.order.outFlightOrder) {
-                    const sorted = element.order.outFlightOrder.data.associatedRecords.map(
+                if (element.order?.outFlightOrder) {
+                    const sorted = element.order?.outFlightOrder.data.associatedRecords.map(
                         (el) => el.reference
                     );
                     outPNR = sorted;
@@ -120,13 +120,13 @@ export class OrdersComponent implements OnInit {
                 }
             }
 
-            if (element.order.inFlightOrder && element.order.inFlightOrder.data.associatedRecords.length > 1) {
+            if (element.order?.inFlightOrder && element.order?.inFlightOrder.data.associatedRecords.length > 1) {
                 const sorted = element.order.inFlightOrder.data.associatedRecords
                     .map((el) => el.reference);
                 inPNR = sorted;
             } else {
                 if (element.order.inFlightOrder) {
-                    const sorted = element.order.inFlightOrder.data.associatedRecords.map(
+                    const sorted = element.order?.inFlightOrder.data.associatedRecords.map(
                         (el) => el.reference
                     );
                     inPNR = sorted;
@@ -137,24 +137,24 @@ export class OrdersComponent implements OnInit {
 
             return {outbound: outPNR, inbound: inPNR}
         } else if (element.oneWay == false && element.flightType === "RT") {
-            if (element.order.data.associatedRecords.length > 1) {
-                const sorted = element.order.data.associatedRecords
+            if (element.order?.data.associatedRecords.length > 1) {
+                const sorted = element.order?.data.associatedRecords
                     .map((el) => el.reference);
                 return {round: sorted};
             } else {
-                const sorted = element.order.data.associatedRecords.map(
+                const sorted = element.order?.data.associatedRecords.map(
                     (el) => el.reference
                 );
                 return {round: sorted}
             }
         } else {
             //One way flights
-            if (element.order.data.associatedRecords.length > 1) {
-                const sorted = element.order.data.associatedRecords
+            if (element.order?.data?.associatedRecords.length > 1) {
+                const sorted = element.order?.data.associatedRecords
                     .map((el) => el.reference);
                 return {outbound: sorted};
             } else {
-                const sorted = element.order.data.associatedRecords.map(
+                const sorted = element.order?.data.associatedRecords.map(
                     (el) => el.reference
                 );
                 return {outbound: sorted};

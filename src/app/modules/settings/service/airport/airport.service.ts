@@ -19,7 +19,7 @@ export class AirportService {
             hasPrevPage: boolean;
         };
     }> {
-        console.log('data', data)
+        console.log('data', data);
         return this.http.get<{
             airports: any[];
             metadata: {
@@ -34,11 +34,16 @@ export class AirportService {
         );
     }
 
-
     updateAirport(data): Observable<any> {
-        return this.http.put(`${environment.baseUrl}insert/airports/${data.id}`, data.value)
+        return this.http.put(
+            `${environment.baseUrl}insert/airports/${data.id}`,
+            data.value
+        );
     }
 
+    addAirport(data): Observable<any> {
+        return this.http.post(`${environment.baseUrl}insert/airports`, data);
+    }
     getInboundAirports(data: { page: number; value: string }): Observable<{
         airports: any[];
         metadata: {
@@ -49,7 +54,7 @@ export class AirportService {
             hasPrevPage: boolean;
         };
     }> {
-        console.log('data', data)
+        console.log('data', data);
         return this.http.get<{
             airports: any[];
             metadata: {
