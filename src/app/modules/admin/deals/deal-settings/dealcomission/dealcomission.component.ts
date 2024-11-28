@@ -64,6 +64,9 @@ export class DealcomissionComponent implements OnInit {
             dealFee: [
                 (this.dealSettings && this.dealSettings[0]?.dealsFee) || 0,
             ],
+            infantFee: [
+                (this.dealSettings && this.dealSettings[0]?.infantFee) || 0,
+            ],
             extraFee: [
                 (this.dealSettings && this.dealSettings[0]?.extraFee) || 0,
             ]
@@ -81,6 +84,9 @@ export class DealcomissionComponent implements OnInit {
     get dealFee(): FormControl {
         return this.form.get('dealFee') as FormControl;
     }
+    get infantFee(): FormControl {
+        return this.form.get('infantFee') as FormControl;
+    }
     get extraFee(): FormControl {
         return this.form.get('extraFee') as FormControl;
     }
@@ -91,6 +97,7 @@ export class DealcomissionComponent implements OnInit {
                 commission1: parseInt(this.form.value.commission1, 10),
                 commission2: parseInt(this.form.value.commission2, 10),
                 dealFee: parseInt(this.form.value.dealFee, 10),
+                infantFee: parseInt(this.form.value.infantFee, 10),
                 extraFee: parseInt(this.form.value.extraFee, 10),
             };
 

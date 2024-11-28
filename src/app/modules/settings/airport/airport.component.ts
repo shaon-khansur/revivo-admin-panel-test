@@ -2,7 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCommonModule } from '@angular/material/core';
-import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
+import {
+    MatDialog,
+    MatDialogConfig,
+    MatDialogModule,
+} from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AirportService } from '../service/airport/airport.service';
@@ -41,6 +45,7 @@ export class AirportComponent implements OnInit, AfterViewInit {
         'name',
         'iata',
         'country',
+        'countryHebrew',
         'city',
         'cityHibrew',
         'state',
@@ -57,7 +62,10 @@ export class AirportComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
 
-    constructor(private airportService: AirportService, private dialog: MatDialog) {}
+    constructor(
+        private airportService: AirportService,
+        private dialog: MatDialog
+    ) {}
 
     ngOnInit(): void {
         this.airportService
@@ -83,7 +91,9 @@ export class AirportComponent implements OnInit, AfterViewInit {
                     .subscribe({
                         next: (response) => {
                             this.allAirports = response.airports;
-                            this.dataSource = new MatTableDataSource(this.allAirports);
+                            this.dataSource = new MatTableDataSource(
+                                this.allAirports
+                            );
                             this.resultsLength = response.metadata.totalItems;
                             // this.dataSource.sort = this.sort;
                             // this.dataSource.paginator = this.paginator;
@@ -124,18 +134,48 @@ export class AirportComponent implements OnInit, AfterViewInit {
 
     openDialog(airport): void {
         const config = new MatDialogConfig();
-        config.width = "600px"
+        config.width = '600px';
         config.data = airport;
-        this.dialog.open(AirportDialogComponent, config).afterClosed().subscribe(values => {
-            if (values) {
-                this.airportService.updateAirport({id: airport.id, value: values}).subscribe({
-                    next: (res) => {
-                        const index = this.allAirports.findIndex(el => el.id === res.updatedAirport.id);
-                        this.allAirports[index] = res.updatedAirport;
-                        this.dataSource = new MatTableDataSource(this.allAirports);
-                    }
-                })
-            }
-        })
+        this.dialog
+            .open(AirportDialogComponent, config)
+            .afterClosed()
+            .subscribe((values) => {
+                if (values) {
+                    this.airportService
+                        .updateAirport({ id: airport.id, value: values })
+                        .subscribe({
+                            next: (res) => {
+                                const index = this.allAirports.findIndex(
+                                    (el) => el.id === res.updatedAirport.id
+                                );
+                                this.allAirports[index] = res.updatedAirport;
+                                this.dataSource = new MatTableDataSource(
+                                    this.allAirports
+                                );
+                            },
+                        });
+                }
+            });
+    }
+
+    onAdd(): void {
+        const config = new MatDialogConfig();
+        config.width = '600px';
+        config.data = null;
+        this.dialog
+            .open(AirportDialogComponent, config)
+            .afterClosed()
+            .subscribe((values) => {
+                if (values) {
+                    this.airportService.addAirport(values).subscribe({
+                        next: (airport) => {
+                            this.allAirports.unshift(airport);
+                            this.dataSource = new MatTableDataSource(
+                                this.allAirports
+                            );
+                        },
+                    });
+                }
+            });
     }
 }

@@ -36,7 +36,7 @@ export class EditHotelImageComponent {
         this.form = this.fb.group({
             ImageTitle: [data.ImageTitle || ''],
             Url: [data.Url || ''],
-            ImageType: ['Hotel'],
+            ImageType: [data?.ImageType || 'HOTEL'],
             file: [null],
         });
     }
