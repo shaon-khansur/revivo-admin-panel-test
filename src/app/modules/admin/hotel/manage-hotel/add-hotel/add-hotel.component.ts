@@ -22,37 +22,55 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseCardComponent } from '@fuse/components/card';
-import { GalleryComponent } from "./gallery/gallery.component";
+import { GalleryComponent } from './gallery/gallery.component';
+import { RoomDescriptionsComponent } from './room-descriptions/room-descriptions.component';
 
 @Component({
     selector: 'app-add-hotel',
     standalone: true,
     imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatTabsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatIconModule,
-    MatDividerModule,
-    MatMenuModule,
-    MatTooltipModule,
-    FuseCardComponent,
-    GalleryComponent
-],
+        CommonModule,
+        ReactiveFormsModule,
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatIconModule,
+        MatDividerModule,
+        MatMenuModule,
+        MatTooltipModule,
+        FuseCardComponent,
+        GalleryComponent,
+        RoomDescriptionsComponent,
+    ],
     templateUrl: './add-hotel.component.html',
     styleUrls: ['./add-hotel.component.scss'],
 })
 export class AddHotelComponent implements OnInit {
     hotelForm!: FormGroup;
     currentTabIndex = 0;
-    currentTab: string = 'description'; // Default selected tab
+    currentTab: string = 'room'; // Default selected tab
     defaultImages = [
+        {
+            Url: 'assets/images/blank_image.jpg',
+            ImageType: 'HOTEL',
+        },
+        {
+            Url: 'assets/images/blank_image.jpg',
+            ImageType: 'HOTEL',
+        },
+        {
+            Url: 'assets/images/blank_image.jpg',
+            ImageType: 'HOTEL',
+        },
+        {
+            Url: 'assets/images/blank_image.jpg',
+            ImageType: 'HOTEL',
+        },
         {
             Url: 'assets/images/blank_image.jpg',
             ImageType: 'HOTEL',
@@ -95,8 +113,21 @@ export class AddHotelComponent implements OnInit {
             Website: [''],
             HotelID: [''],
             source: ['admin'],
+            roomsDescription: this.fb.group({
+                package_type: ['', Validators.required],
+                remarks: ['', Validators.required],
+                selected_category: ['', Validators.required],
+                complects: this.fb.group({}),
+                infantPrice: this.fb.group({}),
+                additionalPayments: this.fb.array([]),
+                dealData: this.fb.array([]),
+                restrictions: [''],
+                supplements: [''],
+                taxes: ['', Validators.required],
+            }),
         });
     }
+
     switchTab(tabName: string): void {
         this.currentTab = tabName;
     }
@@ -110,7 +141,6 @@ export class AddHotelComponent implements OnInit {
             (image: any) => image.get('ImageType').value === 'PREVIEW'
         );
     }
-    
 
     openEditHotelImage(index: number): void {
         const imageControl = this.images.at(index);

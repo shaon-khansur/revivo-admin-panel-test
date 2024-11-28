@@ -56,7 +56,6 @@ export class HotelListComponent implements OnInit {
         'cityName',
         'cityCode',
         'isKosher',
-        'isMain',
         'view',
     ];
 
@@ -66,8 +65,6 @@ export class HotelListComponent implements OnInit {
     resultsLength: number = 0;
     kosherStatusFilter: string | boolean = '';
     selectedKosherStatus: string = '';
-    mainStatusFilter: string | boolean = '';
-    selectedMainStatus: string = '';
 
     searchInputControl = new FormControl('');
     constructor(
@@ -84,7 +81,6 @@ export class HotelListComponent implements OnInit {
                 hotelName: '',
                 pageSize: this.pageSize,
                 kosherStatus: this.kosherStatusFilter,
-                mainStatus: this.mainStatusFilter,
             })
             .subscribe({
                 next: (response) => {
@@ -128,17 +124,6 @@ export class HotelListComponent implements OnInit {
 
         this.refreshHotelList(); // Fetch the filtered hotel list
     }
-    onMainStatusChange(selectedValue: string): void {
-        if (selectedValue === '') {
-            this.mainStatusFilter = ''; // Show all hotels (both kosher and non-kosher)
-        } else if (selectedValue === 'true') {
-            this.mainStatusFilter = true; // Filter for kosher hotels
-        } else if (selectedValue === 'false') {
-            this.mainStatusFilter = false; // Filter for non-kosher hotels
-        }
-
-        this.refreshHotelList(); // Fetch the filtered hotel list
-    }
 
     getStars(rate: number): number[] {
         const fullStars = Math.floor(rate);
@@ -174,7 +159,6 @@ export class HotelListComponent implements OnInit {
                 hotelName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
                 kosherStatus: this.kosherStatusFilter,
-                mainStatus: this.mainStatusFilter,
             })
             .subscribe({
                 next: (response) => {
@@ -220,33 +204,6 @@ export class HotelListComponent implements OnInit {
             },
         });
     }
-    toggleMain(hotelId: string, isMain: boolean) {
-        this.hotelService.toggleMainStatus(hotelId, isMain).subscribe({
-            next: (response) => {
-                if (response.success) {
-                    this.refreshHotelList();
-                } else {
-                    console.error(
-                        'Failed to update kosher status:',
-                        response.message
-                    );
-                }
-            },
-            error: (error) => {
-                console.error('Error updating kosher status:', error);
-                // Log more detailed error information
-                if (error.status) {
-                    console.error('HTTP Status:', error.status);
-                }
-                if (error.message) {
-                    console.error('Error Message:', error.message);
-                }
-                if (error.error) {
-                    console.error('API Response Error:', error.error);
-                }
-            },
-        });
-    }
 
     refreshHotelList(): void {
         this.hotelService
@@ -255,7 +212,6 @@ export class HotelListComponent implements OnInit {
                 hotelName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
                 kosherStatus: this.kosherStatusFilter,
-                mainStatus: this.mainStatusFilter,
             })
             .subscribe({
                 next: (response) => {
