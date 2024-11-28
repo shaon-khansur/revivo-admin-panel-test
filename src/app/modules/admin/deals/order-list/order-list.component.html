@@ -18,7 +18,7 @@
         <ng-container matColumnDef="packageName">
             <th mat-header-cell *matHeaderCellDef>Package Name</th>
             <td mat-cell *matCellDef="let element">
-                {{ element.dealServices?.packageName }}
+                {{ element.dealServices[0]?.packageName }}
             </td>
         </ng-container>
 

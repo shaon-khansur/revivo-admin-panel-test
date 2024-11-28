@@ -1,0 +1,20 @@
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <div class="flex gap-2 flex-wrap">
+            <mat-form-field class="flex-auto">
+                <mat-label>Supplier Name</mat-label>
+                <input matInput formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>SupplierCode</mat-label>
+                <input matInput formControlName="code" />
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="onSave()">Save</button>
+</div>

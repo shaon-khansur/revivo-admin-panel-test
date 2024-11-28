@@ -13,11 +13,11 @@
             align-items: center;
         "
     >
-        <div class="order-details">
+        <div class="order-details" *ngIf="data.customers">
             <h1>Main Customer Info:</h1>
             <p>
-                <span>Customer Name:</span> {{ data.customers[0].first_name }}
-                {{ data.customers[0].last_name }}
+                <span>Customer Name:</span> {{ data.customers[0]?.first_name }}
+                {{ data.customers[0]?.last_name }}
             </p>
             <p><span> email:</span> {{ data.mainCustomer.email }}</p>
             <p>
@@ -25,11 +25,11 @@
                 {{ data.mainCustomer.phone }}
             </p>
         </div>
-        <div>
+        <div *ngIf="data.dealServices">
             <h1 style="text-align: right">
-                {{ data.dealServices.packageName }}
+                {{ data.dealServices[0]?.packageName }}
             </h1>
-            <p>{{ data.dealServices.start }} - {{ data.dealServices.end }}</p>
+            <p>{{ data.dealServices[0]?.start }} - {{ data.dealServices[0]?.end }}</p>
         </div>
     </div>
     <div
@@ -52,7 +52,7 @@
                     gap: 20px;
                 "
             >
-                <div>
+                <div *ngIf="data.flightsData">
                     <p>Outbound</p>
                     <hr style="margin: 5px 0;">
                     <p>
@@ -92,7 +92,7 @@
                         {{ data.flightsData.flightsOut.duration }} h
                     </p>
                 </div>
-                <div>
+                <div *ngIf="data.flightsData">
                     <p>Inbound</p>
                     <hr style="margin: 5px 0;">
                     <p>
@@ -135,18 +135,18 @@
             </div>
         </div>
         <!-- deals info -->
-        <div class="order-details">
+        <div class="order-details" *ngIf="data.dealServices">
             <h1>
                 <span>Deal Info</span>
             </h1>
-            <p><span>Hotel Name :</span> {{ data.dealServices.name }}</p>
-            <p><span>Address :</span> {{ data.dealServices.address }}</p>
+            <p><span>Hotel Name :</span> {{ data.dealServices[0]?.name }}</p>
+            <p><span>Address :</span> {{ data.dealServices[0]?.address }}</p>
 
             <p>
                 <span>Room Type :</span>
                 <ng-container
                     *ngFor="
-                        let numRoom of data.dealServices.roomData;
+                        let numRoom of data.dealServices[0]?.roomData;
                         let last = last
                     "
                 >
@@ -156,11 +156,11 @@
                 </ng-container>
             </p>
 
-            <p><span>Total Rooms :</span> {{ data.dealServices.rooms }}</p>
+            <p><span>Total Rooms :</span> {{ data.dealServices[0]?.rooms }}</p>
             <p>
-                <span>Service length :</span> {{ data.dealServices.duration }}
+                <span>Service length :</span> {{ data.dealServices[0]?.duration }}
             </p>
-            <p><span>Meals :</span> {{ data.dealServices.meal }}</p>
+            <p><span>Meals :</span> {{ data.dealServices[0]?.meal }}</p>
         </div>
     </div>
     <hr />

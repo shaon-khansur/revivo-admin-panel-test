@@ -3,7 +3,11 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HotelService } from '../../hotel.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+    MatPaginator,
+    MatPaginatorModule,
+    PageEvent,
+} from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,9 +16,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { debounceTime } from 'rxjs';
-import { _MatSlideToggleRequiredValidatorModule, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+    _MatSlideToggleRequiredValidatorModule,
+    MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
-
 
 @Component({
     selector: 'app-hotel-list',
@@ -34,7 +40,7 @@ import { MatSelectModule } from '@angular/material/select';
         RouterModule,
         _MatSlideToggleRequiredValidatorModule,
         MatSlideToggleModule,
-        MatSelectModule 
+        MatSelectModule,
     ],
     templateUrl: './hotel-list.component.html',
     styleUrls: ['./hotel-list.component.scss'],
@@ -74,11 +80,11 @@ export class HotelListComponent implements OnInit {
                 page: this.page,
                 hotelName: '',
                 pageSize: this.pageSize,
-                kosherStatus: this.kosherStatusFilter
+                kosherStatus: this.kosherStatusFilter,
             })
             .subscribe({
                 next: (response) => {
-                    console.log(response)
+                    console.log(response);
                     this.allHotel = response.allData;
                     this.dataSource = new MatTableDataSource(this.allHotel);
                     this.resultsLength = response.metadata?.totalItems;
@@ -115,26 +121,27 @@ export class HotelListComponent implements OnInit {
         } else if (selectedValue === 'false') {
             this.kosherStatusFilter = false; // Filter for non-kosher hotels
         }
-    
+
         this.refreshHotelList(); // Fetch the filtered hotel list
     }
-    
 
     getStars(rate: number): number[] {
         const fullStars = Math.floor(rate);
         const hasHalfStar = rate % 1 >= 0.5;
         const totalStars = 5; // assuming a 5-star rating system
-    
-        return Array(totalStars).fill(0).map((_, index) => {
-          if (index < fullStars) {
-            return 1; // full star
-          } else if (index === fullStars && hasHalfStar) {
-            return 0.5; // half star
-          } else {
-            return 0; // empty star
-          }
-        });
-      }
+
+        return Array(totalStars)
+            .fill(0)
+            .map((_, index) => {
+                if (index < fullStars) {
+                    return 1; // full star
+                } else if (index === fullStars && hasHalfStar) {
+                    return 0.5; // half star
+                } else {
+                    return 0; // empty star
+                }
+            });
+    }
 
     ngAfterViewInit(): void {
         this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
@@ -151,7 +158,7 @@ export class HotelListComponent implements OnInit {
                 page: this.page,
                 hotelName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
-                kosherStatus: this.kosherStatusFilter
+                kosherStatus: this.kosherStatusFilter,
             })
             .subscribe({
                 next: (response) => {
@@ -163,9 +170,12 @@ export class HotelListComponent implements OnInit {
     }
 
     openDialog(hotel): void {
-        this.router.navigate(['hotel/hotel-details', hotel.HotelID]); 
+        this.router.navigate(['hotel/hotel-details', hotel.HotelID]);
     }
-      
+
+    createHotel(): void {
+        this.router.navigate(['hotel/add-hotel']);
+    }
 
     toggleKosher(hotelId: string, isKosher: boolean) {
         this.hotelService.toggleKosherStatus(hotelId, isKosher).subscribe({
@@ -173,7 +183,10 @@ export class HotelListComponent implements OnInit {
                 if (response.success) {
                     this.refreshHotelList();
                 } else {
-                    console.error('Failed to update kosher status:', response.message);
+                    console.error(
+                        'Failed to update kosher status:',
+                        response.message
+                    );
                 }
             },
             error: (error) => {
@@ -188,27 +201,28 @@ export class HotelListComponent implements OnInit {
                 if (error.error) {
                     console.error('API Response Error:', error.error);
                 }
-            }
+            },
         });
     }
-    
-    
-      refreshHotelList(): void {
-        this.hotelService.getAllHotels({
-            page: this.page,
-            hotelName: this.searchInputControl.value?.toLowerCase() || '',
-            pageSize: this.pageSize,
-            kosherStatus: this.kosherStatusFilter
-        }).subscribe({
-            next: (response) => {
-                this.allHotel = response.allData;
-                this.dataSource = new MatTableDataSource(this.allHotel);
-                this.resultsLength = response.metadata.totalItems;
-                this.paginator.firstPage(); // Optional: Reset paginator to the first page
-            },
-            error: (error) => {
-                console.error('Error fetching hotel list:', error);
-            }
-        });
+
+    refreshHotelList(): void {
+        this.hotelService
+            .getAllHotels({
+                page: this.page,
+                hotelName: this.searchInputControl.value?.toLowerCase() || '',
+                pageSize: this.pageSize,
+                kosherStatus: this.kosherStatusFilter,
+            })
+            .subscribe({
+                next: (response) => {
+                    this.allHotel = response.allData;
+                    this.dataSource = new MatTableDataSource(this.allHotel);
+                    this.resultsLength = response.metadata.totalItems;
+                    this.paginator.firstPage(); // Optional: Reset paginator to the first page
+                },
+                error: (error) => {
+                    console.error('Error fetching hotel list:', error);
+                },
+            });
     }
 }

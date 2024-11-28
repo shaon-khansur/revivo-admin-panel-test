@@ -40,6 +40,7 @@ export class AirportDialogComponent implements OnInit {
         this.form = this.fb.group({
             name: [''],
             country: [''],
+            countryHebrew: [''],
             city: [''],
             cityHibrew: [''],
             iata: [''],

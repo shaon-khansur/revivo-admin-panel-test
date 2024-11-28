@@ -3,6 +3,7 @@ import { HotelListComponent } from './manage-hotel/hotel-list/hotel-list.compone
 import { HotelDetailsComponent } from './manage-hotel/hotel-details/hotel-details.component';
 import { KosherListComponent } from './manage-hotel/kosher-list/kosher-list.component';
 import { KosherHotelDetailsComponent } from './manage-hotel/kosher-hotel-details/kosher-hotel-details.component';
+import { AddHotelComponent } from './manage-hotel/add-hotel/add-hotel.component';
 
 export default [
     {
@@ -20,5 +21,9 @@ export default [
     {
         path: 'kosher-hotel-details/:id',
         component: KosherHotelDetailsComponent,
+    },
+    {
+        path: 'add-hotel',
+        component: AddHotelComponent,
     },
 ] as Routes;

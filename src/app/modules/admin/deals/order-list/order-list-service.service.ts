@@ -10,15 +10,15 @@ export class OrderListServiceService {
     constructor(private http: HttpClient) {}
 
     getDealOrderData(): Observable<any> {
-        const url = `${environment.baseUrl}createDealOrderSave`;
+        const url = `${environment.baseUrl}createOrderSave`;
         return this.http.get(url);
     }
     getDealOrderDataById(id: number): Observable<any> {
-        const url = `${environment.baseUrl}createDealOrderSave/${id}`;
+        const url = `${environment.baseUrl}createOrderSave/deals/${id}`;
         return this.http.get(url);
     }
     deleteDealOrderDataById(id: number): Observable<any> {
-      const url = `${environment.baseUrl}createDealOrderSave/${id}`;
+      const url = `${environment.baseUrl}createOrderSave/${id}`;
       return this.http.delete(url, { responseType: 'text' }); // Expect text response
   }
   

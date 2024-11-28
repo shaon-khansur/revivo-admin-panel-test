@@ -84,7 +84,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id   : 'order.office-info',
                 title: 'Office Info',
                 type : 'basic',
-                icon : 'heroicons_outline:briefcase',
+                icon : 'heroicons_outline:map-pin',
                 link : '/order/office-info',
             },
         ],
@@ -104,11 +104,18 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link : '/data-management/site-settings',
             },
             {
-                id   : 'site-settings.flightCommission',
+                id   : 'site-settings.updates',
                 title: 'Revivo Updates',
                 type : 'basic',
                 icon : 'heroicons_outline:arrow-path',
                 link : '/data-management/revivo-update',
+            },
+            {
+                id   : 'site-settings.supplier',
+                title: 'Supplier-List',
+                type : 'basic',
+                icon : 'heroicons_outline:clipboard-document-check',
+                link : '/data-management/supplier',
             },
         ]
     },
