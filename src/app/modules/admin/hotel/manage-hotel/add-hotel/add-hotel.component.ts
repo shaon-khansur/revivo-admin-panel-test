@@ -113,6 +113,7 @@ export class AddHotelComponent implements OnInit {
             Website: [''],
             HotelID: [''],
             source: ['admin'],
+            
             roomsDescription: this.fb.group({
                 package_type: ['', Validators.required],
                 remarks: ['', Validators.required],

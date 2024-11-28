@@ -82,19 +82,20 @@
                         class="cursor-pointer"
                         >Hotel Description</a
                     >
-                    <a
-                        (click)="currentTab = 'pictures'"
-                        [class.font-medium]="currentTab === 'pictures'"
-                        [class.text-secondary]="currentTab !== 'pictures'"
-                        class="cursor-pointer"
-                        >Pictures</a
-                    >
+
                     <a
                         (click)="currentTab = 'room'"
                         [class.font-medium]="currentTab === 'room'"
                         [class.text-secondary]="currentTab !== 'room'"
                         class="cursor-pointer"
                         >Room Description</a
+                    >
+                    <a
+                        (click)="currentTab = 'pictures'"
+                        [class.font-medium]="currentTab === 'pictures'"
+                        [class.text-secondary]="currentTab !== 'pictures'"
+                        class="cursor-pointer"
+                        >Pictures</a
                     >
                     <a
                         (click)="currentTab = 'activeDeals'"
@@ -485,25 +486,17 @@
                         </fuse-card>
                     </div>
                 </div>
-                <div mat-dialog-actions class="mb-4 flex justify-end">
-                    <button
-                        (click)="submitForm()"
-                        color="primary"
-                        mat-raised-button
-                    >
-                        Save Hotel
-                    </button>
-                </div>
+            </div>
+
+            <div *ngIf="currentTab === 'room'">
+                <!-- Content for Room Description -->
+                <app-room-descriptions
+                    [roomsDescriptionForm]="hotelForm.get('roomsDescription')"
+                />
             </div>
             <div *ngIf="currentTab === 'pictures'">
                 <!-- Content for Pictures -->
                 <app-gallery [hotelForm]="hotelForm" [images]="images" />
-            </div>
-            <div *ngIf="currentTab === 'room'">
-                <!-- Content for Room Description -->
-                <app-room-descriptions
-                    [roomsDescriptionForm]="hotelForm.get('roomsDescription')" 
-                />
             </div>
             <div *ngIf="currentTab === 'activeDeals'">
                 <!-- Content for Active Deals -->
@@ -513,6 +506,11 @@
                 <!-- Content for Expired Deals -->
                 <p>Expired Deals Content goes here...</p>
             </div>
+        </div>
+        <div mat-dialog-actions class="mb-4 flex justify-center">
+            <button (click)="submitForm()" color="primary" mat-raised-button>
+                Save Hotel
+            </button>
         </div>
     </form>
 </div>

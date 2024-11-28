@@ -57,9 +57,7 @@ export class RoomDescriptionsComponent implements OnInit {
                 remarks: ['', Validators.required],
                 selected_category: ['', Validators.required],
                 complects: this.fb.array([]),
-                infantPrice: this.fb.array([
-                    this.createInfantPrice('', ''),
-                ]),
+                infantPrice: this.fb.array([this.createInfantPrice('', '')]),
                 additionalPayments: this.fb.array([]),
                 dealData: this.fb.array([]),
                 restrictions: [''],
@@ -84,27 +82,36 @@ export class RoomDescriptionsComponent implements OnInit {
         infantPriceArray.push(this.createInfantPrice(currency, price));
     }
 
-
     // Method to add a new additional payment entry
-addAdditionalPayment(): void {
-  const additionalPaymentsArray = this.roomsDescriptionForm.get('additionalPayments') as FormArray;
-  additionalPaymentsArray.push(this.createAdditionalPayment('', '', '', ''));
-}
+    addAdditionalPayment(): void {
+        const additionalPaymentsArray = this.roomsDescriptionForm.get(
+            'additionalPayments'
+        ) as FormArray;
+        additionalPaymentsArray.push(
+            this.createAdditionalPayment('', '', '', '')
+        );
+    }
 
-// Method to create an additional payment FormGroup
-createAdditionalPayment(restriction: string, value: string, rule: string, summ: string): FormGroup {
-  return this.fb.group({
-      restriction: [restriction, Validators.required],
-      value: [value, Validators.required],
-      rule: [rule, Validators.required],
-      summ: [summ, Validators.required],
-  });
-}
-// Method to remove an additional payment entry
-removeAdditionalPayment(index: number): void {
-  const additionalPaymentsArray = this.roomsDescriptionForm.get('additionalPayments') as FormArray;
-  additionalPaymentsArray.removeAt(index);
-}
-
-
+    // Method to create an additional payment FormGroup
+    createAdditionalPayment(
+        restriction: string,
+        value: string,
+        rule: string,
+        summ: string
+    ): FormGroup {
+        return this.fb.group({
+            restriction: [restriction, Validators.required],
+            value: [value, Validators.required],
+            rule: [rule, Validators.required],
+            summ: [summ, Validators.required],
+        });
+    }
+    // Method to remove an additional payment entry
+    removeAdditionalPayment(index: number): void {
+        const additionalPaymentsArray = this.roomsDescriptionForm.get(
+            'additionalPayments'
+        ) as FormArray;
+        additionalPaymentsArray.removeAt(index);
+    }
+    
 }
