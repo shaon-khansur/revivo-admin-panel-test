@@ -154,7 +154,7 @@
 
                         <!-- Gallery -->
                         <fuse-card
-                            class="flex flex-col max-w-140 w-full my-8 px-8 pt-6 pb-4"
+                            class="flex flex-col lg:max-w-140 w-full my-8 px-8 pt-6 pb-4"
                         >
                             <div class="flex items-center justify-between">
                                 <div
@@ -234,7 +234,7 @@
                             <!-- Default Image Template -->
                             <ng-template #defaultImageTemplate>
                                 <div
-                                    class="flex flex-wrap justify-between my-5"
+                                    class="flex flex-wrap justify-between gap-5 my-5"
                                 >
                                     <div
                                         *ngFor="
@@ -247,7 +247,7 @@
                                             <img
                                                 [src]="defaultImage.Url"
                                                 alt="Default Hotel Image"
-                                                class="object-cover w-[150px] h-[100px]"
+                                                class="object-cover w-[80px] h-[60px]"
                                                 loading="lazy"
                                             />
                                         </div>
@@ -286,20 +286,6 @@
                                     <input
                                         matInput
                                         formControlName="CityName"
-                                    />
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <mat-label>Country Code</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="CountryName"
-                                    />
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <mat-label>Country Name</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="CountryCode"
                                     />
                                 </mat-form-field>
                             </div>
@@ -515,7 +501,9 @@
             </div>
             <div *ngIf="currentTab === 'room'">
                 <!-- Content for Room Description -->
-                <p>Room Description Content goes here...</p>
+                <app-room-descriptions
+                    [roomsDescriptionForm]="hotelForm.get('roomsDescription')" 
+                />
             </div>
             <div *ngIf="currentTab === 'activeDeals'">
                 <!-- Content for Active Deals -->
