@@ -151,6 +151,23 @@
                                     <mat-option value="5">5</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <mat-form-field class="w-full mt-3">
+                                <mat-label>Website</mat-label>
+                                <input
+                                    matInput
+                                    type="url"
+                                    formControlName="Website"
+                                    placeholder="Website Url..."
+                                />
+                            </mat-form-field>
+                            <mat-form-field class="w-full mt-3">
+                                <mat-label>Hotel ID / TBO codes</mat-label>
+                                <input
+                                    matInput
+                                    formControlName="HotelID"
+                                    placeholder="Hotel ID..."
+                                />
+                            </mat-form-field>
                         </fuse-card>
 
                         <!-- Gallery -->
@@ -486,9 +503,14 @@
                         </fuse-card>
                     </div>
                 </div>
+                <div mat-dialog-actions class="mb-4 flex justify-end">
+                    <button (click)="submitForm()" color="primary" mat-raised-button>
+                        Save Hotel
+                    </button>
+                </div>
             </div>
 
-            <div *ngIf="currentTab === 'room'">
+            <div *ngIf="currentTab === 'rooms'">
                 <!-- Content for Room Description -->
                 <div [formGroup]="hotelForm.get('roomsDescription')">
                     <div class="flex flex-auto flex-col lg:flex-row justify-center w-full max-w-[1920px] mx-auto p-6 sm:p-8">
@@ -620,6 +642,10 @@
                 </div>
             </div>
             
+            <div *ngIf="currentTab === 'room'">
+                <!-- Content for Pictures -->
+                Content for Room Description
+            </div>
             <div *ngIf="currentTab === 'pictures'">
                 <!-- Content for Pictures -->
                 <app-gallery [hotelForm]="hotelForm" [images]="images" />
@@ -632,11 +658,6 @@
                 <!-- Content for Expired Deals -->
                 <p>Expired Deals Content goes here...</p>
             </div>
-        </div>
-        <div mat-dialog-actions class="mb-4 flex justify-center">
-            <button (click)="submitForm()" color="primary" mat-raised-button>
-                Save Hotel
-            </button>
         </div>
     </form>
 </div>

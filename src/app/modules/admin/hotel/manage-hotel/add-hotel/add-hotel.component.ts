@@ -23,6 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseCardComponent } from '@fuse/components/card';
 import { GalleryComponent } from './gallery/gallery.component';
+import { HotelService } from '../../hotel.service';
 
 @Component({
     selector: 'app-add-hotel',
@@ -51,7 +52,7 @@ import { GalleryComponent } from './gallery/gallery.component';
 export class AddHotelComponent implements OnInit {
     hotelForm!: FormGroup;
     currentTabIndex = 0;
-    currentTab: string = 'room'; // Default selected tab
+    currentTab: string = 'description'; // Default selected tab
     defaultImages = [
         {
             Url: 'assets/images/blank_image.jpg',
@@ -82,7 +83,7 @@ export class AddHotelComponent implements OnInit {
     currency: string = '';
     roomCategories: any[] = [];
 
-    constructor(private fb: FormBuilder, private dialog: MatDialog) {}
+    constructor(private fb: FormBuilder, private dialog: MatDialog, private hotelService: HotelService) {}
 
     ngOnInit(): void {
         this.hotelForm = this.fb.group({
@@ -95,41 +96,41 @@ export class AddHotelComponent implements OnInit {
             HotelImages: this.fb.array([]),
             HotelRemarks: this.fb.array([]),
             HotelLocation: this.fb.group({
-                latitude: ['', Validators.required],
-                longitude: ['', Validators.required],
+                latitude: [''],
+                longitude: [''],
                 CityCode: ['', Validators.required],
                 CityName: ['', Validators.required],
                 CountryCode: [''],
                 CountryName: [''],
-                Description: [``, Validators.required],
+                Description: [``],
                 Address: this.fb.group({
                     street: [''],
                     house_number: [''],
                     zipcode: [''],
                     phone: [''],
                     fax: [''],
-                    email: ['', [Validators.required, Validators.email]],
+                    email: [''],
                 }),
             }),
             Website: [''],
             HotelID: [''],
             source: ['admin'],
 
-            roomsDescription: this.fb.group({
-                package_type: [''],
-                remarks: [''],
-                selected_category: [''],
-                complects: {},
-                infantPrice: this.fb.group({
-                    currency: [this.currency],
-                    amount: [this.price],
-                }),
-                additionalPayments: this.fb.array([]),
-                dealData: [],
-                restrictions: [''],
-                supplements: [''],
-                taxes: [''],
-            }),
+            // roomsDescription: this.fb.group({
+            //     package_type: [''],
+            //     remarks: [''],
+            //     selected_category: [''],
+            //     complects: {},
+            //     infantPrice: this.fb.group({
+            //         currency: [this.currency],
+            //         amount: [this.price],
+            //     }),
+            //     additionalPayments: this.fb.array([]),
+            //     dealData: [],
+            //     restrictions: [''],
+            //     supplements: [''],
+            //     taxes: [''],
+            // }),
         });
     }
 
@@ -323,40 +324,49 @@ export class AddHotelComponent implements OnInit {
 
     submitForm(): void {
         if (this.hotelForm.valid) {
-            const formValue = this.hotelForm.value; // Get the form's current value
+            const formValue = this.hotelForm.value; 
 
-            const infantPrice = {
-                [formValue.infantPrice.currency]: formValue.infantPrice.amount,
-            };
+            // const infantPrice = {
+            //     [formValue?.roomsDescription?.infantPrice.currency]:
+            //         formValue?.roomsDescription?.infantPrice?.amount,
+            // };
 
-            // Prepare the final data for submission
-            const finalData = {
-                ...formValue,
-                infantPrice, // Attach the infantPrice correctly
-            };
+            // // Prepare the final data for submission
+            // const finalData = {
+            //     ...formValue,
+            //     roomsDescription: {
+            //         ...formValue?.roomsDescription, 
+            //         infantPrice: infantPrice, 
+            //     },
+            // };
 
-            console.log('Form Submitted:', finalData); // Log the final data
+            console.log('Form Submitted:', formValue);
+
+            this.hotelService.addHotel(formValue).subscribe((response)=>{
+                console.log("response data", response);
+                
+            })
         } else {
-            const formValue = this.hotelForm.value; // Get the form's current value
-            console.log("form control", this.hotelForm);
-            
+            const formValue = this.hotelForm.value; 
+            console.log('form control', this.hotelForm);
+
             console.log(formValue);
 
-            const infantPrice = {
-                [formValue.roomsDescription.infantPrice.currency]:
-                    formValue.roomsDescription.infantPrice?.amount,
-            };
+            // const infantPrice = {
+            //     [formValue?.roomsDescription?.infantPrice.currency]:
+            //         formValue?.roomsDescription?.infantPrice?.amount,
+            // };
 
-            // Prepare the final data for submission
-            const finalData = {
-                ...formValue,
-                roomsDescription: {
-                    ...formValue.roomsDescription, // Ensure all fields in roomsDescription are kept
-                    infantPrice: infantPrice // Update or add the infantPrice field
-                }
-            };
+            // // Prepare the final data for submission
+            // const finalData = {
+            //     ...formValue,
+            //     roomsDescription: {
+            //         ...formValue?.roomsDescription, 
+            //         infantPrice: infantPrice,
+            //     },
+            // };
 
-            console.log('Form is invalid', finalData);
+            console.log('Form is invalid', formValue);
         }
     }
 }
