@@ -16,11 +16,11 @@ export default [
     },
     {
         path: 'hotel-details/:id',
-        component: HotelDetailsComponent,
+        component: AddHotelComponent,
     },
     {
         path: 'kosher-hotel-details/:id',
-        component: KosherHotelDetailsComponent,
+        component: AddHotelComponent,
     },
     {
         path: 'add-hotel',
