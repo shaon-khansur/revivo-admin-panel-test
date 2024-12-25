@@ -129,4 +129,10 @@ export class HotelService {
     addHotel(data: any): Observable<any> {
         return this.http.post<any>(`${environment.baseUrl}hotelData`, data);
     }
+    isFavorite(hotelId: any): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/isFavorite`;
+        const body = { hotelId };
+    
+        return this.http.post<any>(url, body);
+    }
 }

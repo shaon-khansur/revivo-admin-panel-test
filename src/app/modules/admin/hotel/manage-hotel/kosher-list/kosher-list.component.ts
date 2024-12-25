@@ -20,6 +20,7 @@ import {
     _MatSlideToggleRequiredValidatorModule,
     MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-kosher-list',
@@ -39,6 +40,7 @@ import {
         RouterModule,
         _MatSlideToggleRequiredValidatorModule,
         MatSlideToggleModule,
+        MatCheckboxModule
     ],
     templateUrl: './kosher-list.component.html',
     styleUrls: ['./kosher-list.component.scss'],
@@ -48,7 +50,7 @@ export class KosherListComponent {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
-        'Thumbnail',
+        'Favorite',
         'hotelName',
         'HotelRate',
         'cityName',
@@ -106,6 +108,13 @@ export class KosherListComponent {
                         },
                     });
             });
+    }
+
+    toggleFavorite(element: any) {
+        element.isFavorite = !element.isFavorite;
+        this.hotelService.isFavorite(element.HotelID).subscribe(response => {
+        
+        });
     }
 
     getStars(rate: number): number[] {

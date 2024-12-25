@@ -45,34 +45,26 @@
         >
             <div class="mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource">
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="Thumbnail">
-                        <th mat-header-cell *matHeaderCellDef>Hotel Image</th>
-                        <td
-                            mat-cell
-                            *matCellDef="let element"
-                            style="
-                                display: flex;
-                                gap: 10px;
-                                align-items: center;
-                            "
-                        >
-                            <div
-                                style="width: 100px; height: 52px; padding: 3px"
-                            >
-                                <ng-container *ngIf="element?.thumbnail">
-                                    <img
-                                        [src]="element?.thumbnail"
-                                        alt="logo"
-                                        srcset=""
-                                        loading="lazy"
-                                        style="
-                                            height: 100%;
-                                            width: 100%;
-                                            border-radius: 3px;
-                                        "
-                                    />
-                                </ng-container>
+                    <ng-container matColumnDef="Favorite">
+                        <th mat-header-cell *matHeaderCellDef>Favorite</th>
+                        <td mat-cell *matCellDef="let element" class="w-10">
+                            <div class="flex justify-center">
+                                <mat-icon
+                                    *ngIf="element?.isFavorite"
+                                    class="favorite-icon"
+                                    style="color: red; cursor: pointer;"
+                                    (click)="toggleFavorite(element)"
+                                >
+                                    favorite
+                                </mat-icon>
+                                <mat-icon
+                                    *ngIf="!element?.isFavorite"
+                                    class="favorite-icon"
+                                    style="color: red; cursor: pointer;"
+                                    (click)="toggleFavorite(element)"
+                                >
+                                    favorite_border
+                                </mat-icon>
                             </div>
                         </td>
                     </ng-container>
@@ -124,7 +116,6 @@
                             </ng-container>
                         </td>
                     </ng-container>
-
                     <ng-container matColumnDef="cityName">
                         <th mat-header-cell *matHeaderCellDef>City Name</th>
                         <td mat-cell *matCellDef="let element">
