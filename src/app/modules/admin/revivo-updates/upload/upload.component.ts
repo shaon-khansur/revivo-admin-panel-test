@@ -15,6 +15,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewDataComponent } from './view-data/view-data.component';
 
 @Component({
     selector: 'app-upload',
@@ -41,7 +43,7 @@ export class UploadComponent implements OnInit {
     data: any;
     ELEMENT_DATA: any = [];
     dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-    displayedColumns: string[] = ['time', 'pdfStatus', 'codeStatus', 'delete'];
+    displayedColumns: string[] = ['time', 'pdfStatus', 'codeStatus','view', 'delete'];
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
@@ -49,8 +51,9 @@ export class UploadComponent implements OnInit {
 
     constructor(
         private uploadService: UploadService,
+        private _fuseConfirmationService: FuseConfirmationService,
+        private dialog: MatDialog,
         private fb: FormBuilder,
-        private _fuseConfirmationService: FuseConfirmationService
     ) {
         // Initialize the form with FormBuilder
         this.uploadForm = this.fb.group({
@@ -147,8 +150,6 @@ export class UploadComponent implements OnInit {
             }
         }
     }
-
-    // New function to update statuses
     // New function to update statuses and refresh data
     updateStatus(): void {
         const pdfStatus = this.uploadForm.get('pdfStatus')?.value;
@@ -345,4 +346,18 @@ export class UploadComponent implements OnInit {
             dropArea.classList[action](className);
         }
     }
+
+    openViewDialog(element: any): void {
+        this.dialog.open(ViewDataComponent, {
+            width: '900px',
+            height: '800px',
+            data: {
+                pdfUrl: element.pdf, 
+                htmlContent: element.code,
+                pdfStatus: element.pdfStatus,
+                codeStatus: element.codeStatus,
+            },
+        });
+    }
+    
 }
