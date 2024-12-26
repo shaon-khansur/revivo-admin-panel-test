@@ -7,7 +7,7 @@
                     (change)="updateStatus()"
                 >
                     <span>{{
-                        data.pdfStatus ? "PDF Enabled" : "PDF Disabled"
+                        data?.pdfStatus ? "PDF Enabled" : "PDF Disabled"
                     }}</span>
                 </mat-slide-toggle>
             </div>
