@@ -20,13 +20,32 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import {
+    MatTable,
+    MatTableDataSource,
+    MatTableModule,
+} from '@angular/material/table';
 import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { catchError, concatMap, filter, forkJoin, from, map, of, toArray } from 'rxjs';
+import {
+    catchError,
+    concatMap,
+    filter,
+    forkJoin,
+    from,
+    map,
+    of,
+    tap,
+    toArray,
+} from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { OrderDetailsComponent } from '../../deals/order-list/order-details/order-details.component';
 import { OrderDetailsVewComponent } from './order-details-vew/order-details-vew.component';
+import {
+    MatPaginator,
+    MatPaginatorModule,
+    PageEvent,
+} from '@angular/material/paginator';
 
 @Component({
     selector: 'app-orders',
@@ -36,19 +55,17 @@ import { OrderDetailsVewComponent } from './order-details-vew/order-details-vew.
         MatSidenavModule,
         MatButtonModule,
         MatIconModule,
-        NgFor,
-        NgClass,
-        NgSwitch,
-        NgSwitchCase,
+
         MatFormFieldModule,
         ReactiveFormsModule,
         FormsModule,
         MatInputModule,
         MatAutocompleteModule,
-        AsyncPipe,
+
         MatCheckboxModule,
         MatSelectModule,
         MatTableModule,
+        MatPaginatorModule,
     ],
     templateUrl: './orders.component.html',
     styleUrls: ['./orders.component.scss'],
@@ -69,98 +86,125 @@ export class OrdersComponent implements OnInit {
         'flightType',
         'view',
     ];
-    dataSource: any[];
+    dataSource: MatTableDataSource<any[]>;
+    totalItems: number = 0; // Total number of items from the API
+    limit: number = 10; // Number of items per page
+    page: number = 0; // Current page index
 
     @ViewChild('amaFlightOrderTable') table: MatTable<any[]>;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
     constructor(
         private amaFlightOrderService: AmaFlightOrderService,
         private _fuseConfirmationDialog: FuseConfirmationService,
-        private dialog: MatDialog,
+        private dialog: MatDialog
     ) {}
     ngOnInit(): void {
-        this.getFlightOrders();
+        this.getFlightOrders({ page: this.page, limit: this.limit });
     }
 
-    getFlightOrders(): void {
-        this.amaFlightOrderService.getAllOrders().pipe(
-            concatMap(res => from(res.data)),
-            // map((order: any) => {
-            //     if (order.oneWay == false && order.orderComplete === true) {
-            //         order['order'] = [order.inFlightOrder.data, order.outFlightOrder.data]
-            //     }
-            // }),
-            filter((el: {orderComplete: boolean}) => el?.orderComplete === true  || el?.orderComplete === false),
-            toArray(),
-        ).subscribe({
-            next: (response) => {
-                this.amaFlightOrderData = response;
-                this.dataSource = this.amaFlightOrderData;
-                console.log('amaFlightOrders', this.amaFlightOrderData);
-            },
+    ngAfterViewInit() {
+        this.paginator.page.subscribe((event) => {
+          this.page = event.pageIndex;
+          this.limit = event.pageSize;
+          this.getFlightOrders({page: this.page, limit: this.limit});
         });
+      }
+
+    getFlightOrders(data: { page: number; limit: number }): void {
+        this.amaFlightOrderService
+            .getAllOrders(data)
+            .subscribe({
+                next: (response) => {
+                    this.amaFlightOrderData = response.data;
+                    this.dataSource = new MatTableDataSource<any[]>(
+                        this.amaFlightOrderData
+                    );
+                    this.totalItems = response.totalItems;
+                    console.log('amaFlightOrders', this.amaFlightOrderData);
+                },
+            });
     }
 
+    // handlePageEvent(event: PageEvent): void {
+    //     console.log('pageEvent', event);
+    //     this.pageIndex = event.pageIndex;
+    //     // console.log(`page:${this.pageIndex}, limit:${this.pageSize}`, event);
+    //     this.getFlightOrders({ page: event.pageIndex, limit: this.pageSize });
+    // }
     getPnr(element) {
-        if (element.oneWay == false && element.flightType != "RT") {
+        if (element.oneWay == false && element.flightType != 'RT') {
             let outPNR: any[] = [];
             let inPNR: any[] = [];
             //two way flights
-            if (element.order?.outFlightOrder && element.order?.outFlightOrder.data.associatedRecords.length > 1) {
-                const sorted = element.order?.outFlightOrder.data.associatedRecords
-                    .map((el) => el.reference);
+            if (
+                element.order?.outFlightOrder &&
+                element.order?.outFlightOrder.data.associatedRecords.length > 1
+            ) {
+                const sorted =
+                    element.order?.outFlightOrder.data.associatedRecords.map(
+                        (el) => el.reference
+                    );
                 outPNR = sorted;
             } else {
                 if (element.order?.outFlightOrder) {
-                    const sorted = element.order?.outFlightOrder.data.associatedRecords.map(
-                        (el) => el.reference
-                    );
+                    const sorted =
+                        element.order?.outFlightOrder.data.associatedRecords.map(
+                            (el) => el.reference
+                        );
                     outPNR = sorted;
                 } else {
                     outPNR = [];
                 }
             }
 
-            if (element.order?.inFlightOrder && element.order?.inFlightOrder.data.associatedRecords.length > 1) {
-                const sorted = element.order.inFlightOrder.data.associatedRecords
-                    .map((el) => el.reference);
+            if (
+                element.order?.inFlightOrder &&
+                element.order?.inFlightOrder.data.associatedRecords.length > 1
+            ) {
+                const sorted =
+                    element.order.inFlightOrder.data.associatedRecords.map(
+                        (el) => el.reference
+                    );
                 inPNR = sorted;
             } else {
                 if (element.order.inFlightOrder) {
-                    const sorted = element.order?.inFlightOrder.data.associatedRecords.map(
-                        (el) => el.reference
-                    );
+                    const sorted =
+                        element.order?.inFlightOrder.data.associatedRecords.map(
+                            (el) => el.reference
+                        );
                     inPNR = sorted;
                 } else {
                     inPNR = [];
                 }
             }
 
-            return {outbound: outPNR, inbound: inPNR}
-        } else if (element.oneWay == false && element.flightType === "RT") {
+            return { outbound: outPNR, inbound: inPNR };
+        } else if (element.oneWay == false && element.flightType === 'RT') {
             if (element.order?.data.associatedRecords.length > 1) {
-                const sorted = element.order?.data.associatedRecords
-                    .map((el) => el.reference);
-                return {round: sorted};
+                const sorted = element.order?.data.associatedRecords.map(
+                    (el) => el.reference
+                );
+                return { round: sorted };
             } else {
                 const sorted = element.order?.data.associatedRecords.map(
                     (el) => el.reference
                 );
-                return {round: sorted}
+                return { round: sorted };
             }
         } else {
             //One way flights
             if (element.order?.data?.associatedRecords.length > 1) {
-                const sorted = element.order?.data.associatedRecords
-                    .map((el) => el.reference);
-                return {outbound: sorted};
+                const sorted = element.order?.data.associatedRecords.map(
+                    (el) => el.reference
+                );
+                return { outbound: sorted };
             } else {
                 const sorted = element.order?.data.associatedRecords.map(
                     (el) => el.reference
                 );
-                return {outbound: sorted};
+                return { outbound: sorted };
             }
         }
-
     }
 
     edit(data) {
@@ -168,7 +212,7 @@ export class OrdersComponent implements OnInit {
     }
 
     delete(data) {
-        console.log('data', data)
+        console.log('data', data);
         const confirmation = this._fuseConfirmationDialog.open({
             title: 'Delete data',
             message:
@@ -185,33 +229,48 @@ export class OrdersComponent implements OnInit {
         confirmation.afterClosed().subscribe((result) => {
             if (result === 'confirmed') {
                 if (data.oneWay === true) {
-                    this.amaFlightOrderService.deleteAmadeusFlightOrder({
-                        id: data.id,
-                        amadeusOrderId: data.order.id,
-                    } as OrderIDS)
-                    .subscribe({
-                        next: (res) => {
-                            this.getFlightOrders();
-                            console.log('d-->', res);
-                        },
-                        error: (err) => {
-                            console.log('err-->', err);
-                        },
-                    });
-                } else if (data.oneWay === false && data.flightType !== "RT") {
+                    this.amaFlightOrderService
+                        .deleteAmadeusFlightOrder({
+                            id: data.id,
+                            amadeusOrderId: data.order.id,
+                        } as OrderIDS)
+                        .subscribe({
+                            next: (res) => {
+                                this.getFlightOrders({
+                                    page: this.page,
+                                    limit: this.limit,
+                                });
+                                console.log('d-->', res);
+                            },
+                            error: (err) => {
+                                console.log('err-->', err);
+                            },
+                        });
+                } else if (data.oneWay === false && data.flightType !== 'RT') {
                     forkJoin([
-                        this.amaFlightOrderService.deleteAmadeusFlightOrder({
-                            id: data.id,
-                            amadeusOrderId: data.order.outFlightOrder.data.id,
-                        } as OrderIDS).pipe(catchError(e => of('outFlightOrder Error'))),
+                        this.amaFlightOrderService
+                            .deleteAmadeusFlightOrder({
+                                id: data.id,
+                                amadeusOrderId:
+                                    data.order.outFlightOrder.data.id,
+                            } as OrderIDS)
+                            .pipe(
+                                catchError((e) => of('outFlightOrder Error'))
+                            ),
 
-                        this.amaFlightOrderService.deleteAmadeusFlightOrder({
-                            id: data.id,
-                            amadeusOrderId: data.order.inFlightOrder.data.id,
-                        } as OrderIDS).pipe(catchError(e => of('inFlightOrder Error')))
+                        this.amaFlightOrderService
+                            .deleteAmadeusFlightOrder({
+                                id: data.id,
+                                amadeusOrderId:
+                                    data.order.inFlightOrder.data.id,
+                            } as OrderIDS)
+                            .pipe(catchError((e) => of('inFlightOrder Error'))),
                     ]).subscribe({
                         next: (res) => {
-                            this.getFlightOrders();
+                            this.getFlightOrders({
+                                page: this.page,
+                                limit: this.limit,
+                            });
                             console.log('d-->', res);
                         },
                         error: (err) => {
@@ -219,32 +278,36 @@ export class OrdersComponent implements OnInit {
                         },
                     });
                 } else {
-                    this.amaFlightOrderService.deleteAmadeusFlightOrder({
-                        id: data.id,
-                        amadeusOrderId: data.order.id,
-                    } as OrderIDS)
-                    .subscribe({
-                        next: (res) => {
-                            this.getFlightOrders();
-                            console.log('d-->', res);
-                        },
-                        error: (err) => {
-                            console.log('err-->', err);
-                        },
-                    });
+                    this.amaFlightOrderService
+                        .deleteAmadeusFlightOrder({
+                            id: data.id,
+                            amadeusOrderId: data.order.id,
+                        } as OrderIDS)
+                        .subscribe({
+                            next: (res) => {
+                                this.getFlightOrders({
+                                    page: this.page,
+                                    limit: this.limit,
+                                });
+                                console.log('d-->', res);
+                            },
+                            error: (err) => {
+                                console.log('err-->', err);
+                            },
+                        });
                 }
             }
         });
     }
 
-
     showIssuance(element): void {
-
-
-        this.dialog.open(OrderDetailsVewComponent, {data: element, width: "600px"}).afterClosed().subscribe({
-            next: (data) => {
-                console.log(data)
-            }
-        })
+        this.dialog
+            .open(OrderDetailsVewComponent, { data: element, width: '600px' })
+            .afterClosed()
+            .subscribe({
+                next: (data) => {
+                    console.log(data);
+                },
+            });
     }
 }
