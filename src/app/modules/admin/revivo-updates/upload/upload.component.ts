@@ -12,6 +12,9 @@ import { UploadService } from '../upload.service';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
     selector: 'app-upload',
@@ -24,17 +27,31 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         MatInputModule,
         ReactiveFormsModule,
         MatSlideToggleModule,
+        MatTableModule,
+        MatPaginatorModule,
     ],
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
     @ViewChild('fileInput') fileInput!: ElementRef;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
     selectedFile!: File;
     uploadForm: FormGroup;
     data: any;
+    ELEMENT_DATA: any = [];
+    dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+    displayedColumns: string[] = ['time', 'pdfStatus', 'codeStatus', 'delete'];
 
-    constructor(private uploadService: UploadService, private fb: FormBuilder) {
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+    }
+
+    constructor(
+        private uploadService: UploadService,
+        private fb: FormBuilder,
+        private _fuseConfirmationService: FuseConfirmationService
+    ) {
         // Initialize the form with FormBuilder
         this.uploadForm = this.fb.group({
             file: [''],
@@ -81,6 +98,11 @@ export class UploadComponent implements OnInit {
                 this.handleError(error);
             }
         );
+        this.uploadService.getHistory().subscribe((response) => {
+            console.log(response);
+            this.ELEMENT_DATA = response;
+            this.dataSource.data = this.ELEMENT_DATA;
+        });
     }
 
     triggerFileInput(event?: Event): void {
@@ -162,6 +184,26 @@ export class UploadComponent implements OnInit {
                 this.handleError(error);
             }
         );
+        this.uploadService.getHistory().subscribe(
+            (response) => {
+                this.ELEMENT_DATA = response;
+                this.dataSource.data = this.ELEMENT_DATA;
+            },
+            (error: HttpErrorResponse) => {
+                this.handleError(error);
+            }
+        );
+    }
+    formatDate(timestamp: { _seconds: number; _nanoseconds: number }): string {
+        const date = new Date(timestamp._seconds * 1000);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+        return `${day}-${month}-${year} | ${formattedHours}:${minutes} ${ampm}`;
     }
 
     // Modified function to upload file
@@ -208,6 +250,63 @@ export class UploadComponent implements OnInit {
                 this.handleError(error);
             }
         );
+    }
+
+    deleteElement(element?: any) {
+        if (element) {
+            const confirmation = this._fuseConfirmationService.open({
+                title: 'Delete History',
+                message:
+                    'Are you sure you want to delete? This action cannot be undone!',
+                actions: {
+                    confirm: {
+                        show: true,
+                        label: 'Ok',
+                        color: 'primary',
+                    },
+                },
+            });
+            confirmation.afterClosed().subscribe((result) => {
+                if (result === 'confirmed') {
+                    this.uploadService.deleteHistory(element.id).subscribe(
+                        (response) => {
+                            this.ELEMENT_DATA = this.ELEMENT_DATA.filter(
+                                (item: any) => item !== element
+                            );
+                            this.dataSource.data = this.ELEMENT_DATA;
+                        },
+                        (error: HttpErrorResponse) => {
+                            this.handleError(error);
+                        }
+                    );
+                }
+            });
+        } else {
+            const confirmation = this._fuseConfirmationService.open({
+                title: 'Delete History',
+                message:
+                    'Are you sure you want to delete All History of Updates? This action cannot be undone!',
+                actions: {
+                    confirm: {
+                        show: true,
+                        label: 'Ok',
+                        color: 'primary',
+                    },
+                },
+            });
+            confirmation.afterClosed().subscribe((result) => {
+                if (result === 'confirmed') {
+                    this.uploadService.deleteHistory().subscribe(
+                        (response) => {
+                            this.dataSource.data = [];
+                        },
+                        (error: HttpErrorResponse) => {
+                            this.handleError(error);
+                        }
+                    );
+                }
+            });
+        }
     }
 
     handleError(error: HttpErrorResponse): void {

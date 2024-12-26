@@ -1,59 +1,142 @@
-<form [formGroup]="uploadForm" class="w-full">
-  <div class="status">
-    <div class="status-toggle">
-      <mat-slide-toggle
-        formControlName="pdfStatus"
-        (change)="updateStatus()"
-      >
-        <span>{{ data.pdfStatus ? "PDF Enabled" : "PDF Disabled" }}</span>
-      </mat-slide-toggle>
-    </div>
-    <div class="status-toggle">
-      <mat-slide-toggle
-        formControlName="codeStatus"
-        (change)="updateStatus()"
-      >
-        <span>{{ data.codeStatus ? "HTML Code Enabled" : "HTML Code Disabled" }}</span>
-      </mat-slide-toggle>
-    </div>
-  </div>
-  
-
-    <div class="upload-container mat-elevation-z3">
-        <h1>PDF upload or HTML input</h1>
-
-        <div class="file-drop-area" (click)="triggerFileInput()">
-            <p>
-                <span class="browse-text" (click)="triggerFileInput($event)"
-                    >Browse</span
+<section class="w-full">
+    <form [formGroup]="uploadForm" class="w-full">
+        <div class="status">
+            <div class="status-toggle">
+                <mat-slide-toggle
+                    formControlName="pdfStatus"
+                    (change)="updateStatus()"
                 >
-                for a PDF file to upload.
-            </p>
-            <input
-                type="file"
-                hidden
-                (change)="onFileSelected($event)"
-                accept="application/pdf"
-                #fileInput
-            />
+                    <span>{{
+                        data.pdfStatus ? "PDF Enabled" : "PDF Disabled"
+                    }}</span>
+                </mat-slide-toggle>
+            </div>
+            <div class="status-toggle">
+                <mat-slide-toggle
+                    formControlName="codeStatus"
+                    (change)="updateStatus()"
+                >
+                    <span>{{
+                        data?.codeStatus
+                            ? "HTML Code Enabled"
+                            : "HTML Code Disabled"
+                    }}</span>
+                </mat-slide-toggle>
+            </div>
         </div>
 
-        <p>or</p>
+        <div class="upload-container mat-elevation-z3">
+            <h1>PDF upload or HTML input</h1>
 
-        <mat-form-field appearance="fill" class="w-full">
-            <mat-label>Enter HTML Code:</mat-label>
-            <textarea
-                matInput
-                placeholder="Enter your HTML code here..."
-                formControlName="code"
-                rows="3"
-            ></textarea>
-        </mat-form-field>
+            <div class="file-drop-area" (click)="triggerFileInput()">
+                <p>
+                    <span class="browse-text" (click)="triggerFileInput($event)"
+                        >Browse</span
+                    >
+                    for a PDF file to upload.
+                </p>
+                <input
+                    type="file"
+                    hidden
+                    (change)="onFileSelected($event)"
+                    accept="application/pdf"
+                    #fileInput
+                />
+            </div>
 
-        <div style="width: 100%; margin-top: 20px">
-            <button mat-raised-button color="primary" (click)="uploadFile()">
-                Upload
-            </button>
+            <p>or</p>
+
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Enter HTML Code:</mat-label>
+                <textarea
+                    matInput
+                    placeholder="Enter your HTML code here..."
+                    formControlName="code"
+                    rows="3"
+                ></textarea>
+            </mat-form-field>
+
+            <div style="width: 100%; margin-top: 20px">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="uploadFile()"
+                >
+                    Upload
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="history">
+        <h1>History of Updates</h1>
+    </div>
+    <div class="table-container">
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+                <!-- Weight Column -->
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef>Time</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ formatDate(element.timestamp) }}
+                    </td>
+                </ng-container>
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="pdfStatus">
+                    <th mat-header-cell *matHeaderCellDef>Pdf</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.pdfStatus }}
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="codeStatus">
+                    <th mat-header-cell *matHeaderCellDef>Code</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.codeStatus }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef>Delete</th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-icon
+                            class="delete-icon"
+                            style="cursor: pointer"
+                            (click)="deleteElement(element)"
+                        >
+                            delete
+                        </mat-icon>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+
+            <div class="flex justify-between bg-white pr-5">
+                <mat-paginator
+                    [pageSizeOptions]="[5, 10, 20]"
+                    showFirstLastButtons
+                    aria-label="Select page of periodic elements"
+                >
+                </mat-paginator>
+
+                <button
+                    mat-raised-button
+                    color="warn"
+                    (click)="deleteElement()"
+                    style="direction: rtl;"
+                > 
+                    <mat-icon style="cursor: pointer">
+                      delete_forever
+                    </mat-icon>
+                    Delete All
+                </button>
+            </div>
         </div>
     </div>
-</form>
+</section>
