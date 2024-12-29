@@ -21,6 +21,7 @@ import {
     MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-hotel-list',
@@ -41,6 +42,7 @@ import { MatSelectModule } from '@angular/material/select';
         _MatSlideToggleRequiredValidatorModule,
         MatSlideToggleModule,
         MatSelectModule,
+        MatCheckboxModule
     ],
     templateUrl: './hotel-list.component.html',
     styleUrls: ['./hotel-list.component.scss'],
@@ -50,7 +52,7 @@ export class HotelListComponent implements OnInit {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
-        'Thumbnail',
+        'Favorite',
         'hotelName',
         'HotelRate',
         'cityName',
@@ -111,6 +113,13 @@ export class HotelListComponent implements OnInit {
                         },
                     });
             });
+    }
+
+    toggleFavorite(element: any) {
+        element.isFavorite = !element.isFavorite;
+        this.hotelService.isFavorite(element.HotelID).subscribe(response => {
+        
+        });
     }
 
     onKosherStatusChange(selectedValue: string): void {

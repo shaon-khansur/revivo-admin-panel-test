@@ -17,25 +17,7 @@
     </div>
 </div>
 
-<ng-template #defaultImageTemplate>
-    <div class="flex flex-wrap gap-5 mt-5">
-        <div
-            *ngFor="let defaultImage of defaultImages; let i = index"
-            class="relative"
-        >
-            <div>
-                <img
-                    [src]="defaultImage.Url"
-                    alt="Default Hotel Image"
-                    class="object-cover w-[150px] h-[100px]"
-                    loading="lazy"
-                />
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-<div class="text-2xl font-semibold leading-tight mt-5">Rooms Images</div>
+<!-- <div class="text-2xl font-semibold leading-tight mt-5">Rooms Images</div>
 
 <div
     formArrayName="HotelImages"
@@ -52,7 +34,7 @@
             />
         </div>
     </div>
-</div>
+</div> -->
 
 <ng-template #defaultImageTemplate>
     <div class="flex flex-wrap gap-5 mt-5">
