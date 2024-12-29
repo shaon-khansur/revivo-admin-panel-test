@@ -10,7 +10,12 @@ import {
 } from '@angular/common/http';
 import { UploadService } from '../upload.service';
 import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -43,7 +48,14 @@ export class UploadComponent implements OnInit {
     data: any;
     ELEMENT_DATA: any = [];
     dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
-    displayedColumns: string[] = ['time', 'pdfStatus', 'codeStatus','view', 'delete'];
+    displayedColumns: string[] = [
+        'title',
+        'time',
+        'pdfStatus',
+        'codeStatus',
+        'view',
+        'delete',
+    ];
 
     ngAfterViewInit() {
         this.dataSource.paginator = this.paginator;
@@ -53,12 +65,13 @@ export class UploadComponent implements OnInit {
         private uploadService: UploadService,
         private _fuseConfirmationService: FuseConfirmationService,
         private dialog: MatDialog,
-        private fb: FormBuilder,
+        private fb: FormBuilder
     ) {
         // Initialize the form with FormBuilder
         this.uploadForm = this.fb.group({
             file: [''],
             code: [''],
+            title: ['', Validators.required],
             pdfStatus: [false],
             codeStatus: [false],
         });
@@ -210,6 +223,7 @@ export class UploadComponent implements OnInit {
     // Modified function to upload file
     uploadFile(): void {
         const code = this.uploadForm.get('code')?.value;
+        const title = this.uploadForm.get('title')?.value;
 
         if (this.selectedFile) {
             const formData = new FormData();
@@ -221,7 +235,7 @@ export class UploadComponent implements OnInit {
                     this.refreshData();
 
                     if (response && response.body) {
-                        this.uploadSecondStep(response.body, code);
+                        this.uploadSecondStep(response.body, code, title);
                     }
                 },
                 (error: HttpErrorResponse) => {
@@ -230,27 +244,50 @@ export class UploadComponent implements OnInit {
             );
         } else {
             // If no file is selected, directly call uploadSecondStep
-            this.uploadSecondStep('', code);
+            this.uploadSecondStep('', code, title);
         }
     }
 
     // New function to handle the second step of the upload
-    uploadSecondStep(fileUrl: string, code: string): void {
+    uploadSecondStep(fileUrl: string, code: string, title: string): void {
         const data = {
-            pdfUrl: fileUrl, // If no file was uploaded, this will be an empty string
+            pdfUrl: fileUrl,
             code,
+            title,
         };
-        this.uploadService.upload(data).subscribe(
-            (event) => {
-                if (event.type === HttpEventType.Response) {
+        if (data.pdfUrl || code) {
+            this.uploadService.upload(data).subscribe(
+                (event) => {
+                    if (event.type === HttpEventType.Response) {
+                    }
+                    this.resetForm();
+                    this.refreshData();
+                },
+                (error: HttpErrorResponse) => {
+                    this.handleError(error);
                 }
-                this.resetForm();
-                this.refreshData();
-            },
-            (error: HttpErrorResponse) => {
-                this.handleError(error);
-            }
-        );
+            );
+        } else {
+            this._fuseConfirmationService.open({
+                title: 'Update Failed',
+                message:
+                    'The update could not be completed successfully. Please Upload a PDF file or enter the code to proceed.',
+
+                icon: {
+                    show: true,
+                    name: 'heroicons_outline:exclamation-circle',
+                    color: 'warn',
+                },
+                actions: {
+                    confirm: {
+                        show: false,
+                        label: 'OK',
+                        color: 'primary',
+                    },
+                },
+                dismissible: true, 
+            });
+        }
     }
 
     deleteElement(element?: any) {
@@ -326,6 +363,8 @@ export class UploadComponent implements OnInit {
         setTimeout(() => {
             this.selectedFile = null;
             this.uploadForm.get('code')?.setValue('');
+            this.uploadForm.get('title')?.setValue('');
+            this.uploadForm.get('file')?.setValue('');
             this.updateDropAreaText('Browse for a PDF file to upload.');
             const inputElement = this.fileInput
                 .nativeElement as HTMLInputElement;
@@ -352,12 +391,11 @@ export class UploadComponent implements OnInit {
             width: '900px',
             height: '800px',
             data: {
-                pdfUrl: element.pdf, 
+                pdfUrl: element.pdf,
                 htmlContent: element.code,
                 pdfStatus: element.pdfStatus,
                 codeStatus: element.codeStatus,
             },
         });
     }
-    
 }
