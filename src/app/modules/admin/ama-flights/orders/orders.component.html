@@ -1,4 +1,3 @@
-
 <div class="w-full">
     <table
         #amaFlightOrderTable
@@ -12,55 +11,90 @@
         <!-- Position Column -->
         <ng-container matColumnDef="orderTime">
             <th mat-header-cell *matHeaderCellDef>Order Time</th>
-            <td mat-cell *matCellDef="let element">{{element.orderTime | date:'dd/MM/yyyy, HH:mm:ss':'Asia/Jerusalem' }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element.orderTime
+                        | date : "dd/MM/yyyy, HH:mm:ss" : "Asia/Jerusalem"
+                }}
+            </td>
         </ng-container>
         <ng-container matColumnDef="outbound">
             <th mat-header-cell *matHeaderCellDef>Outbound</th>
-            <td mat-cell *matCellDef="let element">{{ element.outboundFlight.departure}}</td>
+            <td mat-cell *matCellDef="let element">
+                {{ element.outboundFlight.departure }}
+            </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="inbound">
             <th mat-header-cell *matHeaderCellDef>Inbound</th>
-            <td mat-cell *matCellDef="let element">{{ element?.inboundFlight ?  element?.inboundFlight?.departure : element.outboundFlight.destination }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element?.inboundFlight
+                        ? element?.inboundFlight?.departure
+                        : element.outboundFlight.destination
+                }}
+            </td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="pnr">
             <th mat-header-cell *matHeaderCellDef>PNR</th>
-            <td mat-cell *matCellDef="let element">{{ getPnr(element) | json }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{ getPnr(element) | json }}
+            </td>
             <!-- <td mat-cell *matCellDef="let element">{{ "pnr" }}</td> -->
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="flightMode">
             <th mat-header-cell *matHeaderCellDef>Flight Mode</th>
-            <td mat-cell *matCellDef="let element">{{ element.outboundFlight.flightMode ? element.outboundFlight.flightMode : 'N/A' }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element.outboundFlight.flightMode
+                        ? element.outboundFlight.flightMode
+                        : "N/A"
+                }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="issuance">
             <th mat-header-cell *matHeaderCellDef>Issuance</th>
-            <td mat-cell *matCellDef="let element">{{ element.issuance !== undefined ? element.issuance : 'N/A'}}</td>
+            <td mat-cell *matCellDef="let element">
+                {{ element.issuance !== undefined ? element.issuance : "N/A" }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="isDelete">
             <th mat-header-cell *matHeaderCellDef>Deleted</th>
-            <td mat-cell *matCellDef="let element">{{ (element.hasOwnProperty('isDelete')) ? element.isDelete : 'N/A' }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element.hasOwnProperty("isDelete")
+                        ? element.isDelete
+                        : "N/A"
+                }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Out Date</th>
-            <td mat-cell *matCellDef="let element">{{ element.outboundFlight.date }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{ element.outboundFlight.date }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="returnDate">
             <th mat-header-cell *matHeaderCellDef>In Date</th>
-            <td mat-cell *matCellDef="let element">{{element.inboundFlight ?  element.inboundFlight.date : 'N/A'}}</td>
+            <td mat-cell *matCellDef="let element">
+                {{ element.inboundFlight ? element.inboundFlight.date : "N/A" }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="provider">
             <th mat-header-cell *matHeaderCellDef>Provider</th>
-            <td mat-cell *matCellDef="let element">{{ element.dataProvider }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{ element.dataProvider }}
+            </td>
         </ng-container>
         <ng-container matColumnDef="flightType">
             <th mat-header-cell *matHeaderCellDef>Flight Type</th>
@@ -71,16 +105,21 @@
             <th mat-header-cell *matHeaderCellDef>View</th>
             <td mat-cell *matCellDef="let element">
                 <div class="flex flex-row justify-between w-full">
-
-                    <mat-icon style="cursor: pointer;" *ngIf="element.issuance != undefined && element.issuance"
+                    <mat-icon
+                        style="cursor: pointer"
+                        *ngIf="
+                            element.issuance != undefined && element.issuance
+                        "
                         (click)="showIssuance(element)"
-                        svgIcon='heroicons_solid:eye'
+                        svgIcon="heroicons_solid:eye"
                     ></mat-icon>
-                    <mat-icon style="cursor: pointer;"
+                    <mat-icon
+                        style="cursor: pointer"
                         (click)="edit(element)"
                         svgIcon="heroicons_outline:pencil-square"
                     ></mat-icon>
-                    <mat-icon style="cursor: pointer;"
+                    <mat-icon
+                        style="cursor: pointer"
                         (click)="delete(element)"
                         svgIcon="heroicons_outline:trash"
                     ></mat-icon>
@@ -91,15 +130,14 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <ng-container >totalItems: {{totalItems}}</ng-container>
+
     <mat-paginator
         [pageSizeOptions]="[5, 10, 20, 30]"
         [pageIndex]="page"
         [pageSize]="limit"
         [length]="totalItems"
-
         aria-label="Select page of periodic elements"
-        ></mat-paginator>
-        <!-- showFirstLastButtons -->
+    ></mat-paginator>
+    <!-- showFirstLastButtons -->
     <!-- [length]="length" -->
 </div>

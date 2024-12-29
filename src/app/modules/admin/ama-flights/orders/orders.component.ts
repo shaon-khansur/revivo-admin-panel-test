@@ -1,12 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-    AsyncPipe,
-    CommonModule,
-    NgClass,
-    NgFor,
-    NgSwitch,
-    NgSwitchCase,
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
     AmaFlightOrderService,
     OrderIDS,
@@ -25,27 +18,11 @@ import {
     MatTableDataSource,
     MatTableModule,
 } from '@angular/material/table';
-import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import {
-    catchError,
-    concatMap,
-    filter,
-    forkJoin,
-    from,
-    map,
-    of,
-    tap,
-    toArray,
-} from 'rxjs';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { OrderDetailsComponent } from '../../deals/order-list/order-details/order-details.component';
+import { catchError, forkJoin, of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { OrderDetailsVewComponent } from './order-details-vew/order-details-vew.component';
-import {
-    MatPaginator,
-    MatPaginatorModule,
-    PageEvent,
-} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
     selector: 'app-orders',
@@ -104,33 +81,25 @@ export class OrdersComponent implements OnInit {
 
     ngAfterViewInit() {
         this.paginator.page.subscribe((event) => {
-          this.page = event.pageIndex;
-          this.limit = event.pageSize;
-          this.getFlightOrders({page: this.page, limit: this.limit});
+            this.page = event.pageIndex;
+            this.limit = event.pageSize;
+            this.getFlightOrders({ page: this.page, limit: this.limit });
         });
-      }
-
-    getFlightOrders(data: { page: number; limit: number }): void {
-        this.amaFlightOrderService
-            .getAllOrders(data)
-            .subscribe({
-                next: (response) => {
-                    this.amaFlightOrderData = response.data;
-                    this.dataSource = new MatTableDataSource<any[]>(
-                        this.amaFlightOrderData
-                    );
-                    this.totalItems = response.totalItems;
-                    console.log('amaFlightOrders', this.amaFlightOrderData);
-                },
-            });
     }
 
-    // handlePageEvent(event: PageEvent): void {
-    //     console.log('pageEvent', event);
-    //     this.pageIndex = event.pageIndex;
-    //     // console.log(`page:${this.pageIndex}, limit:${this.pageSize}`, event);
-    //     this.getFlightOrders({ page: event.pageIndex, limit: this.pageSize });
-    // }
+    getFlightOrders(data: { page: number; limit: number }): void {
+        this.amaFlightOrderService.getAllOrders(data).subscribe({
+            next: (response) => {
+                this.amaFlightOrderData = response.data;
+                this.dataSource = new MatTableDataSource<any[]>(
+                    this.amaFlightOrderData
+                );
+                this.totalItems = response.totalItems;
+                console.log('amaFlightOrders', this.amaFlightOrderData);
+            },
+        });
+    }
+
     getPnr(element) {
         if (element.oneWay == false && element.flightType != 'RT') {
             let outPNR: any[] = [];
