@@ -39,6 +39,7 @@ export class HotelDetailsComponent implements OnInit {
     form: FormGroup;
     fileString: string;
     hotelIfo: any; // Ideally, define a proper type for hotelIfo
+    id: string;
 
     constructor(
         private fb: FormBuilder,
@@ -51,6 +52,7 @@ export class HotelDetailsComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
             const id = params['id'];
+            this.id = params['id']
 
             // Initialize the form group
             this.form = this.fb.group({
@@ -59,7 +61,7 @@ export class HotelDetailsComponent implements OnInit {
                 cityHeb: [''],
                 thumbnail: [''],
                 HotelRate: [''],
-                countryName:[''],
+                countryName: [''],
                 file: this.fb.group({
                     content: [''],
                     name: [''],
@@ -330,9 +332,11 @@ export class HotelDetailsComponent implements OnInit {
             const updatedHotel = this.form.value;
             console.log(updatedHotel);
 
-            this.hotelService.updateHotel(updatedHotel).subscribe(() => {
-                this.router.navigate(['hotel/hotel-list']);
-            });
+            this.hotelService
+                .updateHotel(updatedHotel, this.id)
+                .subscribe(() => {
+                    this.router.navigate(['hotel/hotel-list']);
+                });
         }
     }
 

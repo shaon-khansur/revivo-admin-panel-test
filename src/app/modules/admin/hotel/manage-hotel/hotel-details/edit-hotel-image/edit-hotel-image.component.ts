@@ -103,7 +103,14 @@ export class EditHotelImageComponent {
                 if (response && response.url) {
                     this.form.get('Url')?.setValue(response.url);
                 }
-                this.dialogRef.close({ action: 'save', data: this.form.value });
+                this.dialogRef.close({
+                    action: 'save',
+                    data: {
+                        ImageTitle: formData.ImageTitle,
+                        Url: response.url,
+                        ImageType: formData.ImageType,
+                    },
+                });
             },
             error: (err) => {
                 console.error('Error uploading image:', err);

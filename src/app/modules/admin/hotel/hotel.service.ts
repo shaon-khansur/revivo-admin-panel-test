@@ -58,8 +58,8 @@ export class HotelService {
         }>(`${environment.baseUrl}hotelData?${queryParams}`);
     }
 
-    updateHotel(data: HotelData): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/${data.id}`;
+    updateHotel(data: HotelData, id: string): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/${id}`;
         console.log(data);
 
         return this.http.put(url, data).pipe(
@@ -70,7 +70,7 @@ export class HotelService {
             })
         );
     }
-    getHotelById(id): Observable<any> {
+    getHotelById(id: string): Observable<any> {
         return this.http.get(`${environment.baseUrl}hotelData/${id}`);
     }
     getAllKosherHotels(data: {
@@ -114,10 +114,10 @@ export class HotelService {
             })
         );
     }
-    getKosherHotelById(id): Observable<any> {
+    getKosherHotelById(id: any): Observable<any> {
         return this.http.get(`${environment.baseUrl}kosherHotelData/${id}`);
     }
-    getHotelImage(file): Observable<any> {
+    getHotelImage(file: any): Observable<any> {
         return this.http.post(`${environment.baseUrl}UploadImage`, file);
     }
     toggleKosherStatus(hotelId: string, isKosher: boolean): Observable<any> {
@@ -125,5 +125,14 @@ export class HotelService {
         const body = { hotelId, isKosher };
 
         return this.http.post(url, body);
+    }
+    addHotel(data: any): Observable<any> {
+        return this.http.post<any>(`${environment.baseUrl}hotelData`, data);
+    }
+    isFavorite(hotelId: any): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/isFavorite`;
+        const body = { hotelId };
+    
+        return this.http.post<any>(url, body);
     }
 }

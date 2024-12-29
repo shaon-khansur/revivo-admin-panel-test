@@ -54,4 +54,13 @@ export class UploadService {
         // Sending a PATCH request to the backend
         return this.http.get(`${environment.baseUrl}uploadUpdatePdf`);
     }
+    getHistory(): Observable<any> {
+        // Sending a PATCH request to the backend
+        return this.http.get(`${environment.baseUrl}uploadUpdatePdf/history`);
+    }
+    deleteHistory(id?: string): Observable<any> {
+        const url = `${environment.baseUrl}uploadUpdatePdf/history`;
+        const body = { id };
+        return this.http.request<any>('delete', url, { body });
+    }
 }
