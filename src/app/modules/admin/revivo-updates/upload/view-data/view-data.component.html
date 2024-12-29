@@ -1,0 +1,28 @@
+<div mat-dialog-content>
+    <div class="mb-4 flex justify-center gap-4">
+        <button mat-raised-button color="primary" (click)="selectView('pdf')">
+            <mat-icon>picture_as_pdf</mat-icon>
+            View PDF
+        </button>
+        <button mat-raised-button color="accent" (click)="selectView('html')">
+            <mat-icon>code</mat-icon>
+            View HTML
+        </button>
+    </div>
+
+    <!-- Conditionally render HTML Preview -->
+    <div *ngIf="currentView === 'html' && safeHtmlContent">
+        <div class="htmlcode" [innerHTML]="safeHtmlContent"></div>
+    </div>
+
+    <!-- Conditionally render PDF Preview -->
+    <div *ngIf="currentView === 'pdf' && safePdfUrl">
+        <iframe
+            [src]="safePdfUrl"
+            width="100%"
+            height="700px"
+            frameborder="0"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
