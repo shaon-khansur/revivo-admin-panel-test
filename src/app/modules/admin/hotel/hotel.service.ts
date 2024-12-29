@@ -126,4 +126,7 @@ export class HotelService {
 
         return this.http.post(url, body);
     }
+    addHotel(data: any): Observable<any> {
+        return this.http.post<any>(`${environment.baseUrl}hotelData`, data);
+    }
 }
