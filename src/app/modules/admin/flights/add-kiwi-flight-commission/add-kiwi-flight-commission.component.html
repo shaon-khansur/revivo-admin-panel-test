@@ -1,0 +1,77 @@
+<div class="w-full">
+    <form [formGroup]="commissionForm">
+        <mat-form-field class="example-chip-list">
+            <mat-label>Airline</mat-label>
+            <!-- Old -->
+            <input
+                matInput
+                type="text"
+                aria-label="Airline"
+                placeholder="Type airline code"
+                formControlName="airline"
+            />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Outbound Commission</mat-label>
+            <input
+                matInput
+                type="number"
+                aria-label="OutboundCommission"
+                placeholder="Type Outbound Commission"
+                formControlName="outboundCommission"
+            />
+        </mat-form-field>
+
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Outbound Airport</mat-label>
+            <input
+                matInput
+                aria-label="OutboundAirport"
+                placeholder="Type Outbound Airport"
+                formControlName="outboundAirport"
+            />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Inbound Commission</mat-label>
+            <input
+                matInput
+                type="number"
+                aria-label="inboundCommission"
+                placeholder="Type inbound commission"
+                formControlName="inboundCommission"
+            />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Inbound Airport</mat-label>
+            <input
+                matInput
+                aria-label="inboundAirport"
+                placeholder="Type Inbound Airport"
+                formControlName="inboundAirport"
+            />
+        </mat-form-field>
+
+        <section class="example-section">
+            <mat-checkbox formControlName="default" class="example-margin"
+                >Default!</mat-checkbox
+            >
+        </section>
+    </form>
+    <div class="space-x-4">
+        <button
+            (click)="save()"
+            color="primary"
+            mat-raised-button
+            [disabled]="commissionForm.invalid"
+        >
+            Create
+        </button>
+        <button (click)="close()" color="secondary" mat-raised-button>
+            Close
+        </button>
+    </div>
+</div>

@@ -40,33 +40,34 @@ import { DealcomissionComponent } from '../../deals/deal-settings/dealcomission/
 import { FareFamilyDetailsComponent } from '../../fare-family/fare-family-details/fare-family-details.component';
 import { DealMiningStatusComponent } from '../../deal-mining-status/deal-mining-status.component';
 import { FareFamilyCommissionComponent } from '../fare-family-commission/fare-family-commission.component';
+import { KiwiFlightCommissionComponent } from "../kiwi-flight-commission/kiwi-flight-commission.component";
 
 @Component({
     selector: 'app-flight-commision',
     standalone: true,
     imports: [
-        CommonModule,
-        MatSidenavModule,
-        MatButtonModule,
-        MatIconModule,
-        NgFor,
-        NgClass,
-        NgSwitch,
-        NgSwitchCase,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        FormsModule,
-        MatInputModule,
-        MatAutocompleteModule,
-        AsyncPipe,
-        MatCheckboxModule,
-        MatSelectModule,
-        MatTableModule,
-        DealcomissionComponent,
-        FareFamilyDetailsComponent,
-        DealMiningStatusComponent,
-        FareFamilyCommissionComponent
-    ],
+    CommonModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    NgFor,
+    NgClass,
+    NgSwitch,
+    NgSwitchCase,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatTableModule,
+    DealcomissionComponent,
+    FareFamilyDetailsComponent,
+    DealMiningStatusComponent,
+    FareFamilyCommissionComponent,
+    KiwiFlightCommissionComponent
+],
     templateUrl: './flight-commision.component.html',
     styleUrls: ['./flight-commision.component.scss'],
 })
@@ -120,6 +121,12 @@ export class FlightCommisionComponent {
                 icon: 'heroicons_outline:clipboard-document-list',
                 title: 'Fare Family Commission',
                 description: 'Manage your Fare family commission',
+            },
+            {
+                id: 'kiwiFlightCommission',
+                icon: 'heroicons_outline:clipboard-document-list',
+                title: 'Kiwi Flight Commission',
+                description: 'Manage your Kiwi flight commission',
             },
             {
                 id: 'dealCommission',

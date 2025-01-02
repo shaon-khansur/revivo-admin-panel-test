@@ -265,6 +265,9 @@
                             </div>
                         </ng-container>
                         <!-- Deals -->
+                        <ng-container *ngSwitchCase="'kiwiFlightCommission'">
+                            <app-kiwi-flight-commission />
+                        </ng-container>
                         <ng-container *ngSwitchCase="'dealCommission'">
                             <app-dealcomission />
                         </ng-container>
