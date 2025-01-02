@@ -1,6 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import {
+    MatTable,
+    MatTableDataSource,
+    MatTableModule,
+} from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -9,65 +13,66 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FlightCommissionService } from '../service/flight-commission.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { FareFamilyCommissioinDialogComponent } from './fare-family-commissioin-dialog/fare-family-commissioin-dialog.component';
+import { AddKiwiFlightCommissionComponent } from '../add-kiwi-flight-commission/add-kiwi-flight-commission.component';
+import { FlightCommissionService } from '../service/flight-commission.service';
 
-export interface FareFamilyCommissionData {
+export interface KiwiCommissionData {
     id: string;
-    type: string;
-    amount: number;
+    airline: string;
+    outboundAirport: string;
+    outboundCommission: number;
+    inboundAirport: string;
+    inboundCommission: number;
+    provider: string;
+    default: boolean;
 }
 
 @Component({
-    selector: 'app-fare-family-commission',
+    selector: 'app-kiwi-flight-commission',
     standalone: true,
     imports: [
         CommonModule,
+        MatSidenavModule,
+        MatButtonModule,
         MatIconModule,
         MatFormFieldModule,
         ReactiveFormsModule,
         FormsModule,
         MatInputModule,
-        MatButtonModule,
         MatAutocompleteModule,
         MatCheckboxModule,
         MatSelectModule,
         MatTableModule,
     ],
-    templateUrl: './fare-family-commission.component.html',
-    styleUrls: ['./fare-family-commission.component.scss'],
+    templateUrl: './kiwi-flight-commission.component.html',
+    styleUrls: ['./kiwi-flight-commission.component.scss'],
 })
-export class FareFamilyCommissionComponent {
-    displayedColumns: string[] = ['type', 'amount', 'view'];
-    dataSource: FareFamilyCommissionData[] = [];
-    fareFamilyCommissionsData: FareFamilyCommissionData[];
-
-    @ViewChild('fareFamilyCommissionTable') table: MatTable<
-        FareFamilyCommissionData[]
-    >;
-
+export class KiwiFlightCommissionComponent {
+    displayedColumns: string[] = [
+        'airline',
+        'outboundCommission',
+        'outboundAirport',
+        'inboundCommission',
+        'inboundAirport',
+        'default',
+        'view',
+    ];
+    dataSource: KiwiCommissionData[] = [];
+    kiwiCommissionsData: KiwiCommissionData[];
+    @ViewChild('commissionTable') table: MatTable<KiwiCommissionData[]>;
     constructor(
         private flightCommissionService: FlightCommissionService,
         private dialog: MatDialog,
         private _fuseConfirmationDialog: FuseConfirmationService
     ) {}
 
-    ngOnInit(): void {
-        // Setup available panels
-        this.flightCommissionService.getFareFamilyCommissions().subscribe({
-            next: (response) => {
-                this.fareFamilyCommissionsData = response;
-                this.dataSource = this.fareFamilyCommissionsData;
-            },
-        });
-    }
-
     edit(element) {
         console.log(element);
         this.dialog
-            .open(FareFamilyCommissioinDialogComponent, {
+            .open(AddKiwiFlightCommissionComponent, {
                 width: '600px',
                 data: element,
             })
@@ -75,7 +80,7 @@ export class FareFamilyCommissionComponent {
             .subscribe((value) => {
                 if (value) {
                     this.flightCommissionService
-                        .updateFareFamilyCommssion(value)
+                        .updateKiwiCommssion(value)
                         .subscribe((updatedCommission) => {
                             const index = this.dataSource.findIndex(
                                 (c) => c.id === updatedCommission.id
@@ -83,7 +88,7 @@ export class FareFamilyCommissionComponent {
 
                             this.dataSource[index] = {
                                 ...updatedCommission,
-                            } as FareFamilyCommissionData;
+                            } as KiwiCommissionData;
                             this.table.renderRows();
                         });
                 }
@@ -92,13 +97,13 @@ export class FareFamilyCommissionComponent {
 
     add() {
         this.dialog
-            .open(FareFamilyCommissioinDialogComponent, { width: '600px' })
+            .open(AddKiwiFlightCommissionComponent, { width: '600px' })
             .afterClosed()
             .subscribe((value) => {
                 if (value) {
                     console.log(value);
                     this.flightCommissionService
-                        .addFareFamilyCommission(value)
+                        .addKiwiCommission(value)
                         .subscribe({
                             next: (flightCommission) => {
                                 this.dataSource.push(flightCommission);
@@ -109,7 +114,7 @@ export class FareFamilyCommissionComponent {
             });
     }
 
-    delete(data: FareFamilyCommissionData) {
+    delete(data: KiwiCommissionData) {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationDialog.open({
             title: 'Delete data',
@@ -126,17 +131,15 @@ export class FareFamilyCommissionComponent {
 
         confirmation.afterClosed().subscribe((result) => {
             if (result === 'confirmed') {
-                this.flightCommissionService
-                    .deleteFareFamilyCommission(data)
-                    .subscribe({
-                        next: (deletedCommission) => {
-                            const index = this.dataSource.findIndex(
-                                (d) => d.id === deletedCommission.id
-                            );
-                            this.dataSource.splice(index, 1);
-                            this.table.renderRows();
-                        },
-                    });
+                this.flightCommissionService.deleteKiwiCommission(data).subscribe({
+                    next: (deletedCommission) => {
+                        const index = this.dataSource.findIndex(
+                            (d) => d.id === deletedCommission.id
+                        );
+                        this.dataSource.splice(index, 1);
+                        this.table.renderRows();
+                    },
+                });
             }
         });
     }

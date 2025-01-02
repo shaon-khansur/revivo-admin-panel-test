@@ -42,6 +42,26 @@ export class FlightCommissionService {
         return this.http.delete<CommissionData>(`${environment.baseUrl}flight-commission/${data.id}`);
     }
 
+    //Kiwi flight commission
+    getKiwiFlightsCommissions(): Observable<CommissionData[]> {
+        return this.http.get<CommissionData[]>(`${environment.baseUrl}kiwiFlightCommission`);
+    }
+
+    addKiwiCommission(data): Observable<CommissionData> {
+        delete data.id
+        return this.http.post<CommissionData>(`${environment.baseUrl}kiwiFlightCommission`, data);
+    }
+
+    updateKiwiCommssion(data: CommissionData): Observable<CommissionData> {
+        const id = data.id;
+        delete data.id
+        return this.http.put<CommissionData>(`${environment.baseUrl}kiwiFlightCommission/${id}`, data);
+    }
+
+    deleteKiwiCommission(data: CommissionData): Observable<CommissionData> {
+        return this.http.delete<CommissionData>(`${environment.baseUrl}kiwiFlightCommission/${data.id}`);
+    }
+
 
     //Fare family Commission
     getFareFamilyCommissions(): Observable<FareFamilyCommissionData[]> {
