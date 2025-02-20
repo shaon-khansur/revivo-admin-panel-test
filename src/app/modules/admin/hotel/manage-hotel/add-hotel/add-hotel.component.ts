@@ -25,6 +25,7 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { GalleryComponent } from './gallery/gallery.component';
 import { HotelService } from '../../hotel.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
     selector: 'app-add-hotel',
@@ -92,7 +93,8 @@ export class AddHotelComponent implements OnInit {
         private dialog: MatDialog,
         private hotelService: HotelService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+         private _fuseConfirmationService: FuseConfirmationService,
     ) {}
 
     ngOnInit(): void {
@@ -125,7 +127,7 @@ export class AddHotelComponent implements OnInit {
                     }),
                 }),
                 Website: [''],
-                HotelID: [''],
+                HotelID: ['', Validators.required],
                 source: ['admin'],
 
                 // roomsDescription: this.fb.group({
@@ -497,9 +499,27 @@ export class AddHotelComponent implements OnInit {
 
             console.log('Form Submitted:', formValue);
 
-            this.hotelService.addHotel(formValue).subscribe((response) => {
-                console.log('response data', response);
-                this.router.navigate(['hotel/hotel-list']);
+            this.hotelService.addHotel(formValue).subscribe({
+                next: (response) => {
+                    console.log('Response data:', response);
+                    this.router.navigate(['hotel/hotel-list']);
+                },
+                error: (error) => {
+                    console.error('API Error:', error);
+    
+                    // Show error message to the user
+                    this._fuseConfirmationService.open({
+                        title: 'Submission Failed',
+                        message: error?.error?.message || 'Something went wrong while submitting the form.',
+                        actions: {
+                            confirm: {
+                                show: true,
+                                label: 'Ok',
+                                color: 'warn',
+                            },
+                        },
+                    });
+                },
             });
         } else {
             const formValue = this.hotelForm.value;

@@ -36,6 +36,22 @@
         >
             <div class="mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="hotelId">
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            class="hotel-name-header w-10"
+                        >
+                            Hotel ID
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let element"
+                            class="hotel-name-cell w-10"
+                        >
+                            {{ element?.HotelID }}
+                        </td>
+                    </ng-container>
                     <ng-container matColumnDef="Favorite">
                         <th mat-header-cell *matHeaderCellDef>Favorite</th>
                         <td mat-cell *matCellDef="let element" class="w-10">

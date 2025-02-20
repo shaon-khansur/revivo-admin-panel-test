@@ -50,6 +50,7 @@ export class KosherListComponent {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
+        'hotelId',
         'Favorite',
         'hotelName',
         'HotelRate',
