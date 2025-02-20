@@ -214,7 +214,7 @@ export class AddHotelComponent implements OnInit {
     }
     get previewImages() {
         return this.images.controls.filter(
-            (image: any) => image.get('ImageType').value === 'PREVIEW'
+            (image: any) => image.get('ImageType').value === 'MAIN'
         );
     }
 
