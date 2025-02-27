@@ -132,7 +132,49 @@ export class HotelService {
     isFavorite(hotelId: any): Observable<any> {
         const url = `${environment.baseUrl}hotelData/isFavorite`;
         const body = { hotelId };
-    
+
         return this.http.post<any>(url, body);
+    }
+
+    getAllTBOHotels(data: {
+        page: number;
+        hotelName: string;
+        pageSize: number;
+        kosherStatus?: string | boolean;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`;
+
+        console.log('data', data);
+
+        // Add the kosherStatus filter if it is defined
+        if (data.kosherStatus !== undefined && data.kosherStatus !== '') {
+            queryParams += `&status=${data.kosherStatus}`;
+        }
+
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}hotelData/hotels/tbo-hotels?${queryParams}`);
+    }
+    getTBOHotelById(id: string): Observable<any> {
+        return this.http.get(
+            `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`
+        );
     }
 }

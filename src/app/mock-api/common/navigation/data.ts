@@ -157,20 +157,27 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type    : 'group',
         icon    : 'heroicons_outline:building-office-2',
         children: [
+            // {
+            //     id   : 'hotel.manage',
+            //     title: 'ALP Hotel List',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:building-office-2',
+            //     link : '/hotel/hotel-list',
+            // },
             {
-                id   : 'hotel.manage',
-                title: 'Hotel List',
+                id   : 'hotel.Tbo',
+                title: 'TBO Hotel List',
                 type : 'basic',
                 icon : 'heroicons_outline:building-office-2',
-                link : '/hotel/hotel-list',
+                link : '/hotel/tbo-hotel-list',
             },
-            {
-                id   : 'hotel.kosher-hotel',
-                title: 'Kosher-Hotel List',
-                type : 'basic',
-                icon : 'heroicons_outline:building-office-2',
-                link : '/hotel/kosher-hotel-list',
-            }
+            // {
+            //     id   : 'hotel.kosher-hotel',
+            //     title: 'Kosher-Hotel List',
+            //     type : 'basic',
+            //     icon : 'heroicons_outline:building-office-2',
+            //     link : '/hotel/kosher-hotel-list',
+            // }
 
         ],
     },

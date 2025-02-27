@@ -51,7 +51,6 @@ export class KosherListComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
         'hotelId',
-        'Favorite',
         'hotelName',
         'HotelRate',
         'cityName',
@@ -109,13 +108,6 @@ export class KosherListComponent {
                         },
                     });
             });
-    }
-
-    toggleFavorite(element: any) {
-        element.isFavorite = !element.isFavorite;
-        this.hotelService.isFavorite(element.HotelID).subscribe(response => {
-        
-        });
     }
 
     getStars(rate: number): number[] {
