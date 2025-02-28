@@ -58,7 +58,7 @@ export class TboHotelListComponent implements OnInit {
       'cityName',
       'cityCode',
       'isKosher',
-      // 'view',
+      'view',
   ];
 
   allHotel: any[] = [];

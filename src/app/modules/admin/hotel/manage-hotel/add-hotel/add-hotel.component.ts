@@ -59,29 +59,24 @@ export class AddHotelComponent implements OnInit {
     defaultImages = [
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
     ];
+    previewImages: any;
     price: number = 0;
     currency: string = '';
     roomCategories: any[] = [];
@@ -94,109 +89,79 @@ export class AddHotelComponent implements OnInit {
         private hotelService: HotelService,
         private route: ActivatedRoute,
         private router: Router,
-         private _fuseConfirmationService: FuseConfirmationService,
+        private _fuseConfirmationService: FuseConfirmationService
     ) {}
 
     ngOnInit(): void {
         this.route.params.subscribe((params) => {
             this.id = params['id'];
+            console.log('params', params);
             this.hotelForm = this.fb.group({
                 HotelName: ['', Validators.required],
                 HotelRate: ['', Validators.required],
-                isKosher: false,
-                cityHeb: [''],
-                countryName: [''],
+                Description: [''],
                 HotelFacilities: this.fb.array([]),
-                HotelImages: this.fb.array([]),
-                HotelRemarks: this.fb.array([]),
-                HotelLocation: this.fb.group({
-                    latitude: [''],
-                    longitude: [''],
-                    CityCode: ['', Validators.required],
-                    CityName: ['', Validators.required],
-                    CountryCode: [''],
-                    CountryName: [''],
-                    Description: [``],
-                    Address: this.fb.group({
-                        street: [''],
-                        house_number: [''],
-                        zipcode: [''],
-                        phone: [''],
-                        fax: [''],
-                        email: [''],
-                    }),
-                }),
-                Website: [''],
-                HotelID: ['', Validators.required],
+                Attractions: [''],
+                Address: [''],
+                PinCode: [''],
+                CityId: [''],
+                CountryName: [''],
+                PhoneNumber: [''],
+                FaxNumber: [''],
+                Map: [''],
+                HotelRating: [''],
+                CityName: [''],
+                CountryCode: [''],
+                CheckInTime: [''],
+                CheckOutTime: [''],
+                Thumbnail: [''],
+                Latitude: [''],
+                Longitude: [''],
+                cityLatitude: [''],
+                cityLongitude: [''],
+                Images: this.fb.array([]),
+                HotelWebsiteUrl: [''],
+                HotelCode: [''],
                 source: ['admin'],
-
-                // roomsDescription: this.fb.group({
-                //     package_type: [''],
-                //     remarks: [''],
-                //     selected_category: [''],
-                //     complects: {},
-                //     infantPrice: this.fb.group({
-                //         currency: [this.currency],
-                //         amount: [this.price],
-                //     }),
-                //     additionalPayments: this.fb.array([]),
-                //     dealData: [],
-                //     restrictions: [''],
-                //     supplements: [''],
-                //     taxes: [''],
-                // }),
+                isKosher: false,
             });
             if (this.id) {
-                this.hotelService.getHotelById(this.id).subscribe(
+                this.hotelService.getTBOHotelById(this.id).subscribe(
                     (hotel) => {
                         this.hotelIfo = hotel;
+                        console.log('hotel data', hotel);
+
                         // Patch the form with hotel data
                         this.hotelForm.patchValue({
                             HotelName: hotel.HotelName,
-                            cityHeb: hotel.cityHeb,
-                            countryName: hotel.countryName,
-                            thumbnail: hotel.thumbnail,
-                            HotelRate: hotel.HotelRate,
-                            Website: hotel.Website,
-                            isKosher: false,
-                            HotelID: hotel.HotelID || '',
+                            Description: hotel.Description,
+                            Attractions: hotel.Attractions,
+                            Address: hotel.Address,
+                            PinCode: hotel.PinCode,
+                            CityId: hotel.CityId || hotel.CityCode,
+                            CountryName: hotel.CountryName,
+                            PhoneNumber: hotel.PhoneNumber,
+                            FaxNumber: hotel.FaxNumber,
+                            Map: hotel.Map,
+                            HotelRating: hotel.HotelRating,
+                            CityName: hotel.CityName,
+                            CountryCode: hotel.CountryCode,
+                            CheckInTime: hotel.CheckInTime,
+                            CheckOutTime: hotel.CheckOutTime,
+                            Thumbnail: hotel.Thumbnail,
+                            Latitude: hotel.Latitude,
+                            Longitude: hotel.Longitude,
+                            cityLatitude: hotel.cityLatitude,
+                            cityLongitude: hotel.cityLongitude,
+                            HotelWebsiteUrl: hotel.HotelWebsiteUrl,
+                            HotelCode: hotel.HotelCode,
                             source: hotel.source,
-                            HotelLocation: {
-                                CityCode: hotel.HotelLocation?.CityCode || '',
-                                CityName: hotel.HotelLocation?.CityName || '',
-                                CountryName:
-                                    hotel.HotelLocation?.CountryName || '',
-                                Description:
-                                    hotel.HotelLocation?.Description || '',
-                                Address: {
-                                    zipcode:
-                                        hotel.HotelLocation?.Address?.zipcode ||
-                                        '',
-                                    phone:
-                                        hotel.HotelLocation?.Address?.phone ||
-                                        '',
-                                    street:
-                                        hotel.HotelLocation?.Address?.street ||
-                                        '',
-                                    house_number:
-                                        hotel.HotelLocation?.Address
-                                            ?.house_number || '',
-                                    fax:
-                                        hotel.HotelLocation?.Address?.fax || '',
-                                    email:
-                                        hotel.HotelLocation?.Address?.email ||
-                                        '',
-                                },
-                                latitude: hotel.HotelLocation?.latitude || '',
-                                longitude: hotel.HotelLocation?.longitude || '',
-                            },
+                            isKosher: hotel.isKosher,
                         });
                         // Set facilities
                         this.setFacilities(hotel.HotelFacilities || []);
-                        // Set hotel remarks
-                        this.setHotelRemarks(hotel.HotelRemarks || []);
                         // Set hotel images
-                        this.setHotelImages(hotel.HotelImages || []);
+                        this.setHotelImages(hotel.Images || []);
                     },
                     (error) => {
                         console.error('Error fetching hotel:', error);
@@ -211,26 +176,24 @@ export class AddHotelComponent implements OnInit {
     }
 
     // -------------------------------------------  image ---------------------------------------
-    get images(): FormArray {
-        return this.hotelForm.get('HotelImages') as FormArray;
+    get hotelCode(): FormArray {
+        return this.hotelForm.get('HotelCode')?.value;
     }
-    get previewImages() {
-        return this.images.controls.filter(
-            (image: any) => image.get('ImageType').value === 'MAIN'
-        );
+    get images(): FormArray {
+        return this.hotelForm.get('Images') as FormArray;
     }
 
     openEditHotelImage(index: number): void {
         const imageControl = this.images.at(index);
+        console.log("image pre", this.images);
+        
 
         const previousUrl = imageControl.get('Url').value; // Save the previous URL value
 
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
-                ImageTitle: imageControl.get('ImageTitle').value,
                 Url: previousUrl, // Pass the previous URL
-                ImageType: imageControl.get('ImageType').value,
             },
         });
 
@@ -245,6 +208,7 @@ export class AddHotelComponent implements OnInit {
                             : result.data.Url,
                 };
                 this.images.at(index).patchValue(updatedData);
+                this.previewImages = this.images[0].Url;
             } else if (result?.action === 'delete') {
                 this.removeImage(index);
             }
@@ -255,30 +219,28 @@ export class AddHotelComponent implements OnInit {
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
-                ImageTitle: '',
                 Url: '',
-                ImageType: '',
             },
         });
 
         dialogRef.afterClosed().subscribe((result) => {
             if (result?.action === 'save' && result?.data) {
                 this.images.push(this.fb.group(result.data));
+                this.previewImages = result?.data.Url;
                 console.log('images', this.images);
             }
         });
     }
 
     removeImage(index: number): void {
+        this.previewImages = ""
         if (this.images.length >= 0) {
             this.images.removeAt(index);
         }
     }
     private createHotelImageGroup(): FormGroup {
         return this.fb.group({
-            ImageTitle: [''],
             Url: [''],
-            ImageType: [''],
         });
     }
 
@@ -294,8 +256,6 @@ export class AddHotelComponent implements OnInit {
             data: {
                 FacilityTitle: facilityControl.get('FacilityTitle').value,
                 FacilityCode: facilityControl.get('FacilityCode').value,
-                FacilityType: facilityControl.get('FacilityType').value,
-                Url: facilityControl.get('Url').value,
             },
         });
 
@@ -314,8 +274,6 @@ export class AddHotelComponent implements OnInit {
             data: {
                 FacilityTitle: '',
                 FacilityCode: '',
-                FacilityType: '',
-                Url: '',
             },
         });
 
@@ -335,32 +293,7 @@ export class AddHotelComponent implements OnInit {
         return this.fb.group({
             FacilityTitle: [''],
             FacilityCode: [''],
-            FacilityType: [''],
-            Url: [''],
         });
-    }
-
-    // -------------------------------------------  Remark ---------------------------------------
-
-    get remarks(): FormArray {
-        return this.hotelForm.get('HotelRemarks') as FormArray;
-    }
-
-    private createHotelRemarkGroup(): FormGroup {
-        return this.fb.group({
-            FreeText: [''],
-            RemarkType: [''],
-        });
-    }
-
-    addRemark(): void {
-        this.remarks.push(this.createHotelRemarkGroup());
-    }
-
-    removeRemark(index: number): void {
-        if (this.remarks.length >= 0) {
-            this.remarks.removeAt(index);
-        }
     }
 
     goToNextTab(): void {
@@ -372,14 +305,11 @@ export class AddHotelComponent implements OnInit {
     // Set facilities in the form array based on the data retrieved
     private setFacilities(facilities: any[]): void {
         this.facilities.clear(); // Clear existing facilities
-
         facilities.forEach((facility) => {
             this.facilities.push(
                 this.fb.group({
                     FacilityTitle: [facility.FacilityTitle || ''],
                     FacilityCode: [facility.FacilityCode || ''],
-                    FacilityType: [facility.FacilityType || ''],
-                    Url: [facility.Url || ''],
                 })
             );
         });
@@ -390,25 +320,6 @@ export class AddHotelComponent implements OnInit {
         }
     }
 
-    // Set hotel remarks in the form array based on the data retrieved
-    private setHotelRemarks(remarks: any[]): void {
-        this.remarks.clear(); // Clear existing remarks
-
-        remarks.forEach((remark) => {
-            this.remarks.push(
-                this.fb.group({
-                    FreeText: [remark.FreeText || ''],
-                    RemarkType: [remark.RemarkType || ''],
-                })
-            );
-        });
-
-        // Ensure at least one remark input group is present
-        if (this.remarks.length === 0) {
-            this.remarks.push(this.createHotelRemarkGroup());
-        }
-    }
-
     // Set hotel images in the form array based on the data retrieved
     private setHotelImages(images: any[]): void {
         this.images.clear(); // Clear existing images
@@ -416,101 +327,36 @@ export class AddHotelComponent implements OnInit {
         images.forEach((image) => {
             this.images.push(
                 this.fb.group({
-                    ImageTitle: [image.ImageTitle || ''],
                     Url: [image.Url || ''],
-                    ImageType: [image.ImageType || ''],
                 })
             );
         });
 
         // Ensure at least one image input group is present
         if (this.images.length === 0) {
-            this.images.push(this.createHotelImageGroup());
+            // this.images.push(this.createHotelImageGroup());
         }
-    }
-
-    // Method to update the price when the input changes
-    updatePrice(newPrice: number): void {
-        this.price = newPrice;
-        this.hotelForm
-            .get('roomsDescription')
-            .get('infantPrice.amount')
-            .setValue(this.price);
-    }
-
-    // Method to update the currency when the input changes
-    updateCurrency(newCurrency: string): void {
-        this.currency = newCurrency;
-        this.hotelForm
-            .get('roomsDescription')
-            .get('infantPrice.currency')
-            .setValue(this.currency);
-    }
-
-    // Method to add a new additional payment entry
-    addAdditionalPayment(): void {
-        const additionalPaymentsArray = this.hotelForm
-            .get('roomsDescription')
-            .get('additionalPayments') as FormArray;
-        additionalPaymentsArray.push(
-            this.createAdditionalPayment('', '', '', '')
-        );
-    }
-
-    // Method to create an additional payment FormGroup
-    createAdditionalPayment(
-        restriction: string,
-        value: string,
-        rule: string,
-        summ: string
-    ): FormGroup {
-        return this.fb.group({
-            restriction: [restriction, Validators.required],
-            value: [value, Validators.required],
-            rule: [rule, Validators.required],
-            summ: [summ, Validators.required],
-        });
-    }
-    // Method to remove an additional payment entry
-    removeAdditionalPayment(index: number): void {
-        const additionalPaymentsArray = this.hotelForm
-            .get('roomsDescription')
-            .get('additionalPayments') as FormArray;
-        additionalPaymentsArray.removeAt(index);
     }
 
     submitForm(): void {
         if (this.hotelForm.valid) {
             const formValue = this.hotelForm.value;
-
-            // const infantPrice = {
-            //     [formValue?.roomsDescription?.infantPrice.currency]:
-            //         formValue?.roomsDescription?.infantPrice?.amount,
-            // };
-
-            // // Prepare the final data for submission
-            // const finalData = {
-            //     ...formValue,
-            //     roomsDescription: {
-            //         ...formValue?.roomsDescription,
-            //         infantPrice: infantPrice,
-            //     },
-            // };
-
             console.log('Form Submitted:', formValue);
 
             this.hotelService.addHotel(formValue).subscribe({
                 next: (response) => {
                     console.log('Response data:', response);
-                    this.router.navigate(['hotel/hotel-list']);
+                    this.router.navigate(['hotel/tbo-hotel-list']);
                 },
                 error: (error) => {
                     console.error('API Error:', error);
-    
+
                     // Show error message to the user
                     this._fuseConfirmationService.open({
                         title: 'Submission Failed',
-                        message: error?.error?.message || 'Something went wrong while submitting the form.',
+                        message:
+                            error?.error?.message ||
+                            'Something went wrong while submitting the form.',
                         actions: {
                             confirm: {
                                 show: true,
@@ -524,23 +370,7 @@ export class AddHotelComponent implements OnInit {
         } else {
             const formValue = this.hotelForm.value;
             console.log('form control', this.hotelForm);
-
             console.log(formValue);
-
-            // const infantPrice = {
-            //     [formValue?.roomsDescription?.infantPrice.currency]:
-            //         formValue?.roomsDescription?.infantPrice?.amount,
-            // };
-
-            // // Prepare the final data for submission
-            // const finalData = {
-            //     ...formValue,
-            //     roomsDescription: {
-            //         ...formValue?.roomsDescription,
-            //         infantPrice: infantPrice,
-            //     },
-            // };
-
             console.log('Form is invalid', formValue);
         }
     }
@@ -550,11 +380,11 @@ export class AddHotelComponent implements OnInit {
         console.log(formValue);
 
         this.hotelService.updateHotel(formValue, this.id).subscribe(() => {
-            this.router.navigate(['hotel/hotel-list']);
+            this.router.navigate(['hotel/tbo-hotel-list']);
         });
     }
 
     close(): void {
-        this.router.navigate(['hotel/hotel-list']);
+        this.router.navigate(['hotel/tbo-hotel-list']);
     }
 }

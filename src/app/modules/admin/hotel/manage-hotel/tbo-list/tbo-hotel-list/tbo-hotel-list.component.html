@@ -128,6 +128,7 @@
                                 (selectionChange)="
                                     onKosherStatusChange($event.value)
                                 "
+                                class="font-semibold"
                             >
                                 <mat-option value="">All Hotel</mat-option>
                                 <mat-option value="true">Kosher</mat-option>
@@ -148,7 +149,7 @@
                         </td>
                     </ng-container>
 
-                    <!-- <ng-container matColumnDef="view">
+                    <ng-container matColumnDef="view">
                         <th mat-header-cell *matHeaderCellDef>View</th>
                         <td
                             mat-cell
@@ -160,7 +161,7 @@
                                 (click)="openDialog(element)"
                             ></mat-icon>
                         </td>
-                    </ng-container> -->
+                    </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr

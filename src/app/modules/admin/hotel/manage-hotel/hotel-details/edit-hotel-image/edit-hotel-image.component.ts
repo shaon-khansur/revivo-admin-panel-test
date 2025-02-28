@@ -34,9 +34,7 @@ export class EditHotelImageComponent {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.form = this.fb.group({
-            ImageTitle: [data.ImageTitle || ''],
             Url: [data.Url || ''],
-            ImageType: [data?.ImageType || 'HOTEL'],
             file: [null],
         });
     }
@@ -106,9 +104,7 @@ export class EditHotelImageComponent {
                 this.dialogRef.close({
                     action: 'save',
                     data: {
-                        ImageTitle: formData.ImageTitle,
                         Url: response.url,
-                        ImageType: formData.ImageType,
                     },
                 });
             },
