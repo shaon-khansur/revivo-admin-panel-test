@@ -171,6 +171,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:building-office-2',
                 link : '/hotel/tbo-hotel-list',
             },
+            {
+                id   : 'hotel.Tbo-room',
+                title: 'TBO Room List',
+                type : 'basic',
+                icon : 'heroicons_outline:building-office-2',
+                link : '/hotel/tbo-hotel-room',
+            },
             // {
             //     id   : 'hotel.kosher-hotel',
             //     title: 'Kosher-Hotel List',

@@ -1,0 +1,20 @@
+<div mat-dialog-content>
+    <form [formGroup]="form">
+        <div class="flex gap-2 flex-wrap">
+            <mat-form-field class="flex-auto">
+                <mat-label>Room Type</mat-label>
+                <input matInput formControlName="roomType" />
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>Bed Type</mat-label>
+                <input matInput formControlName="bedType" />
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="onSave()">Save</button>
+</div>

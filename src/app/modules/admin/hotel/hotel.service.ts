@@ -129,13 +129,8 @@ export class HotelService {
     addHotel(data: any): Observable<any> {
         return this.http.post<any>(`${environment.baseUrl}hotelData`, data);
     }
-    isFavorite(hotelId: any): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/isFavorite`;
-        const body = { hotelId };
 
-        return this.http.post<any>(url, body);
-    }
-
+    // tbo hotels
     getAllTBOHotels(data: {
         page: number;
         hotelName: string;
@@ -175,6 +170,49 @@ export class HotelService {
     getTBOHotelById(id: string): Observable<any> {
         return this.http.get(
             `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`
+        );
+    }
+
+    // room data
+    getRoomData(data: {
+        page: number;
+        roomNameSearch: string;
+        pageSize: number;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `roomNameSearch=${data.roomNameSearch}&page=${data.page}&pageSize=${data.pageSize}`;
+        console.log('data', data);
+
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}roomMap?${queryParams}`);
+    }
+    updateRoom(data: any): Observable<any> {
+        const url = `${environment.baseUrl}roomMap/${data.id}`;
+        console.log(data);
+
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                // Handle the error here
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
         );
     }
 }
