@@ -138,7 +138,7 @@ export class TboRoomComponent {
         console.log('supplier', data);
 
         const dialogRef = this.dialog.open(UpdateRoomComponent, {
-            width: '400px',
+            width: '600px',
             data: data,
         });
 
