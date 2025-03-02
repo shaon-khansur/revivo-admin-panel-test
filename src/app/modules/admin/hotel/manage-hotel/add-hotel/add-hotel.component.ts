@@ -98,13 +98,12 @@ export class AddHotelComponent implements OnInit {
             console.log('params', params);
             this.hotelForm = this.fb.group({
                 HotelName: ['', Validators.required],
-                HotelRate: ['', Validators.required],
                 Description: [''],
                 HotelFacilities: this.fb.array([]),
                 Attractions: [''],
                 Address: [''],
                 PinCode: [''],
-                CityId: [''],
+                CityCode: [''],
                 CountryName: [''],
                 PhoneNumber: [''],
                 FaxNumber: [''],
@@ -129,6 +128,8 @@ export class AddHotelComponent implements OnInit {
                 this.hotelService.getTBOHotelById(this.id).subscribe(
                     (hotel) => {
                         this.hotelIfo = hotel;
+                        this.previewImages =
+                            hotel.Images[0].Url || hotel.Thumbnail;
                         console.log('hotel data', hotel);
 
                         // Patch the form with hotel data
@@ -138,7 +139,7 @@ export class AddHotelComponent implements OnInit {
                             Attractions: hotel.Attractions,
                             Address: hotel.Address,
                             PinCode: hotel.PinCode,
-                            CityId: hotel.CityId || hotel.CityCode,
+                            CityCode: hotel.CityCode,
                             CountryName: hotel.CountryName,
                             PhoneNumber: hotel.PhoneNumber,
                             FaxNumber: hotel.FaxNumber,
@@ -185,11 +186,7 @@ export class AddHotelComponent implements OnInit {
 
     openEditHotelImage(index: number): void {
         const imageControl = this.images.at(index);
-        console.log("image pre", this.images);
-        
-
         const previousUrl = imageControl.get('Url').value; // Save the previous URL value
-
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
@@ -198,19 +195,22 @@ export class AddHotelComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result) => {
+            console.log('Dialog closed result:', result); // Check what is actually returned
+
             if (result?.action === 'save' && result?.data) {
-                // If Url is empty and this.id exists, use the previous value
+                console.log('Data received for saving', result.data);
+
                 const updatedData = {
                     ...result.data,
-                    Url:
-                        this.id && !result.data.Url
-                            ? previousUrl
-                            : result.data.Url,
+                    Url: this.id && !result.data.Url ? '' : result.data.Url,
                 };
                 this.images.at(index).patchValue(updatedData);
-                this.previewImages = this.images[0].Url;
+                this.previewImages = this.images[0]?.Url;
             } else if (result?.action === 'delete') {
+                console.log('delete action received'); // Confirm delete is received
                 this.removeImage(index);
+            } else {
+                console.log('No recognized action, result:', result);
             }
         });
     }
@@ -226,16 +226,18 @@ export class AddHotelComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result) => {
             if (result?.action === 'save' && result?.data) {
                 this.images.push(this.fb.group(result.data));
-                this.previewImages = result?.data.Url;
                 console.log('images', this.images);
+                this.previewImages = this.images.value[0].Url;
             }
         });
     }
 
     removeImage(index: number): void {
-        this.previewImages = ""
+        console.log('remove images', index);
+        this.previewImages = '';
         if (this.images.length >= 0) {
             this.images.removeAt(index);
+            this.previewImages = this.images.value[0].Url;
         }
     }
     private createHotelImageGroup(): FormGroup {
@@ -289,12 +291,12 @@ export class AddHotelComponent implements OnInit {
             this.facilities.removeAt(index);
         }
     }
-    private createFacilityGroup(): FormGroup {
-        return this.fb.group({
-            FacilityTitle: [''],
-            FacilityCode: [''],
-        });
-    }
+    // private createFacilityGroup(): FormGroup {
+    //     return this.fb.group({
+    //         FacilityTitle: [''],
+    //         FacilityCode: [''],
+    //     });
+    // }
 
     goToNextTab(): void {
         if (this.currentTabIndex < 2) {
@@ -316,12 +318,12 @@ export class AddHotelComponent implements OnInit {
 
         // Ensure at least one facility input group is present
         if (this.facilities.length === 0) {
-            this.facilities.push(this.createFacilityGroup());
+            // this.facilities.push(this.createFacilityGroup());
         }
     }
 
     // Set hotel images in the form array based on the data retrieved
-    private setHotelImages(images: any[]): void {
+    setHotelImages(images: any[]): void {
         this.images.clear(); // Clear existing images
 
         images.forEach((image) => {
@@ -334,7 +336,7 @@ export class AddHotelComponent implements OnInit {
 
         // Ensure at least one image input group is present
         if (this.images.length === 0) {
-            // this.images.push(this.createHotelImageGroup());
+            this.images.push(this.createHotelImageGroup());
         }
     }
 

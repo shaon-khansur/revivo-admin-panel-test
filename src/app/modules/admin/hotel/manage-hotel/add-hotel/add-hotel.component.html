@@ -154,16 +154,15 @@
                                     placeholder="Website Url..."
                                 />
                             </mat-form-field>
-                            <ng-container *ngIf="!hotelCode">
-                                <mat-form-field class="w-full mt-3">
-                                    <mat-label>Hotel ID / TBO codes</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="HotelCode"
-                                        placeholder="Hotel ID..."
-                                    />
-                                </mat-form-field>
-                            </ng-container>
+
+                            <mat-form-field class="w-full mt-3">
+                                <mat-label>Hotel ID / TBO codes</mat-label>
+                                <input
+                                    matInput
+                                    formControlName="HotelCode"
+                                    placeholder="Hotel ID..."
+                                />
+                            </mat-form-field>
                         </fuse-card>
 
                         <!-- Gallery -->
@@ -277,25 +276,39 @@
                                     formControlName="Description"
                                 ></textarea>
                             </mat-form-field>
+                            <mat-form-field class="w-full">
+                                <mat-label>Attraction</mat-label>
+                                <textarea
+                                    matInput
+                                    formControlName="Attractions"
+                                ></textarea>
+                            </mat-form-field>
 
                             <div class="sm:flex gap-3">
                                 <mat-form-field>
-                                    <mat-label>City Code</mat-label>
-                                    <input matInput formControlName="CityId" />
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <mat-label>City Name</mat-label>
+                                    <mat-label>City Name*</mat-label>
                                     <input
                                         matInput
                                         formControlName="CityName"
                                     />
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <mat-label>Country Code</mat-label>
-                                    <input matInput formControlName="CountryCode" />
+                                    <mat-label>City Code*</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CityCode"
+                                        placeholder="125623"
+                                    />
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <mat-label>Country Name</mat-label>
+                                    <mat-label>Country Code*</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CountryCode"
+                                    />
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Country Name*</mat-label>
                                     <input
                                         matInput
                                         formControlName="CountryName"
@@ -306,14 +319,14 @@
                             <div>
                                 <div class="sm:flex gap-3">
                                     <mat-form-field>
-                                        <mat-label>Address</mat-label>
+                                        <mat-label>Address*</mat-label>
                                         <input
                                             matInput
                                             formControlName="Address"
                                         />
                                     </mat-form-field>
                                     <mat-form-field>
-                                        <mat-label>Latitude</mat-label>
+                                        <mat-label>Latitude*</mat-label>
                                         <input
                                             matInput
                                             formControlName="Latitude"
@@ -321,7 +334,7 @@
                                         />
                                     </mat-form-field>
                                     <mat-form-field>
-                                        <mat-label>Longitude</mat-label>
+                                        <mat-label>Longitude*</mat-label>
                                         <input
                                             matInput
                                             formControlName="Longitude"
@@ -406,7 +419,6 @@
                         (click)="id ? update() : submitForm()"
                         color="primary"
                         mat-raised-button
-                        [disabled]="hotelForm.invalid"
                     >
                         {{ id ? "Update" : "Save Hotel" }}
                     </button>

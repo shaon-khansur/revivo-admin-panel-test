@@ -57,19 +57,6 @@ export class HotelService {
             };
         }>(`${environment.baseUrl}hotelData?${queryParams}`);
     }
-
-    updateHotel(data: HotelData, id: string): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/${id}`;
-        console.log(data);
-
-        return this.http.put(url, data).pipe(
-            catchError((error) => {
-                // Handle the error here
-                console.error('Error updating hotel data:', error);
-                return throwError(() => new Error('Error updating hotel data'));
-            })
-        );
-    }
     getHotelById(id: string): Observable<any> {
         return this.http.get(`${environment.baseUrl}hotelData/${id}`);
     }
@@ -126,9 +113,7 @@ export class HotelService {
 
         return this.http.post(url, body);
     }
-    addHotel(data: any): Observable<any> {
-        return this.http.post<any>(`${environment.baseUrl}hotelData`, data);
-    }
+
 
     // tbo hotels
     getAllTBOHotels(data: {
@@ -170,6 +155,21 @@ export class HotelService {
     getTBOHotelById(id: string): Observable<any> {
         return this.http.get(
             `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`
+        );
+    }
+    addHotel(data: any): Observable<any> {
+        return this.http.post<any>(`${environment.baseUrl}hotelData/hotels/tbo-hotels`, data);
+    }
+    updateHotel(data: HotelData, id: string): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`;
+        console.log(data);
+
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                // Handle the error here
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
         );
     }
 

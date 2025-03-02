@@ -100,13 +100,13 @@ export class EditHotelImageComponent {
             next: (response) => {
                 if (response && response.url) {
                     this.form.get('Url')?.setValue(response.url);
+                    this.dialogRef.close({
+                        action: 'save',
+                        data: {
+                            Url: response.url,
+                        },
+                    });
                 }
-                this.dialogRef.close({
-                    action: 'save',
-                    data: {
-                        Url: response.url,
-                    },
-                });
             },
             error: (err) => {
                 console.error('Error uploading image:', err);
@@ -118,6 +118,10 @@ export class EditHotelImageComponent {
         this.dialogRef.close();
     }
     onDelete(): void {
-        this.dialogRef.close({ action: 'delete' });
+        if (this.dialogRef.getState() !== 1) {
+            // Ensure dialog is open
+            console.log('delete clicked');
+            this.dialogRef.close({ action: 'delete' });
+        }
     }
 }
