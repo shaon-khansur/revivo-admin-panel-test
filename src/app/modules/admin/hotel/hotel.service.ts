@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 
@@ -215,4 +215,10 @@ export class HotelService {
             })
         );
     }
+
+    getCitySearch(value: string): Observable<any> {
+        const url = `${environment.baseUrl}tboHotelDetails/citySearchList?value=${value}`;
+        const httpContext = new HttpContext();
+        return this.http.get(url, { context: httpContext });
+      }
 }

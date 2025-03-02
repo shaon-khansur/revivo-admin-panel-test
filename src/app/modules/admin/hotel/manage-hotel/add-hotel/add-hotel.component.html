@@ -284,12 +284,13 @@
                                 ></textarea>
                             </mat-form-field>
 
-                            <div class="sm:flex gap-3">
+                            <!-- <div class="sm:flex gap-3">
                                 <mat-form-field>
                                     <mat-label>City Name*</mat-label>
                                     <input
                                         matInput
                                         formControlName="CityName"
+                                        placeholder="Paris"
                                     />
                                 </mat-form-field>
                                 <mat-form-field>
@@ -305,6 +306,7 @@
                                     <input
                                         matInput
                                         formControlName="CountryCode"
+                                        placeholder="FR"
                                     />
                                 </mat-form-field>
                                 <mat-form-field>
@@ -312,6 +314,77 @@
                                     <input
                                         matInput
                                         formControlName="CountryName"
+                                        placeholder="France"
+                                    />
+                                </mat-form-field>
+                            </div> -->
+
+                            <div class="sm:flex gap-3">
+                                <!-- City Name with Autocomplete -->
+                                <mat-form-field>
+                                    <mat-label>City Name*</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CityName"
+                                        [matAutocomplete]="auto"
+                                        placeholder="Select City"
+                                    />
+                                    <mat-autocomplete
+                                        #auto="matAutocomplete"
+                                        (optionSelected)="
+                                            onCitySelected($event)
+                                        "
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let city of filteredCities
+                                                    | async
+                                            "
+                                            [value]="city.CityName"
+                                        >
+                                            {{ city.CityName }}, {{city.CountryCode}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
+                                <!-- City Code -->
+                                <mat-form-field>
+                                    <mat-label>City Code</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CityCode"
+                                        placeholder="12345"
+                                        readonly
+                                    />
+                                </mat-form-field>
+
+                                <!-- Country Code -->
+                                <mat-form-field>
+                                    <mat-label>Country Code</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CountryCode"
+                                        placeholder="FR"
+                                        readonly
+                                    />
+                                </mat-form-field>
+
+                                <!-- Country Name -->
+                                <mat-form-field>
+                                    <mat-label>Country Name</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="CountryName"
+                                        placeholder="France"
+                                        readonly
+                                    />
+                                </mat-form-field>
+                                <mat-form-field>
+                                    <mat-label>Pin Code</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="PinCode"
+                                        placeholder="12345"
                                     />
                                 </mat-form-field>
                             </div>
@@ -323,22 +396,25 @@
                                         <input
                                             matInput
                                             formControlName="Address"
+                                            placeholder="Address..."
+                                        />
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:flex gap-3">
+                                    <mat-form-field>
+                                        <mat-label>Check In*</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="CheckInTime"
+                                            placeholder="3:00 PM"
                                         />
                                     </mat-form-field>
                                     <mat-form-field>
-                                        <mat-label>Latitude*</mat-label>
+                                        <mat-label>Check Out*</mat-label>
                                         <input
                                             matInput
-                                            formControlName="Latitude"
-                                            placeholder="14.5454"
-                                        />
-                                    </mat-form-field>
-                                    <mat-form-field>
-                                        <mat-label>Longitude*</mat-label>
-                                        <input
-                                            matInput
-                                            formControlName="Longitude"
-                                            placeholder="-14.5454"
+                                            formControlName="CheckOutTime"
+                                            placeholder="12:00 PM"
                                         />
                                     </mat-form-field>
                                 </div>
@@ -348,6 +424,7 @@
                                         <input
                                             matInput
                                             formControlName="PhoneNumber"
+                                            placeholder="0500000000"
                                         />
                                     </mat-form-field>
                                     <mat-form-field>
@@ -355,6 +432,7 @@
                                         <input
                                             matInput
                                             formControlName="FaxNumber"
+                                            placeholder="+0561498465"
                                         />
                                     </mat-form-field>
                                 </div>
@@ -425,253 +503,7 @@
                 </div>
             </div>
 
-            <div *ngIf="currentTab === 'rooms'">
-                <!-- Content for Room Description -->
-                <div [formGroup]="hotelForm.get('roomsDescription')">
-                    <div
-                        class="flex flex-auto flex-col lg:flex-row justify-center w-full max-w-[1920px] mx-auto p-6 sm:p-8"
-                    >
-                        <!-- Column -->
-                        <div class="flex flex-col items-start lg:mr-8">
-                            <!-- About me -->
-                            <fuse-card class="flex flex-col w-full p-8">
-                                <div
-                                    class="text-2xl font-semibold leading-tight"
-                                >
-                                    Rooms Info
-                                </div>
-                                <p class="my-2">
-                                    Step inside and explore the beauty, comfort,
-                                    and luxury that await you at our hotel.
-                                </p>
-                                <!-- Package Type -->
-                                <mat-form-field appearance="fill" class="mt-3">
-                                    <mat-label>Package Type</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="package_type"
-                                        required
-                                    />
-                                </mat-form-field>
-
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Selected Category</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="selected_category"
-                                        required
-                                    />
-                                </mat-form-field>
-
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Taxes</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="taxes"
-                                        required
-                                    />
-                                </mat-form-field>
-
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Restrictions</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="restrictions"
-                                    />
-                                </mat-form-field>
-                            </fuse-card>
-                        </div>
-
-                        <!-- Column -->
-                        <div class="flex flex-col items-start w-full">
-                            <!-- Create Post -->
-                            <fuse-card
-                                class="flex flex-col w-full p-6 sm:p-8 pb-6"
-                            >
-                                <!-- Remarks -->
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Remarks</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="remarks"
-                                        required
-                                    />
-                                </mat-form-field>
-
-                                <!-- Supplements -->
-                                <mat-form-field appearance="fill">
-                                    <mat-label>Supplements</mat-label>
-                                    <input
-                                        matInput
-                                        formControlName="supplements"
-                                    />
-                                </mat-form-field>
-
-                                <!-- Currency Selection -->
-                                <hr />
-                                <!--  Additional Payments -->
-                                <div class="flex items-center justify-between">
-                                    <div
-                                        class="text-2xl font-semibold leading-tight"
-                                    >
-                                        Additional Payments
-                                    </div>
-                                    <div class="-mr-3">
-                                        <button
-                                            mat-icon-button
-                                            [matMenuTriggerFor]="
-                                                listCard09Menu2
-                                            "
-                                        >
-                                            <mat-icon
-                                                class="icon-size-5"
-                                                [svgIcon]="
-                                                    'heroicons_solid:ellipsis-vertical'
-                                                "
-                                            ></mat-icon>
-                                        </button>
-                                        <mat-menu #listCard09Menu2="matMenu">
-                                            <button
-                                                mat-menu-item
-                                                (click)="addAdditionalPayment()"
-                                            >
-                                                Add Additional Payment
-                                            </button>
-                                        </mat-menu>
-                                    </div>
-                                </div>
-
-                                <div formArrayName="additionalPayments">
-                                    <mat-accordion>
-                                        <div
-                                            *ngFor="
-                                                let additionalPayment of hotelForm.get(
-                                                    'roomsDescription.additionalPayments'
-                                                ).controls;
-                                                let i = index
-                                            "
-                                            [formGroupName]="i"
-                                        >
-                                            <mat-expansion-panel class="mb-3">
-                                                <mat-expansion-panel-header>
-                                                    <mat-panel-title>
-                                                        {{
-                                                            additionalPayment.get(
-                                                                "value"
-                                                            ).value ||
-                                                                "Additional Payment " +
-                                                                    (i + 1)
-                                                        }}
-                                                    </mat-panel-title>
-                                                    <mat-action-row>
-                                                        <button
-                                                            mat-button
-                                                            color="warn"
-                                                            (click)="
-                                                                removeAdditionalPayment(
-                                                                    i
-                                                                )
-                                                            "
-                                                        >
-                                                            Remove Additional
-                                                            Payment
-                                                        </button>
-                                                    </mat-action-row>
-                                                </mat-expansion-panel-header>
-
-                                                <div
-                                                    class="flex flex-wrap gap-5 md:flex-row flex-col"
-                                                >
-                                                    <!-- Restriction Field -->
-                                                    <mat-form-field
-                                                        class="flex-auto"
-                                                    >
-                                                        <mat-label
-                                                            >Restriction</mat-label
-                                                        >
-                                                        <input
-                                                            matInput
-                                                            formControlName="restriction"
-                                                        />
-                                                    </mat-form-field>
-
-                                                    <!-- Value Field -->
-                                                    <mat-form-field
-                                                        class="flex-auto"
-                                                    >
-                                                        <mat-label
-                                                            >Value</mat-label
-                                                        >
-                                                        <input
-                                                            matInput
-                                                            formControlName="value"
-                                                        />
-                                                    </mat-form-field>
-
-                                                    <!-- Rule Field -->
-                                                    <mat-form-field
-                                                        class="flex-auto"
-                                                    >
-                                                        <mat-label
-                                                            >Rule</mat-label
-                                                        >
-                                                        <input
-                                                            matInput
-                                                            formControlName="rule"
-                                                        />
-                                                    </mat-form-field>
-
-                                                    <!-- Sum Field -->
-                                                    <mat-form-field
-                                                        class="flex-auto"
-                                                    >
-                                                        <mat-label
-                                                            >Sum</mat-label
-                                                        >
-                                                        <input
-                                                            matInput
-                                                            formControlName="summ"
-                                                        />
-                                                    </mat-form-field>
-                                                </div>
-                                            </mat-expansion-panel>
-                                        </div>
-                                    </mat-accordion>
-                                </div>
-
-                                <hr />
-                                <div formArrayName="infantPrice">
-                                    <label for="amount">Amount (Price):</label>
-                                    <input
-                                        type="number"
-                                        id="amount"
-                                        formControlName="amount"
-                                        (input)="
-                                            updatePrice($event.target.value)
-                                        "
-                                    />
-
-                                    <!-- Input for currency inside infantPrice -->
-                                    <label for="currency">Currency:</label>
-                                    <input
-                                        type="text"
-                                        id="currency"
-                                        formControlName="currency"
-                                        (input)="
-                                            updateCurrency($event.target.value)
-                                        "
-                                    />
-                                </div>
-
-                                <!-- Other fields -->
-                            </fuse-card>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div *ngIf="currentTab === 'room'">
-                <!-- Content for Pictures -->
                 Content for Room Description
             </div>
             <div *ngIf="currentTab === 'pictures'">

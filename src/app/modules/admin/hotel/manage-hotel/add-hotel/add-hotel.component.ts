@@ -26,6 +26,20 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { HotelService } from '../../hotel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import {
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    Observable,
+    of,
+    startWith,
+    switchMap,
+    tap,
+} from 'rxjs';
+import {
+    MatAutocompleteModule,
+    MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 
 @Component({
     selector: 'app-add-hotel',
@@ -48,6 +62,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
         FuseCardComponent,
         GalleryComponent,
         MatIconModule,
+        MatAutocompleteModule,
     ],
     templateUrl: './add-hotel.component.html',
     styleUrls: ['./add-hotel.component.scss'],
@@ -83,6 +98,10 @@ export class AddHotelComponent implements OnInit {
     hotelIfo: any;
     id: string;
 
+    cities: any[];
+
+    filteredCities!: Observable<any[]>;
+
     constructor(
         private fb: FormBuilder,
         private dialog: MatDialog,
@@ -93,6 +112,9 @@ export class AddHotelComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.hotelService.getCitySearch('').subscribe((data) => {
+            this.cities = data.data;
+        });
         this.route.params.subscribe((params) => {
             this.id = params['id'];
             console.log('params', params);
@@ -109,7 +131,7 @@ export class AddHotelComponent implements OnInit {
                 FaxNumber: [''],
                 Map: [''],
                 HotelRating: [''],
-                CityName: [''],
+                CityName: ['', Validators.required],
                 CountryCode: [''],
                 CheckInTime: [''],
                 CheckOutTime: [''],
@@ -129,7 +151,7 @@ export class AddHotelComponent implements OnInit {
                     (hotel) => {
                         this.hotelIfo = hotel;
                         this.previewImages =
-                            hotel.Images[0].Url || hotel.Thumbnail;
+                            hotel.Images[0]?.Url || hotel.Thumbnail;
                         console.log('hotel data', hotel);
 
                         // Patch the form with hotel data
@@ -169,7 +191,63 @@ export class AddHotelComponent implements OnInit {
                     }
                 );
             }
+            // ✅ Trigger suggestions by default using `startWith('')`
+            this.filteredCities = this.hotelForm
+                .get('CityName')!
+                .valueChanges.pipe(
+                    startWith(''), // Start with an empty string to trigger suggestions
+                    debounceTime(300), // Wait for user to stop typing
+                    distinctUntilChanged(),
+                    switchMap((value) => this.filterCities(value || ''))
+                );
         });
+    }
+
+    /** ✅ Fetch city list and return filtered data */
+filterCities(value: string): Observable<any[]> {
+    console.log('value', value);
+
+    if (value.trim() === '') {
+        // Reset form fields if input is empty
+        this.hotelForm.patchValue({
+            CityCode: '',
+            CountryCode: '',
+            CountryName: '',
+            cityLatitude: '',
+            cityLongitude: '',
+        });
+    }
+
+    // Fetch cities from API and return filtered list
+    return this.hotelService.getCitySearch(value).pipe(
+        tap((data) => {
+            this.cities = data.data; // Update stored city list
+            console.log('cities data', this.cities);
+        }),
+        map((data) => {
+            const filterValue = value.toLowerCase();
+            return data.data.filter((city) =>
+                city.CityName.toLowerCase().includes(filterValue)
+            );
+        })
+    );
+}
+
+    /** ✅ Properly update the selected city */
+    onCitySelected(event: MatAutocompleteSelectedEvent): void {
+        const selectedCity = this.cities.find(
+            (city) => city.CityName === event.option.value
+        );
+
+        if (selectedCity) {
+            this.hotelForm.patchValue({
+                CityCode: selectedCity.CityCode,
+                CountryCode: selectedCity.CountryCode,
+                CountryName: selectedCity.CountryName,
+                cityLatitude: selectedCity.cityLatitude || '',
+                cityLongitude: selectedCity.cityLongitude || '',
+            });
+        }
     }
 
     switchTab(tabName: string): void {
