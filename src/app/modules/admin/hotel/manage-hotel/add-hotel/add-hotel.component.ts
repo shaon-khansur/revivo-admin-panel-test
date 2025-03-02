@@ -133,8 +133,8 @@ export class AddHotelComponent implements OnInit {
                 HotelRating: [''],
                 CityName: ['', Validators.required],
                 CountryCode: [''],
-                CheckInTime: [''],
-                CheckOutTime: [''],
+                CheckInTime: ['', Validators.required],
+                CheckOutTime: ['', Validators.required],
                 Thumbnail: [''],
                 Latitude: [''],
                 Longitude: [''],
@@ -142,7 +142,7 @@ export class AddHotelComponent implements OnInit {
                 cityLongitude: [''],
                 Images: this.fb.array([]),
                 HotelWebsiteUrl: [''],
-                HotelCode: [''],
+                HotelCode: ['', Validators.required],
                 source: ['admin'],
                 isKosher: false,
             });
@@ -150,8 +150,7 @@ export class AddHotelComponent implements OnInit {
                 this.hotelService.getTBOHotelById(this.id).subscribe(
                     (hotel) => {
                         this.hotelIfo = hotel;
-                        this.previewImages =
-                            hotel.Images[0]?.Url || hotel.Thumbnail;
+                        this.previewImages = hotel.Thumbnail;
                         console.log('hotel data', hotel);
 
                         // Patch the form with hotel data
