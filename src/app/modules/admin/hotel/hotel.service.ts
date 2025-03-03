@@ -114,7 +114,6 @@ export class HotelService {
         return this.http.post(url, body);
     }
 
-
     // tbo hotels
     getAllTBOHotels(data: {
         page: number;
@@ -158,7 +157,10 @@ export class HotelService {
         );
     }
     addHotel(data: any): Observable<any> {
-        return this.http.post<any>(`${environment.baseUrl}hotelData/hotels/tbo-hotels`, data);
+        return this.http.post<any>(
+            `${environment.baseUrl}hotelData/hotels/tbo-hotels`,
+            data
+        );
     }
     updateHotel(data: HotelData, id: string): Observable<any> {
         const url = `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`;
@@ -220,5 +222,34 @@ export class HotelService {
         const url = `${environment.baseUrl}tboHotelDetails/citySearchList?value=${value}`;
         const httpContext = new HttpContext();
         return this.http.get(url, { context: httpContext });
-      }
+    }
+
+    // tbo city list
+    getCityData(data: {
+        page: number;
+        cityName: string;
+        pageSize: number;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `cityName=${data.cityName}&page=${data.page}&pageSize=${data.pageSize}`;
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}tboCityListAdmin?${queryParams}`);
+    }
 }

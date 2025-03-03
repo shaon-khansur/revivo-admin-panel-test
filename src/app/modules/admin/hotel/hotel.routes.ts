@@ -6,6 +6,7 @@ import { KosherHotelDetailsComponent } from './manage-hotel/kosher-hotel-details
 import { AddHotelComponent } from './manage-hotel/add-hotel/add-hotel.component';
 import { TboHotelListComponent } from './manage-hotel/tbo-list/tbo-hotel-list/tbo-hotel-list.component';
 import { TboRoomComponent } from './manage-hotel/tbo-list/tbo-room/tbo-room.component';
+import { TboCitylistComponent } from './manage-hotel/tbo-citylist/tbo-citylist.component';
 
 export default [
     {
@@ -35,5 +36,9 @@ export default [
     {
         path: 'tbo-hotel-room',
         component: TboRoomComponent,
+    },
+    {
+        path: 'tbo-cityList',
+        component: TboCitylistComponent,
     },
 ] as Routes;
