@@ -54,7 +54,7 @@ export class TboRoomComponent {
     hotelList: any;
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    displayedColumns: string[] = ['roomName', 'roomType', 'bedType', 'update'];
+    displayedColumns: string[] = ['roomName', 'roomType', 'bedType','description', 'update'];
 
     allsupplier: any[] = [];
     page: number = 1;
