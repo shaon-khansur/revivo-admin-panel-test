@@ -25,6 +25,21 @@ import { FuseCardComponent } from '@fuse/components/card';
 import { GalleryComponent } from './gallery/gallery.component';
 import { HotelService } from '../../hotel.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import {
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    Observable,
+    of,
+    startWith,
+    switchMap,
+    tap,
+} from 'rxjs';
+import {
+    MatAutocompleteModule,
+    MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 
 @Component({
     selector: 'app-add-hotel',
@@ -47,6 +62,7 @@ import { ActivatedRoute, Router } from '@angular/router';
         FuseCardComponent,
         GalleryComponent,
         MatIconModule,
+        MatAutocompleteModule,
     ],
     templateUrl: './add-hotel.component.html',
     styleUrls: ['./add-hotel.component.scss'],
@@ -58,150 +74,179 @@ export class AddHotelComponent implements OnInit {
     defaultImages = [
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
         {
             Url: 'assets/images/blank_image.jpg',
-            ImageType: 'HOTEL',
         },
     ];
+    previewImages: any;
     price: number = 0;
     currency: string = '';
     roomCategories: any[] = [];
     hotelIfo: any;
     id: string;
 
+    cities: any[];
+
+    filteredCities!: Observable<any[]>;
+
     constructor(
         private fb: FormBuilder,
         private dialog: MatDialog,
         private hotelService: HotelService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private _fuseConfirmationService: FuseConfirmationService
     ) {}
 
     ngOnInit(): void {
+        this.hotelService.getCitySearch('').subscribe((data) => {
+            this.cities = data.data;
+        });
         this.route.params.subscribe((params) => {
             this.id = params['id'];
+            console.log('params', params);
             this.hotelForm = this.fb.group({
                 HotelName: ['', Validators.required],
-                HotelRate: ['', Validators.required],
-                isKosher: false,
-                cityHeb: [''],
-                countryName: [''],
+                Description: [''],
                 HotelFacilities: this.fb.array([]),
-                HotelImages: this.fb.array([]),
-                HotelRemarks: this.fb.array([]),
-                HotelLocation: this.fb.group({
-                    latitude: [''],
-                    longitude: [''],
-                    CityCode: ['', Validators.required],
-                    CityName: ['', Validators.required],
-                    CountryCode: [''],
-                    CountryName: [''],
-                    Description: [``],
-                    Address: this.fb.group({
-                        street: [''],
-                        house_number: [''],
-                        zipcode: [''],
-                        phone: [''],
-                        fax: [''],
-                        email: [''],
-                    }),
-                }),
-                Website: [''],
-                HotelID: [''],
+                Attractions: [''],
+                Address: [''],
+                PinCode: [''],
+                CityCode: [''],
+                CountryName: [''],
+                PhoneNumber: [''],
+                FaxNumber: [''],
+                Map: [''],
+                HotelRating: [''],
+                CityName: ['', Validators.required],
+                CountryCode: [''],
+                CheckInTime: ['', Validators.required],
+                CheckOutTime: ['', Validators.required],
+                Thumbnail: [''],
+                Latitude: [''],
+                Longitude: [''],
+                cityLatitude: [''],
+                cityLongitude: [''],
+                Images: this.fb.array([]),
+                HotelWebsiteUrl: [''],
+                HotelCode: ['', Validators.required],
                 source: ['admin'],
-
-                // roomsDescription: this.fb.group({
-                //     package_type: [''],
-                //     remarks: [''],
-                //     selected_category: [''],
-                //     complects: {},
-                //     infantPrice: this.fb.group({
-                //         currency: [this.currency],
-                //         amount: [this.price],
-                //     }),
-                //     additionalPayments: this.fb.array([]),
-                //     dealData: [],
-                //     restrictions: [''],
-                //     supplements: [''],
-                //     taxes: [''],
-                // }),
+                isKosher: false,
             });
             if (this.id) {
-                this.hotelService.getHotelById(this.id).subscribe(
+                this.hotelService.getTBOHotelById(this.id).subscribe(
                     (hotel) => {
                         this.hotelIfo = hotel;
+                        this.previewImages = hotel.Thumbnail;
+                        console.log('hotel data', hotel);
+
                         // Patch the form with hotel data
                         this.hotelForm.patchValue({
                             HotelName: hotel.HotelName,
-                            cityHeb: hotel.cityHeb,
-                            countryName: hotel.countryName,
-                            thumbnail: hotel.thumbnail,
-                            HotelRate: hotel.HotelRate,
-                            Website: hotel.Website,
-                            isKosher: false,
-                            HotelID: hotel.HotelID || '',
+                            Description: hotel.Description,
+                            Attractions: hotel.Attractions,
+                            Address: hotel.Address,
+                            PinCode: hotel.PinCode,
+                            CityCode: hotel.CityCode,
+                            CountryName: hotel.CountryName,
+                            PhoneNumber: hotel.PhoneNumber,
+                            FaxNumber: hotel.FaxNumber,
+                            Map: hotel.Map,
+                            HotelRating: hotel.HotelRating,
+                            CityName: hotel.CityName,
+                            CountryCode: hotel.CountryCode,
+                            CheckInTime: hotel.CheckInTime,
+                            CheckOutTime: hotel.CheckOutTime,
+                            Thumbnail: hotel.Thumbnail,
+                            Latitude: hotel.Latitude,
+                            Longitude: hotel.Longitude,
+                            cityLatitude: hotel.cityLatitude,
+                            cityLongitude: hotel.cityLongitude,
+                            HotelWebsiteUrl: hotel.HotelWebsiteUrl,
+                            HotelCode: hotel.HotelCode,
                             source: hotel.source,
-                            HotelLocation: {
-                                CityCode: hotel.HotelLocation?.CityCode || '',
-                                CityName: hotel.HotelLocation?.CityName || '',
-                                CountryName:
-                                    hotel.HotelLocation?.CountryName || '',
-                                Description:
-                                    hotel.HotelLocation?.Description || '',
-                                Address: {
-                                    zipcode:
-                                        hotel.HotelLocation?.Address?.zipcode ||
-                                        '',
-                                    phone:
-                                        hotel.HotelLocation?.Address?.phone ||
-                                        '',
-                                    street:
-                                        hotel.HotelLocation?.Address?.street ||
-                                        '',
-                                    house_number:
-                                        hotel.HotelLocation?.Address
-                                            ?.house_number || '',
-                                    fax:
-                                        hotel.HotelLocation?.Address?.fax || '',
-                                    email:
-                                        hotel.HotelLocation?.Address?.email ||
-                                        '',
-                                },
-                                latitude: hotel.HotelLocation?.latitude || '',
-                                longitude: hotel.HotelLocation?.longitude || '',
-                            },
+                            isKosher: hotel.isKosher,
                         });
                         // Set facilities
                         this.setFacilities(hotel.HotelFacilities || []);
-                        // Set hotel remarks
-                        this.setHotelRemarks(hotel.HotelRemarks || []);
                         // Set hotel images
-                        this.setHotelImages(hotel.HotelImages || []);
+                        this.setHotelImages(hotel.Images || []);
                     },
                     (error) => {
                         console.error('Error fetching hotel:', error);
                     }
                 );
             }
+            // ✅ Trigger suggestions by default using `startWith('')`
+            this.filteredCities = this.hotelForm
+                .get('CityName')!
+                .valueChanges.pipe(
+                    startWith(''), // Start with an empty string to trigger suggestions
+                    debounceTime(300), // Wait for user to stop typing
+                    distinctUntilChanged(),
+                    switchMap((value) => this.filterCities(value || ''))
+                );
         });
+    }
+
+    /** ✅ Fetch city list and return filtered data */
+filterCities(value: string): Observable<any[]> {
+    console.log('value', value);
+
+    if (value.trim() === '') {
+        // Reset form fields if input is empty
+        this.hotelForm.patchValue({
+            CityCode: '',
+            CountryCode: '',
+            CountryName: '',
+            cityLatitude: '',
+            cityLongitude: '',
+        });
+    }
+
+    // Fetch cities from API and return filtered list
+    return this.hotelService.getCitySearch(value).pipe(
+        tap((data) => {
+            this.cities = data.data; // Update stored city list
+            console.log('cities data', this.cities);
+        }),
+        map((data) => {
+            const filterValue = value.toLowerCase();
+            return data.data.filter((city) =>
+                city.CityName.toLowerCase().includes(filterValue)
+            );
+        })
+    );
+}
+
+    /** ✅ Properly update the selected city */
+    onCitySelected(event: MatAutocompleteSelectedEvent): void {
+        const selectedCity = this.cities.find(
+            (city) => city.CityName === event.option.value
+        );
+
+        if (selectedCity) {
+            this.hotelForm.patchValue({
+                CityCode: selectedCity.CityCode,
+                CountryCode: selectedCity.CountryCode,
+                CountryName: selectedCity.CountryName,
+                cityLatitude: selectedCity.cityLatitude || '',
+                cityLongitude: selectedCity.cityLongitude || '',
+            });
+        }
     }
 
     switchTab(tabName: string): void {
@@ -209,42 +254,40 @@ export class AddHotelComponent implements OnInit {
     }
 
     // -------------------------------------------  image ---------------------------------------
-    get images(): FormArray {
-        return this.hotelForm.get('HotelImages') as FormArray;
+    get hotelCode(): FormArray {
+        return this.hotelForm.get('HotelCode')?.value;
     }
-    get previewImages() {
-        return this.images.controls.filter(
-            (image: any) => image.get('ImageType').value === 'PREVIEW'
-        );
+    get images(): FormArray {
+        return this.hotelForm.get('Images') as FormArray;
     }
 
     openEditHotelImage(index: number): void {
         const imageControl = this.images.at(index);
-
         const previousUrl = imageControl.get('Url').value; // Save the previous URL value
-
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
-                ImageTitle: imageControl.get('ImageTitle').value,
                 Url: previousUrl, // Pass the previous URL
-                ImageType: imageControl.get('ImageType').value,
             },
         });
 
         dialogRef.afterClosed().subscribe((result) => {
+            console.log('Dialog closed result:', result); // Check what is actually returned
+
             if (result?.action === 'save' && result?.data) {
-                // If Url is empty and this.id exists, use the previous value
+                console.log('Data received for saving', result.data);
+
                 const updatedData = {
                     ...result.data,
-                    Url:
-                        this.id && !result.data.Url
-                            ? previousUrl
-                            : result.data.Url,
+                    Url: this.id && !result.data.Url ? '' : result.data.Url,
                 };
                 this.images.at(index).patchValue(updatedData);
+                this.previewImages = this.images[0]?.Url;
             } else if (result?.action === 'delete') {
+                console.log('delete action received'); // Confirm delete is received
                 this.removeImage(index);
+            } else {
+                console.log('No recognized action, result:', result);
             }
         });
     }
@@ -253,9 +296,7 @@ export class AddHotelComponent implements OnInit {
         const dialogRef = this.dialog.open(EditHotelImageComponent, {
             width: '400px',
             data: {
-                ImageTitle: '',
                 Url: '',
-                ImageType: '',
             },
         });
 
@@ -263,20 +304,22 @@ export class AddHotelComponent implements OnInit {
             if (result?.action === 'save' && result?.data) {
                 this.images.push(this.fb.group(result.data));
                 console.log('images', this.images);
+                this.previewImages = this.images.value[0].Url;
             }
         });
     }
 
     removeImage(index: number): void {
+        console.log('remove images', index);
+        this.previewImages = '';
         if (this.images.length >= 0) {
             this.images.removeAt(index);
+            this.previewImages = this.images.value[0].Url;
         }
     }
     private createHotelImageGroup(): FormGroup {
         return this.fb.group({
-            ImageTitle: [''],
             Url: [''],
-            ImageType: [''],
         });
     }
 
@@ -292,8 +335,6 @@ export class AddHotelComponent implements OnInit {
             data: {
                 FacilityTitle: facilityControl.get('FacilityTitle').value,
                 FacilityCode: facilityControl.get('FacilityCode').value,
-                FacilityType: facilityControl.get('FacilityType').value,
-                Url: facilityControl.get('Url').value,
             },
         });
 
@@ -312,8 +353,6 @@ export class AddHotelComponent implements OnInit {
             data: {
                 FacilityTitle: '',
                 FacilityCode: '',
-                FacilityType: '',
-                Url: '',
             },
         });
 
@@ -329,37 +368,12 @@ export class AddHotelComponent implements OnInit {
             this.facilities.removeAt(index);
         }
     }
-    private createFacilityGroup(): FormGroup {
-        return this.fb.group({
-            FacilityTitle: [''],
-            FacilityCode: [''],
-            FacilityType: [''],
-            Url: [''],
-        });
-    }
-
-    // -------------------------------------------  Remark ---------------------------------------
-
-    get remarks(): FormArray {
-        return this.hotelForm.get('HotelRemarks') as FormArray;
-    }
-
-    private createHotelRemarkGroup(): FormGroup {
-        return this.fb.group({
-            FreeText: [''],
-            RemarkType: [''],
-        });
-    }
-
-    addRemark(): void {
-        this.remarks.push(this.createHotelRemarkGroup());
-    }
-
-    removeRemark(index: number): void {
-        if (this.remarks.length >= 0) {
-            this.remarks.removeAt(index);
-        }
-    }
+    // private createFacilityGroup(): FormGroup {
+    //     return this.fb.group({
+    //         FacilityTitle: [''],
+    //         FacilityCode: [''],
+    //     });
+    // }
 
     goToNextTab(): void {
         if (this.currentTabIndex < 2) {
@@ -370,53 +384,29 @@ export class AddHotelComponent implements OnInit {
     // Set facilities in the form array based on the data retrieved
     private setFacilities(facilities: any[]): void {
         this.facilities.clear(); // Clear existing facilities
-
         facilities.forEach((facility) => {
             this.facilities.push(
                 this.fb.group({
                     FacilityTitle: [facility.FacilityTitle || ''],
                     FacilityCode: [facility.FacilityCode || ''],
-                    FacilityType: [facility.FacilityType || ''],
-                    Url: [facility.Url || ''],
                 })
             );
         });
 
         // Ensure at least one facility input group is present
         if (this.facilities.length === 0) {
-            this.facilities.push(this.createFacilityGroup());
-        }
-    }
-
-    // Set hotel remarks in the form array based on the data retrieved
-    private setHotelRemarks(remarks: any[]): void {
-        this.remarks.clear(); // Clear existing remarks
-
-        remarks.forEach((remark) => {
-            this.remarks.push(
-                this.fb.group({
-                    FreeText: [remark.FreeText || ''],
-                    RemarkType: [remark.RemarkType || ''],
-                })
-            );
-        });
-
-        // Ensure at least one remark input group is present
-        if (this.remarks.length === 0) {
-            this.remarks.push(this.createHotelRemarkGroup());
+            // this.facilities.push(this.createFacilityGroup());
         }
     }
 
     // Set hotel images in the form array based on the data retrieved
-    private setHotelImages(images: any[]): void {
+    setHotelImages(images: any[]): void {
         this.images.clear(); // Clear existing images
 
         images.forEach((image) => {
             this.images.push(
                 this.fb.group({
-                    ImageTitle: [image.ImageTitle || ''],
                     Url: [image.Url || ''],
-                    ImageType: [image.ImageType || ''],
                 })
             );
         });
@@ -427,100 +417,39 @@ export class AddHotelComponent implements OnInit {
         }
     }
 
-    // Method to update the price when the input changes
-    updatePrice(newPrice: number): void {
-        this.price = newPrice;
-        this.hotelForm
-            .get('roomsDescription')
-            .get('infantPrice.amount')
-            .setValue(this.price);
-    }
-
-    // Method to update the currency when the input changes
-    updateCurrency(newCurrency: string): void {
-        this.currency = newCurrency;
-        this.hotelForm
-            .get('roomsDescription')
-            .get('infantPrice.currency')
-            .setValue(this.currency);
-    }
-
-    // Method to add a new additional payment entry
-    addAdditionalPayment(): void {
-        const additionalPaymentsArray = this.hotelForm
-            .get('roomsDescription')
-            .get('additionalPayments') as FormArray;
-        additionalPaymentsArray.push(
-            this.createAdditionalPayment('', '', '', '')
-        );
-    }
-
-    // Method to create an additional payment FormGroup
-    createAdditionalPayment(
-        restriction: string,
-        value: string,
-        rule: string,
-        summ: string
-    ): FormGroup {
-        return this.fb.group({
-            restriction: [restriction, Validators.required],
-            value: [value, Validators.required],
-            rule: [rule, Validators.required],
-            summ: [summ, Validators.required],
-        });
-    }
-    // Method to remove an additional payment entry
-    removeAdditionalPayment(index: number): void {
-        const additionalPaymentsArray = this.hotelForm
-            .get('roomsDescription')
-            .get('additionalPayments') as FormArray;
-        additionalPaymentsArray.removeAt(index);
-    }
-
     submitForm(): void {
         if (this.hotelForm.valid) {
             const formValue = this.hotelForm.value;
-
-            // const infantPrice = {
-            //     [formValue?.roomsDescription?.infantPrice.currency]:
-            //         formValue?.roomsDescription?.infantPrice?.amount,
-            // };
-
-            // // Prepare the final data for submission
-            // const finalData = {
-            //     ...formValue,
-            //     roomsDescription: {
-            //         ...formValue?.roomsDescription,
-            //         infantPrice: infantPrice,
-            //     },
-            // };
-
             console.log('Form Submitted:', formValue);
 
-            this.hotelService.addHotel(formValue).subscribe((response) => {
-                console.log('response data', response);
-                this.router.navigate(['hotel/hotel-list']);
+            this.hotelService.addHotel(formValue).subscribe({
+                next: (response) => {
+                    console.log('Response data:', response);
+                    this.router.navigate(['hotel/tbo-hotel-list']);
+                },
+                error: (error) => {
+                    console.error('API Error:', error);
+
+                    // Show error message to the user
+                    this._fuseConfirmationService.open({
+                        title: 'Submission Failed',
+                        message:
+                            error?.error?.message ||
+                            'Something went wrong while submitting the form.',
+                        actions: {
+                            confirm: {
+                                show: true,
+                                label: 'Ok',
+                                color: 'warn',
+                            },
+                        },
+                    });
+                },
             });
         } else {
             const formValue = this.hotelForm.value;
             console.log('form control', this.hotelForm);
-
             console.log(formValue);
-
-            // const infantPrice = {
-            //     [formValue?.roomsDescription?.infantPrice.currency]:
-            //         formValue?.roomsDescription?.infantPrice?.amount,
-            // };
-
-            // // Prepare the final data for submission
-            // const finalData = {
-            //     ...formValue,
-            //     roomsDescription: {
-            //         ...formValue?.roomsDescription,
-            //         infantPrice: infantPrice,
-            //     },
-            // };
-
             console.log('Form is invalid', formValue);
         }
     }
@@ -530,11 +459,11 @@ export class AddHotelComponent implements OnInit {
         console.log(formValue);
 
         this.hotelService.updateHotel(formValue, this.id).subscribe(() => {
-            this.router.navigate(['hotel/hotel-list']);
+            this.router.navigate(['hotel/tbo-hotel-list']);
         });
     }
 
     close(): void {
-        this.router.navigate(['hotel/hotel-list']);
+        this.router.navigate(['hotel/tbo-hotel-list']);
     }
 }

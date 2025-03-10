@@ -34,9 +34,7 @@ export class EditHotelImageComponent {
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.form = this.fb.group({
-            ImageTitle: [data.ImageTitle || ''],
             Url: [data.Url || ''],
-            ImageType: [data?.ImageType || 'HOTEL'],
             file: [null],
         });
     }
@@ -102,15 +100,13 @@ export class EditHotelImageComponent {
             next: (response) => {
                 if (response && response.url) {
                     this.form.get('Url')?.setValue(response.url);
+                    this.dialogRef.close({
+                        action: 'save',
+                        data: {
+                            Url: response.url,
+                        },
+                    });
                 }
-                this.dialogRef.close({
-                    action: 'save',
-                    data: {
-                        ImageTitle: formData.ImageTitle,
-                        Url: response.url,
-                        ImageType: formData.ImageType,
-                    },
-                });
             },
             error: (err) => {
                 console.error('Error uploading image:', err);
@@ -122,6 +118,10 @@ export class EditHotelImageComponent {
         this.dialogRef.close();
     }
     onDelete(): void {
-        this.dialogRef.close({ action: 'delete' });
+        if (this.dialogRef.getState() !== 1) {
+            // Ensure dialog is open
+            console.log('delete clicked');
+            this.dialogRef.close({ action: 'delete' });
+        }
     }
 }

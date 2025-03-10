@@ -20,10 +20,11 @@ import {
     _MatSlideToggleRequiredValidatorModule,
     MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-    selector: 'app-kosher-list',
+    selector: 'app-tbo-citylist',
     standalone: true,
     imports: [
         CommonModule,
@@ -40,23 +41,24 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         RouterModule,
         _MatSlideToggleRequiredValidatorModule,
         MatSlideToggleModule,
-        MatCheckboxModule
+        MatSelectModule,
+        MatCheckboxModule,
     ],
-    templateUrl: './kosher-list.component.html',
-    styleUrls: ['./kosher-list.component.scss'],
+    templateUrl: './tbo-citylist.component.html',
+    styleUrls: ['./tbo-citylist.component.scss'],
 })
-export class KosherListComponent {
+export class TboCitylistComponent implements OnInit {
     hotelList: any;
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
-        'hotelId',
-        'hotelName',
-        'HotelRate',
-        'cityName',
         'cityCode',
-        'isKosher',
-        'view',
+        'cityName',
+        'countryName',
+        'cityLatitude',
+        'cityLongitude',
+        'isMiningHotel',
+        // 'view',
     ];
 
     allHotel: any[] = [];
@@ -74,9 +76,9 @@ export class KosherListComponent {
 
     ngOnInit(): void {
         this.hotelService
-            .getAllKosherHotels({
+            .getCityData({
                 page: this.page,
-                hotelName: '',
+                cityName: '',
                 pageSize: this.pageSize,
             })
             .subscribe({
@@ -92,9 +94,9 @@ export class KosherListComponent {
             .pipe(debounceTime(500))
             .subscribe((value) => {
                 this.hotelService
-                    .getAllKosherHotels({
+                    .getCityData({
                         page: 1, // Reset to page 1 when a search is performed
-                        hotelName: value?.toLowerCase(),
+                        cityName: value?.toLowerCase(),
                         pageSize: this.pageSize,
                     })
                     .subscribe({
@@ -110,24 +112,6 @@ export class KosherListComponent {
             });
     }
 
-    getStars(rate: number): number[] {
-        const fullStars = Math.floor(rate);
-        const hasHalfStar = rate % 1 >= 0.5;
-        const totalStars = 5; // assuming a 5-star rating system
-
-        return Array(totalStars)
-            .fill(0)
-            .map((_, index) => {
-                if (index < fullStars) {
-                    return 1; // full star
-                } else if (index === fullStars && hasHalfStar) {
-                    return 0.5; // half star
-                } else {
-                    return 0; // empty star
-                }
-            });
-    }
-
     ngAfterViewInit(): void {
         this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
         this.resultsLength = 0;
@@ -139,9 +123,10 @@ export class KosherListComponent {
         this.pageSize = event.pageSize;
 
         this.hotelService
-            .getAllKosherHotels({
+            .getCityData({
                 page: this.page,
-                hotelName: this.searchInputControl.value?.toLowerCase() || '',
+                cityName:
+                    this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
             })
             .subscribe({
@@ -152,44 +137,11 @@ export class KosherListComponent {
                 },
             });
     }
-
-    openDialog(hotel): void {
-        this.router.navigate(['hotel/kosher-hotel-details', hotel.HotelID]);
-    }
-
-    toggleKosher(hotelId: string, isKosher: boolean) {
-        this.hotelService.toggleKosherStatus(hotelId, isKosher).subscribe({
-            next: (response) => {
-                if (response.success) {
-                    this.refreshHotelList();
-                } else {
-                    console.error(
-                        'Failed to update kosher status:',
-                        response.message
-                    );
-                }
-            },
-            error: (error) => {
-                console.error('Error updating kosher status:', error);
-                // Log more detailed error information
-                if (error.status) {
-                    console.error('HTTP Status:', error.status);
-                }
-                if (error.message) {
-                    console.error('Error Message:', error.message);
-                }
-                if (error.error) {
-                    console.error('API Response Error:', error.error);
-                }
-            },
-        });
-    }
-
     refreshHotelList(): void {
         this.hotelService
-            .getAllKosherHotels({
+            .getCityData({
                 page: this.page,
-                hotelName: this.searchInputControl.value?.toLowerCase() || '',
+                cityName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
             })
             .subscribe({

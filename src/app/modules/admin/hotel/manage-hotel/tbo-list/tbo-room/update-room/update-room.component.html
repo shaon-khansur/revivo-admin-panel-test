@@ -1,0 +1,27 @@
+<div mat-dialog-content>
+    <h1 class="font-bold">Update Room</h1>
+    <hr class="my-2" />
+    <h1 class="mb-5 text-lg">{{ data.name }}</h1>
+    <form [formGroup]="form">
+        <div class="flex gap-2 flex-wrap">
+            <mat-form-field class="flex-auto">
+                <mat-label>Room Type</mat-label>
+                <input matInput formControlName="roomType" />
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto">
+                <mat-label>Bed Type</mat-label>
+                <input matInput formControlName="bedType" />
+            </mat-form-field>
+        </div>
+        <mat-form-field class="flex-auto w-full">
+            <mat-label>Room Description</mat-label>
+            <input matInput formControlName="roomDescription" />
+        </mat-form-field>
+    </form>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="onSave()">Save</button>
+</div>

@@ -52,12 +52,12 @@ export class HotelListComponent implements OnInit {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
-        'Favorite',
+        'hotelId',
         'hotelName',
         'HotelRate',
         'cityName',
         'cityCode',
-        'isKosher',
+        // 'isKosher',
         'view',
     ];
 
@@ -113,13 +113,6 @@ export class HotelListComponent implements OnInit {
                         },
                     });
             });
-    }
-
-    toggleFavorite(element: any) {
-        element.isFavorite = !element.isFavorite;
-        this.hotelService.isFavorite(element.HotelID).subscribe(response => {
-        
-        });
     }
 
     onKosherStatusChange(selectedValue: string): void {

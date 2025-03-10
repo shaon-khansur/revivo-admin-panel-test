@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 
@@ -57,19 +57,6 @@ export class HotelService {
             };
         }>(`${environment.baseUrl}hotelData?${queryParams}`);
     }
-
-    updateHotel(data: HotelData, id: string): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/${id}`;
-        console.log(data);
-
-        return this.http.put(url, data).pipe(
-            catchError((error) => {
-                // Handle the error here
-                console.error('Error updating hotel data:', error);
-                return throwError(() => new Error('Error updating hotel data'));
-            })
-        );
-    }
     getHotelById(id: string): Observable<any> {
         return this.http.get(`${environment.baseUrl}hotelData/${id}`);
     }
@@ -126,13 +113,143 @@ export class HotelService {
 
         return this.http.post(url, body);
     }
-    addHotel(data: any): Observable<any> {
-        return this.http.post<any>(`${environment.baseUrl}hotelData`, data);
+
+    // tbo hotels
+    getAllTBOHotels(data: {
+        page: number;
+        hotelName: string;
+        pageSize: number;
+        kosherStatus?: string | boolean;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`;
+
+        console.log('data', data);
+
+        // Add the kosherStatus filter if it is defined
+        if (data.kosherStatus !== undefined && data.kosherStatus !== '') {
+            queryParams += `&status=${data.kosherStatus}`;
+        }
+
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}hotelData/hotels/tbo-hotels?${queryParams}`);
     }
-    isFavorite(hotelId: any): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/isFavorite`;
-        const body = { hotelId };
-    
-        return this.http.post<any>(url, body);
+    getTBOHotelById(id: string): Observable<any> {
+        return this.http.get(
+            `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`
+        );
+    }
+    addHotel(data: any): Observable<any> {
+        return this.http.post<any>(
+            `${environment.baseUrl}hotelData/hotels/tbo-hotels`,
+            data
+        );
+    }
+    updateHotel(data: HotelData, id: string): Observable<any> {
+        const url = `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`;
+        console.log(data);
+
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                // Handle the error here
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
+        );
+    }
+
+    // room data
+    getRoomData(data: {
+        page: number;
+        roomNameSearch: string;
+        pageSize: number;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `roomNameSearch=${data.roomNameSearch}&page=${data.page}&pageSize=${data.pageSize}`;
+        console.log('data', data);
+
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}roomMap?${queryParams}`);
+    }
+    updateRoom(data: any): Observable<any> {
+        const url = `${environment.baseUrl}roomMap/${data.id}`;
+        console.log(data);
+
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                // Handle the error here
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
+        );
+    }
+
+    getCitySearch(value: string): Observable<any> {
+        const url = `${environment.baseUrl}tboHotelDetails/citySearchList?value=${value}`;
+        const httpContext = new HttpContext();
+        return this.http.get(url, { context: httpContext });
+    }
+
+    // tbo city list
+    getCityData(data: {
+        page: number;
+        cityName: string;
+        pageSize: number;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `cityName=${data.cityName}&page=${data.page}&pageSize=${data.pageSize}`;
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(`${environment.baseUrl}tboCityListAdmin?${queryParams}`);
     }
 }

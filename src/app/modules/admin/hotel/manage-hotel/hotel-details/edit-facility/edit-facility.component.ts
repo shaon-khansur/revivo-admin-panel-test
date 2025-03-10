@@ -33,8 +33,6 @@ export class EditFacilityComponent {
         this.form = this.fb.group({
           FacilityTitle: [data.FacilityTitle || ''],
           FacilityCode: [data.FacilityCode || ''],
-          FacilityType: [data.FacilityType || ''],
-          Url: [data.Url || '']
         });
     }
 

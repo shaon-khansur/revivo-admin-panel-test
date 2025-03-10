@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { HotelService } from '../../hotel.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
     MatPaginator,
@@ -20,10 +19,16 @@ import {
     _MatSlideToggleRequiredValidatorModule,
     MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { HotelService } from 'app/modules/admin/hotel/hotel.service';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { UpdateComponent } from 'app/modules/admin/flights/supplier/supplier-list/supplierUpdate/update/update.component';
+import { SupplierService } from 'app/modules/admin/flights/supplier/supplier.service';
+import { UpdateRoomComponent } from './update-room/update-room.component';
+// import { UpdateComponent } from './supplierUpdate/update/update.component';
 
 @Component({
-    selector: 'app-kosher-list',
+    selector: 'app-tbo-room',
     standalone: true,
     imports: [
         CommonModule,
@@ -40,26 +45,18 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         RouterModule,
         _MatSlideToggleRequiredValidatorModule,
         MatSlideToggleModule,
-        MatCheckboxModule
+        MatSelectModule,
     ],
-    templateUrl: './kosher-list.component.html',
-    styleUrls: ['./kosher-list.component.scss'],
+    templateUrl: './tbo-room.component.html',
+    styleUrls: ['./tbo-room.component.scss'],
 })
-export class KosherListComponent {
+export class TboRoomComponent {
     hotelList: any;
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    displayedColumns: string[] = [
-        'hotelId',
-        'hotelName',
-        'HotelRate',
-        'cityName',
-        'cityCode',
-        'isKosher',
-        'view',
-    ];
+    displayedColumns: string[] = ['roomName', 'roomType', 'bedType','description', 'update'];
 
-    allHotel: any[] = [];
+    allsupplier: any[] = [];
     page: number = 1;
     pageSize: number = 10;
     resultsLength: number = 0;
@@ -69,21 +66,22 @@ export class KosherListComponent {
         private hotelService: HotelService,
         private dialog: MatDialog,
         private router: Router,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private _fuseConfirmationService: FuseConfirmationService
     ) {}
 
     ngOnInit(): void {
         this.hotelService
-            .getAllKosherHotels({
+            .getRoomData({
                 page: this.page,
-                hotelName: '',
+                roomNameSearch: '',
                 pageSize: this.pageSize,
             })
             .subscribe({
                 next: (response) => {
                     console.log(response);
-                    this.allHotel = response.allData;
-                    this.dataSource = new MatTableDataSource(this.allHotel);
+                    this.allsupplier = response.allData;
+                    this.dataSource = new MatTableDataSource(this.allsupplier);
                     this.resultsLength = response.metadata?.totalItems;
                 },
             });
@@ -92,16 +90,16 @@ export class KosherListComponent {
             .pipe(debounceTime(500))
             .subscribe((value) => {
                 this.hotelService
-                    .getAllKosherHotels({
+                    .getRoomData({
                         page: 1, // Reset to page 1 when a search is performed
-                        hotelName: value?.toLowerCase(),
+                        roomNameSearch: value?.toLowerCase(),
                         pageSize: this.pageSize,
                     })
                     .subscribe({
                         next: (response) => {
-                            this.allHotel = response.allData;
+                            this.allsupplier = response.allData;
                             this.dataSource = new MatTableDataSource(
-                                this.allHotel
+                                this.allsupplier
                             );
                             this.resultsLength = response.metadata.totalItems;
                             this.paginator.firstPage(); // Reset paginator to the first page
@@ -110,26 +108,8 @@ export class KosherListComponent {
             });
     }
 
-    getStars(rate: number): number[] {
-        const fullStars = Math.floor(rate);
-        const hasHalfStar = rate % 1 >= 0.5;
-        const totalStars = 5; // assuming a 5-star rating system
-
-        return Array(totalStars)
-            .fill(0)
-            .map((_, index) => {
-                if (index < fullStars) {
-                    return 1; // full star
-                } else if (index === fullStars && hasHalfStar) {
-                    return 0.5; // half star
-                } else {
-                    return 0; // empty star
-                }
-            });
-    }
-
     ngAfterViewInit(): void {
-        this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
+        this.paginator.pageIndex = 0;
         this.resultsLength = 0;
         this.cdr.detectChanges();
     }
@@ -139,63 +119,66 @@ export class KosherListComponent {
         this.pageSize = event.pageSize;
 
         this.hotelService
-            .getAllKosherHotels({
+            .getRoomData({
                 page: this.page,
-                hotelName: this.searchInputControl.value?.toLowerCase() || '',
+                roomNameSearch:
+                    this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
             })
             .subscribe({
                 next: (response) => {
-                    this.allHotel = response.allData;
-                    this.dataSource = new MatTableDataSource(this.allHotel);
+                    this.allsupplier = response.allData;
+                    this.dataSource = new MatTableDataSource(this.allsupplier);
                     this.resultsLength = response.metadata.totalItems;
                 },
             });
     }
 
-    openDialog(hotel): void {
-        this.router.navigate(['hotel/kosher-hotel-details', hotel.HotelID]);
+    openDialog(data): void {
+        console.log('supplier', data);
+
+        const dialogRef = this.dialog.open(UpdateRoomComponent, {
+            width: '600px',
+            data: data,
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.action === 'save') {
+                this.updateSupplier(result.data, data.id);
+            }
+        });
     }
 
-    toggleKosher(hotelId: string, isKosher: boolean) {
-        this.hotelService.toggleKosherStatus(hotelId, isKosher).subscribe({
+    updateSupplier(data: any, id: string): void {
+        console.log('update', data);
+
+        const payload = {
+            ...data,
+            id,
+        };
+
+        this.hotelService.updateRoom(payload).subscribe({
             next: (response) => {
-                if (response.success) {
-                    this.refreshHotelList();
-                } else {
-                    console.error(
-                        'Failed to update kosher status:',
-                        response.message
-                    );
-                }
+                this.refreshSupplierList();
             },
             error: (error) => {
-                console.error('Error updating kosher status:', error);
-                // Log more detailed error information
-                if (error.status) {
-                    console.error('HTTP Status:', error.status);
-                }
-                if (error.message) {
-                    console.error('Error Message:', error.message);
-                }
-                if (error.error) {
-                    console.error('API Response Error:', error.error);
-                }
+                console.error('Error updating supplier:', error);
             },
         });
     }
 
-    refreshHotelList(): void {
+    refreshSupplierList(): void {
         this.hotelService
-            .getAllKosherHotels({
+            .getRoomData({
                 page: this.page,
-                hotelName: this.searchInputControl.value?.toLowerCase() || '',
+                roomNameSearch:
+                    this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
             })
             .subscribe({
                 next: (response) => {
-                    this.allHotel = response.allData;
-                    this.dataSource = new MatTableDataSource(this.allHotel);
+                    this.allsupplier = response.allData;
+                    this.dataSource = new MatTableDataSource(this.allsupplier);
                     this.resultsLength = response.metadata.totalItems;
                     this.paginator.firstPage(); // Optional: Reset paginator to the first page
                 },
