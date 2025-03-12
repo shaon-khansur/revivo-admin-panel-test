@@ -16,6 +16,13 @@ interface FareFamilyCommissionFrom {
     id: FormControl<string>;
     type: FormControl<string>;
     amount: FormControl<number>;
+    type_id: FormControl<string>;
+}
+
+enum FareFamilyCommissionTypeId {
+    REFUND = 1,
+    EXCHANGE = 2,
+    SERVICES_PRICE =3
 }
 
 @Component({
@@ -24,16 +31,11 @@ interface FareFamilyCommissionFrom {
   imports: [CommonModule,
     MatButtonModule,
     MatIconModule,
-    NgFor,
-    NgClass,
-    NgSwitch,
-    NgSwitchCase,
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
     MatAutocompleteModule,
-    AsyncPipe,
     MatCheckboxModule,
     MatSelectModule,
     MatChipsModule,],
@@ -56,6 +58,7 @@ export class FareFamilyCommissioinDialogComponent {
 
     ngOnInit(): void {
         this.createForm();
+
         if (this.dialogData) {
             this.fareFamilyCommissionForm.patchValue(this.dialogData);
         }
@@ -66,11 +69,19 @@ export class FareFamilyCommissioinDialogComponent {
             id: [''],
             type: ['', Validators.required],
             amount: [0, Validators.required],
+            type_id: ['']
 
         });
     }
 
     save() {
+        const value = this.fareFamilyCommissionForm.get('type')?.value;
+        if (value) {
+            const formattedValue = value.toUpperCase().replace(/\s+/g, '_');
+            this.fareFamilyCommissionForm.get('type_id').setValue(formattedValue);
+            this.fareFamilyCommissionForm.get('type').setValue(value.toUpperCase());
+        }
+
         this.dialogRef.close(this.fareFamilyCommissionForm.value as FareFamilyCommissionData);
     }
 

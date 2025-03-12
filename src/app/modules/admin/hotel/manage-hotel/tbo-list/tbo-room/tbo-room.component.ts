@@ -54,7 +54,7 @@ export class TboRoomComponent {
     hotelList: any;
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    displayedColumns: string[] = ['roomName', 'roomType', 'bedType','description', 'update'];
+    displayedColumns: string[] = ['roomName','description', 'roomType', 'bedType', 'update'];
 
     allsupplier: any[] = [];
     page: number = 1;
@@ -91,7 +91,7 @@ export class TboRoomComponent {
             .subscribe((value) => {
                 this.hotelService
                     .getRoomData({
-                        page: 1, // Reset to page 1 when a search is performed
+                        page: this.page, // Reset to page 1 when a search is performed
                         roomNameSearch: value?.toLowerCase(),
                         pageSize: this.pageSize,
                     })
@@ -168,6 +168,8 @@ export class TboRoomComponent {
     }
 
     refreshSupplierList(): void {
+        console.log("page data", this.page);
+        
         this.hotelService
             .getRoomData({
                 page: this.page,
@@ -180,7 +182,7 @@ export class TboRoomComponent {
                     this.allsupplier = response.allData;
                     this.dataSource = new MatTableDataSource(this.allsupplier);
                     this.resultsLength = response.metadata.totalItems;
-                    this.paginator.firstPage(); // Optional: Reset paginator to the first page
+                    // this.paginator.firstPage(); 
                 },
                 error: (error) => {
                     console.error('Error fetching hotel list:', error);

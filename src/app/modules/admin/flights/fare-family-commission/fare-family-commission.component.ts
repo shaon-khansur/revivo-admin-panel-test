@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FareFamilyCommissioinDialogComponent } from './fare-family-commissioin-dialog/fare-family-commissioin-dialog.component';
 
+
 export interface FareFamilyCommissionData {
     id: string;
     type: string;
@@ -63,6 +64,7 @@ export class FareFamilyCommissionComponent {
             },
         });
     }
+
 
     edit(element) {
         console.log(element);
