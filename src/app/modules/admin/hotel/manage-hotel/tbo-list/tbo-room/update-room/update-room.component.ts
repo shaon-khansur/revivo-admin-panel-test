@@ -32,6 +32,7 @@ export class UpdateRoomComponent {
         this.form = this.fb.group({
             bedType: [data?.bedType || ''],
             roomType: [data?.roomType || ''],
+            roomDescription: [data?.roomDescription || ''],
         });
     }
 
