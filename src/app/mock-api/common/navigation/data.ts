@@ -223,6 +223,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:user-group',
                 link : '/supports/create-order-error',
             },
+            {
+                id   : 'support.openMemory',
+                title: 'Open AI Memory',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/supports/openMemory',
+            },
         ],
     },
     {
