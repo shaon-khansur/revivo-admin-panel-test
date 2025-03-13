@@ -10,7 +10,7 @@ export class OpenMemoryServiceService {
     constructor(private http: HttpClient) {}
 
     getMemoryData(data: { page: number; pageSize: number }): Observable<{
-        allData: any[];
+        conversations: any[];
         metadata: {
             totalItems: number;
             totalPages: number;
@@ -23,7 +23,7 @@ export class OpenMemoryServiceService {
         console.log('data', data);
 
         return this.http.get<{
-            allData: any[];
+            conversations: any[];
             metadata: {
                 totalItems: number;
                 totalPages: number;
@@ -48,15 +48,18 @@ export class OpenMemoryServiceService {
         );
     }
 
-    updateMemory(data: any): Observable<any> {
-        const url = `${environment.baseUrl}openai/updatememory/${data.id}`;
-        console.log(data);
+    updateMemory(conversation_id: string, messages: any[]): Observable<any> {
+        const url = `${environment.baseUrl}openai/updatememory/${conversation_id}`;
 
-        return this.http.put(url, data).pipe(
+        // Ensure the payload contains messages
+        const payload = { messages };
+
+        return this.http.put(url, payload).pipe(
             catchError((error) => {
                 console.error('Error updating memory data:', error);
                 return throwError(
-                    () => new Error('Error updating memory data')
+                    () =>
+                        new Error(error.message || 'Error updating memory data')
                 );
             })
         );
@@ -72,6 +75,15 @@ export class OpenMemoryServiceService {
                 return throwError(
                     () => new Error('Error deleting memory data')
                 );
+            })
+        );
+    }
+    deleteAllMemory(): Observable<any> {
+        const url = `${environment.baseUrl}openai/deleteallmemory`;
+        return this.http.delete(url).pipe(
+            catchError((error) => {
+                console.error('Error deleting all memory:', error);
+                return throwError(() => new Error('Error deleting all memory'));
             })
         );
     }

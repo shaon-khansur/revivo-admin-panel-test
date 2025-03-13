@@ -16,6 +16,7 @@ import { AirlineComponent } from './modules/settings/airline/airline.component';
 import { SubscriberComponent } from './modules/admin/subscriber/subscriber.component';
 import { SupportTicketsComponent } from './modules/admin/support-tickets/support-tickets.component';
 import { OpenMemoryComponent } from './modules/supports/open-memory/open-memory.component';
+import { EditConversationComponent } from './modules/supports/open-memory/edit-conversation/edit-conversation.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -209,6 +210,10 @@ export const appRoutes: Route[] = [
                     {
                         path: 'openMemory',
                         component: OpenMemoryComponent,
+                    },
+                    {
+                        path: 'openMemory/:id',
+                        component: EditConversationComponent,
                     },
                 ],
             },
