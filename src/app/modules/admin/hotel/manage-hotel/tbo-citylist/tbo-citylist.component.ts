@@ -57,14 +57,14 @@ export class TboCitylistComponent implements OnInit {
         'countryName',
         'cityLatitude',
         'cityLongitude',
-        'isMiningHotel',
-        // 'view',
+        'view',
     ];
 
     allHotel: any[] = [];
     page: number = 1;
     pageSize: number = 10;
     resultsLength: number = 0;
+    isTboCityList: boolean = true;
 
     searchInputControl = new FormControl('');
     constructor(
@@ -80,6 +80,7 @@ export class TboCitylistComponent implements OnInit {
                 page: this.page,
                 cityName: '',
                 pageSize: this.pageSize,
+                isTboCityList: this.isTboCityList,
             })
             .subscribe({
                 next: (response) => {
@@ -98,6 +99,7 @@ export class TboCitylistComponent implements OnInit {
                         page: 1, // Reset to page 1 when a search is performed
                         cityName: value?.toLowerCase(),
                         pageSize: this.pageSize,
+                        isTboCityList: this.isTboCityList,
                     })
                     .subscribe({
                         next: (response) => {
@@ -112,6 +114,10 @@ export class TboCitylistComponent implements OnInit {
             });
     }
 
+    onChange() {
+        this.refreshHotelList()
+      }
+
     ngAfterViewInit(): void {
         this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
         this.resultsLength = 0;
@@ -125,9 +131,9 @@ export class TboCitylistComponent implements OnInit {
         this.hotelService
             .getCityData({
                 page: this.page,
-                cityName:
-                    this.searchInputControl.value?.toLowerCase() || '',
+                cityName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
+                isTboCityList: this.isTboCityList,
             })
             .subscribe({
                 next: (response) => {
@@ -143,6 +149,7 @@ export class TboCitylistComponent implements OnInit {
                 page: this.page,
                 cityName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
+                isTboCityList: this.isTboCityList,
             })
             .subscribe({
                 next: (response) => {
