@@ -229,6 +229,7 @@ export class HotelService {
         page: number;
         cityName: string;
         pageSize: number;
+        isTboCityList: boolean;
     }): Observable<{
         allData: any[];
         metadata: {
@@ -240,7 +241,7 @@ export class HotelService {
         };
     }> {
         // Start with the basic query parameters
-        let queryParams = `cityName=${data.cityName}&page=${data.page}&pageSize=${data.pageSize}`;
+        let queryParams = `isTboCityList=${data.isTboCityList}&cityName=${data.cityName}&page=${data.page}&pageSize=${data.pageSize}`;
         return this.http.get<{
             allData: any[];
             metadata: {
