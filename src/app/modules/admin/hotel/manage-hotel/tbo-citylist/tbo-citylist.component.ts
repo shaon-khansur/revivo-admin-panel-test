@@ -22,6 +22,7 @@ import {
 } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UpdateCityComponent } from './update-city/update-city.component';
 
 @Component({
     selector: 'app-tbo-citylist',
@@ -64,7 +65,6 @@ export class TboCitylistComponent implements OnInit {
     page: number = 1;
     pageSize: number = 10;
     resultsLength: number = 0;
-    isTboCityList: boolean = true;
 
     searchInputControl = new FormControl('');
     constructor(
@@ -80,7 +80,6 @@ export class TboCitylistComponent implements OnInit {
                 page: this.page,
                 cityName: '',
                 pageSize: this.pageSize,
-                isTboCityList: this.isTboCityList,
             })
             .subscribe({
                 next: (response) => {
@@ -99,7 +98,6 @@ export class TboCitylistComponent implements OnInit {
                         page: 1, // Reset to page 1 when a search is performed
                         cityName: value?.toLowerCase(),
                         pageSize: this.pageSize,
-                        isTboCityList: this.isTboCityList,
                     })
                     .subscribe({
                         next: (response) => {
@@ -115,8 +113,34 @@ export class TboCitylistComponent implements OnInit {
     }
 
     onChange() {
-        this.refreshHotelList()
-      }
+        this.refreshHotelList();
+    }
+    openDialog(city: any): void {
+        const dialogRef = this.dialog.open(UpdateCityComponent, {
+            width: '600px',
+            data: city,
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.action === 'save') {
+                this.updateCity(result.data);
+            }
+        });
+    }
+    updateCity(updatedCity: any): void {
+        console.log('City data update in progress for:', updatedCity);
+
+        // Assuming you already have the `updateCityRequest` method defined:
+        this.hotelService.updateCity(updatedCity).subscribe(
+            (response) => {
+                console.log('City data successfully updated:', response);
+                this.refreshHotelList()
+            },
+            (error) => {
+                console.error('Error updating city data:', error);
+            }
+        );
+    }
 
     ngAfterViewInit(): void {
         this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
@@ -133,7 +157,6 @@ export class TboCitylistComponent implements OnInit {
                 page: this.page,
                 cityName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
-                isTboCityList: this.isTboCityList,
             })
             .subscribe({
                 next: (response) => {
@@ -149,7 +172,6 @@ export class TboCitylistComponent implements OnInit {
                 page: this.page,
                 cityName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
-                isTboCityList: this.isTboCityList,
             })
             .subscribe({
                 next: (response) => {

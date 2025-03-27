@@ -229,7 +229,6 @@ export class HotelService {
         page: number;
         cityName: string;
         pageSize: number;
-        isTboCityList: boolean;
     }): Observable<{
         allData: any[];
         metadata: {
@@ -241,7 +240,7 @@ export class HotelService {
         };
     }> {
         // Start with the basic query parameters
-        let queryParams = `isTboCityList=${data.isTboCityList}&cityName=${data.cityName}&page=${data.page}&pageSize=${data.pageSize}`;
+        let queryParams = `cityName=${data.cityName}&page=${data.page}&pageSize=${data.pageSize}`;
         return this.http.get<{
             allData: any[];
             metadata: {
@@ -252,5 +251,14 @@ export class HotelService {
                 hasPrevPage: boolean;
             };
         }>(`${environment.baseUrl}tboCityListAdmin?${queryParams}`);
+    }
+    updateCity(data: any): Observable<any> {
+        const url = `${environment.baseUrl}tboCityListAdmin/${data.id}`;
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
+        );
     }
 }

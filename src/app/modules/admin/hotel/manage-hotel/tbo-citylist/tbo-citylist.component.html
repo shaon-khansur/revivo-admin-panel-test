@@ -7,14 +7,6 @@
     >
         <!-- Title -->
         <div class="text-4xl font-extrabold tracking-tight">City List</div>
-        <p>
-            <mat-slide-toggle
-                [(ngModel)]="isTboCityList"
-                (ngModelChange)="onChange()"
-            >
-                {{ isTboCityList ? "TBO City" : "Airport City" }}
-            </mat-slide-toggle>
-        </p>
 
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
@@ -51,7 +43,7 @@
                             *matHeaderCellDef
                             class="hotel-name-header w-30"
                         >
-                            {{ isTboCityList ? "City Code" : "Airport" }}
+                            City Code
                         </th>
                         <td
                             mat-cell
