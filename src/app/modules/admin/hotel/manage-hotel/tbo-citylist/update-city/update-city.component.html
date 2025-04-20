@@ -1,0 +1,37 @@
+<div mat-dialog-content>
+    <h1 class="font-bold">Update City</h1>
+    <hr class="my-2" />
+    <h1 class="mb-5 text-lg">{{ city.CityName }}</h1>
+
+    <form [formGroup]="form">
+        <!-- City Hebrew Name -->
+        <mat-form-field class="w-full">
+            <mat-label>City Name (Hebrew)</mat-label>
+            <input matInput formControlName="cityHebrew" />
+        </mat-form-field>
+
+        <!-- Country Hebrew Name -->
+        <mat-form-field class="w-full">
+            <mat-label>Country Name (Hebrew)</mat-label>
+            <input matInput formControlName="countryHebrew" />
+        </mat-form-field>
+
+        <!-- Airport Data (Array) -->
+        <div formArrayName="airportData">
+            <div *ngFor="let airport of airportDataArray.controls; let i = index" [formGroupName]="i" class="border p-2 rounded-lg mb-3">
+                <h3 class="font-semibold">Airport {{ i + 1 }}</h3>
+
+                <div class="w-full flex justify-between items-center">
+                    <p class="font-medium">{{ airport.get('name').value }}</p>
+                    <mat-checkbox formControlName="tbo">Main Airport</mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Dialog Actions -->
+<div mat-dialog-actions class="flex justify-end gap-2">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button color="primary" (click)="onSave()">Save</button>
+</div>

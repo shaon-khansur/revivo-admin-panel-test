@@ -22,6 +22,7 @@ import {
 } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UpdateCityComponent } from './update-city/update-city.component';
 
 @Component({
     selector: 'app-tbo-citylist',
@@ -57,8 +58,7 @@ export class TboCitylistComponent implements OnInit {
         'countryName',
         'cityLatitude',
         'cityLongitude',
-        'isMiningHotel',
-        // 'view',
+        'view',
     ];
 
     allHotel: any[] = [];
@@ -112,6 +112,36 @@ export class TboCitylistComponent implements OnInit {
             });
     }
 
+    onChange() {
+        this.refreshHotelList();
+    }
+    openDialog(city: any): void {
+        const dialogRef = this.dialog.open(UpdateCityComponent, {
+            width: '600px',
+            data: city,
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result?.action === 'save') {
+                this.updateCity(result.data);
+            }
+        });
+    }
+    updateCity(updatedCity: any): void {
+        console.log('City data update in progress for:', updatedCity);
+
+        // Assuming you already have the `updateCityRequest` method defined:
+        this.hotelService.updateCity(updatedCity).subscribe(
+            (response) => {
+                console.log('City data successfully updated:', response);
+                this.refreshHotelList()
+            },
+            (error) => {
+                console.error('Error updating city data:', error);
+            }
+        );
+    }
+
     ngAfterViewInit(): void {
         this.paginator.pageIndex = 0; // Angular Material paginator starts at 0
         this.resultsLength = 0;
@@ -125,8 +155,7 @@ export class TboCitylistComponent implements OnInit {
         this.hotelService
             .getCityData({
                 page: this.page,
-                cityName:
-                    this.searchInputControl.value?.toLowerCase() || '',
+                cityName: this.searchInputControl.value?.toLowerCase() || '',
                 pageSize: this.pageSize,
             })
             .subscribe({

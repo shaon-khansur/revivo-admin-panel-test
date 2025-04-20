@@ -180,7 +180,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id   : 'hotel.Tbo-cities',
-                title: 'TBO City List',
+                title: 'City List',
                 type : 'basic',
                 icon : 'heroicons_outline:globe-asia-australia',
                 link : '/hotel/tbo-cityList',
@@ -222,6 +222,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:user-group',
                 link : '/supports/create-order-error',
+            },
+            {
+                id   : 'support.openMemory',
+                title: 'Open AI Memory',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/supports/openMemory',
             },
         ],
     },
