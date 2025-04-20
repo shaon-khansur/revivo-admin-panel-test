@@ -17,6 +17,7 @@ import { SubscriberComponent } from './modules/admin/subscriber/subscriber.compo
 import { SupportTicketsComponent } from './modules/admin/support-tickets/support-tickets.component';
 import { OpenMemoryComponent } from './modules/supports/open-memory/open-memory.component';
 import { EditConversationComponent } from './modules/supports/open-memory/edit-conversation/edit-conversation.component';
+import { EmailComponent } from './modules/settings/email/email.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -235,6 +236,10 @@ export const appRoutes: Route[] = [
                         component: AirlineComponent,
                         canActivate: [adminGuard],
                     },
+                    {
+                        path: 'email',
+                        component: EmailComponent
+                    }
                 ],
             },
 
