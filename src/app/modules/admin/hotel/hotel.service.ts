@@ -252,4 +252,13 @@ export class HotelService {
             };
         }>(`${environment.baseUrl}tboCityListAdmin?${queryParams}`);
     }
+    updateCity(data: any): Observable<any> {
+        const url = `${environment.baseUrl}tboCityListAdmin/${data.id}`;
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                console.error('Error updating hotel data:', error);
+                return throwError(() => new Error('Error updating hotel data'));
+            })
+        );
+    }
 }

@@ -180,7 +180,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
             {
                 id   : 'hotel.Tbo-cities',
-                title: 'TBO City List',
+                title: 'City List',
                 type : 'basic',
                 icon : 'heroicons_outline:globe-asia-australia',
                 link : '/hotel/tbo-cityList',
