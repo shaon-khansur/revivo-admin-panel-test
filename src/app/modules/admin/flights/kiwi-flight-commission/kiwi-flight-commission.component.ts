@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     MatTable,
@@ -50,7 +50,7 @@ export interface KiwiCommissionData {
     templateUrl: './kiwi-flight-commission.component.html',
     styleUrls: ['./kiwi-flight-commission.component.scss'],
 })
-export class KiwiFlightCommissionComponent {
+export class KiwiFlightCommissionComponent implements OnInit {
     displayedColumns: string[] = [
         'airline',
         'outboundCommission',
@@ -68,6 +68,15 @@ export class KiwiFlightCommissionComponent {
         private dialog: MatDialog,
         private _fuseConfirmationDialog: FuseConfirmationService
     ) {}
+
+    ngOnInit(): void {
+        this.flightCommissionService
+            .getKiwiFlightsCommissions()
+            .subscribe((kiwiCommissions) => {
+                this.kiwiCommissionsData = kiwiCommissions;
+                this.dataSource = kiwiCommissions;
+            });
+    }
 
     edit(element) {
         console.log(element);
