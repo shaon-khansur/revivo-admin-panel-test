@@ -260,6 +260,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:cog-8-tooth',
                 link : '/utility/airline',
             },
+            {
+                id   : 'utility.email',
+                title: 'Email',
+                type : 'basic',
+                icon : 'heroicons_outline:cog-8-tooth',
+                link : '/utility/email',
+            },
         ],
     },
 ];
