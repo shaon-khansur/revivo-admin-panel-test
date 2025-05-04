@@ -1,0 +1,43 @@
+.admin-form {
+    margin: auto;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .option-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .option-input {
+    flex: 1;
+  }
+  
+  .section-label {
+    font-weight: bold;
+    margin-top: 1rem;
+    display: block;
+  }
+  
+  .success {
+    color: green;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  .spinner-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  

@@ -3,6 +3,14 @@ import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 
+interface KosherAdminInfo {
+    title: string;
+    subtitle: string;
+    description: string;
+    options: string[]; 
+    information: string; 
+}
+
 interface HotelData {
     id: string;
     value: {
@@ -261,5 +269,15 @@ export class HotelService {
                 return throwError(() => new Error('Error updating hotel data'));
             })
         );
+    }
+    getAdminInfo(): Observable<KosherAdminInfo> {
+        return this.http.get<KosherAdminInfo>(
+            `${this.temporaryUrl}kosherAdminInfo`
+        );
+    }
+
+    // PUT update admin info
+    updateAdminInfo(data: Partial<KosherAdminInfo>): Observable<any> {
+        return this.http.put(`${this.temporaryUrl}kosherAdminInfo`, data);
     }
 }
