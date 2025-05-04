@@ -32,14 +32,17 @@ export class FlightsOrderDetailsComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = [
+        'outboundSource',
+        'inboundSource',
         'departure',
         'destination',
-        'flightMode',
+        'outboundFlightMode',
+        'inboundFlightMode',
         'flightType',
         'agtOrderId',
-        'orderStatus',
+        'orderToSourceStatus',
         'issuanceStatus',
-        'orderDate',
+        'orderToSourceDate',
         'view',
     ];
     constructor(
@@ -65,29 +68,56 @@ export class FlightsOrderDetailsComponent implements OnInit, AfterViewInit {
             });
     }
 
-
     ngAfterViewInit() {
         this.paginator.page.subscribe((event) => {
             console.log('event', event);
             this.page = event.pageIndex;
             this.limit = event.pageSize;
-            this.flightsOrderDetailsService.getFlightsOrder({
-                page: this.page,
-                limit: this.limit,
-            }).subscribe({
-                next: (res) => {
-                    this.page = res.page;
-                    this.limit = res.limit;
-                    this.totalItems = res.totalItems;
-                    this.flightsOrderData = res.data;
-                    this.dataSource = new MatTableDataSource<any[]>(
-                        this.flightsOrderData
-                    );
-                },
-                error: (err) => {
-                    console.error(err);
-                },
-            })
+            this.flightsOrderDetailsService
+                .getFlightsOrder({
+                    page: this.page,
+                    limit: this.limit,
+                })
+                .subscribe({
+                    next: (res) => {
+                        this.page = res.page;
+                        this.limit = res.limit;
+                        this.totalItems = res.totalItems;
+                        this.flightsOrderData = res.data;
+                        this.dataSource = new MatTableDataSource<any[]>(
+                            this.flightsOrderData
+                        );
+                    },
+                    error: (err) => {
+                        console.error(err);
+                    },
+                });
         });
+    }
+
+    getOrderStatus(element) {
+        if (
+            !element.oneWay &&
+            element.outboundDataProvider === 'amadeus' &&
+            element.inboundDataProvider === 'amadeus'
+        ) {
+            if (element.flightType === 'RT') {
+                return element.order.data && element.outboundPnr ? true : false;
+            } else if (element.flightType === 'twoway') {
+                return element.order.outFlightOrder &&
+                    element.order.inFlightOrder &&
+                    element.outboundPnr &&
+                    element.inboundPnr
+                    ? true
+                    : false;
+            } else {
+                return 'Not Amadeus';
+            }
+        }
+        if (element.oneWay && element.outboundDataProvider === 'amadeus') {
+            return element.order && element.outboundPnr;
+        } else {
+            return 'Not Amadeus';
+        }
     }
 }

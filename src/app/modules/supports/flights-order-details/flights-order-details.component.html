@@ -10,62 +10,94 @@
     </ng-container> -->
 
         <!-- Name Column -->
+        <ng-container matColumnDef="outboundSource">
+            <th mat-header-cell *matHeaderCellDef>Outbound Source</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.outboundDataProvider | uppercase }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="inboundSource">
+            <th mat-header-cell *matHeaderCellDef>Inbound Source</th>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element.inboundDataProvider
+                        ? (element.inboundDataProvider | uppercase)
+                        : "N/A"
+                }}
+            </td>
+        </ng-container>
         <ng-container matColumnDef="departure">
             <th mat-header-cell *matHeaderCellDef>Departure</th>
             <td mat-cell *matCellDef="let element">
-                {{ "departure" }}
+                {{ element.parameters.depCity }}
             </td>
         </ng-container>
 
         <ng-container matColumnDef="destination">
             <th mat-header-cell *matHeaderCellDef>Destination</th>
             <td mat-cell *matCellDef="let element">
-                {{ "destination" }}
+                {{ element.parameters.destination }}
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="flightMode">
-            <th mat-header-cell *matHeaderCellDef>Flight Mode</th>
+        <ng-container matColumnDef="outboundFlightMode">
+            <th mat-header-cell *matHeaderCellDef>Out-Flight Mode</th>
             <td mat-cell *matCellDef="let element">
-                {{ "flightMode" }}
+                {{ element.outCustomFlight.flightMode }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="inboundFlightMode">
+            <th mat-header-cell *matHeaderCellDef>In-Flight Mode</th>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element.oneWay !== true
+                        ? element.inCustomFlight.flightMode
+                        : "N/A"
+                }}
             </td>
         </ng-container>
 
         <!-- Weight Column -->
         <ng-container matColumnDef="flightType">
             <th mat-header-cell *matHeaderCellDef>Flight Type</th>
-            <td
-                mat-cell
-                *matCellDef="let element"
-                [ngStyle]="{ color: element.apiError ? 'red' : 'green' }"
-            >
-                {{ "flightType" }}
+            <td mat-cell *matCellDef="let element">
+                {{ element.flightType }}
                 <!-- {{ element.apiError && 'name' in   ?   element.apiError?.message  : 'None'}} -->
             </td>
         </ng-container>
         <ng-container matColumnDef="agtOrderId">
             <th mat-header-cell *matHeaderCellDef>Top Agt Order ID</th>
             <td mat-cell *matCellDef="let element">
-                {{ "agtOrderId" }}
+                {{ element.agtOrder ? element.agtOrder.id : "N/A" }}
                 <!-- {{ element.apiError && 'name' in   ?   element.apiError?.message  : 'None'}} -->
             </td>
         </ng-container>
-        <ng-container matColumnDef="orderStatus">
-            <th mat-header-cell *matHeaderCellDef>Order status</th>
+        <ng-container matColumnDef="orderToSourceStatus">
+            <th mat-header-cell *matHeaderCellDef>Order to source</th>
             <td mat-cell *matCellDef="let element">
-                {{ "orderStatus" }}
+                {{ getOrderStatus(element) }}
                 <!-- {{ element.apiError && 'name' in   ?   element.apiError?.message  : 'None'}} -->
             </td>
         </ng-container>
 
         <ng-container matColumnDef="issuanceStatus">
             <th mat-header-cell *matHeaderCellDef>Issuance Status</th>
-            <td mat-cell *matCellDef="let element">{{ "Issuance status" }}</td>
+            <td mat-cell *matCellDef="let element">
+                {{
+                    element.oneWay
+                        ? element.issuance && element.outboundIssuanceData
+                        : element.issuance &&
+                          element.outboundIssuanceData &&
+                          element.inboundIssuanceData
+                }}
+            </td>
         </ng-container>
 
-        <ng-container matColumnDef="orderDate">
-            <th mat-header-cell *matHeaderCellDef>Order Date</th>
-            <td mat-cell *matCellDef="let element">{{ "Order Date" }}</td>
+        <ng-container matColumnDef="orderToSourceDate">
+            <th mat-header-cell *matHeaderCellDef>Source Order Date</th>
+            <td mat-cell *matCellDef="let element">
+                {{ element.orderTime | date : "dd MMM yyyy, HH:mm" }}
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="view">
