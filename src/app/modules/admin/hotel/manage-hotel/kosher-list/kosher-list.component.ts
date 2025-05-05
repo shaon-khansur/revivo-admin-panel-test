@@ -63,6 +63,7 @@ export class KosherListComponent {
     page: number = 1;
     pageSize: number = 10;
     resultsLength: number = 0;
+    isKosher:any
 
     searchInputControl = new FormControl('');
     constructor(

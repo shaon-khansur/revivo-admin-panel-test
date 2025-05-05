@@ -27,7 +27,7 @@ export default [
         component: TboHotelListComponent,
     },
     {
-        path: 'hotel-details/:id',
+        path: 'hotel-details/:id/:isKosher',
         component: AddHotelComponent,
     },
     {
