@@ -169,32 +169,21 @@
                         <fuse-card
                             class="flex flex-col lg:max-w-140 w-full my-8 px-8 pt-6 pb-4"
                         >
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between mb-5">
                                 <div
                                     class="text-2xl font-semibold leading-tight"
                                 >
                                     Gallery
                                 </div>
                                 <div class="-mr-3">
-                                    <button
-                                        mat-icon-button
-                                        [matMenuTriggerFor]="listCard09Menu"
-                                    >
-                                        <mat-icon
-                                            class="icon-size-5"
-                                            [svgIcon]="
-                                                'heroicons_solid:ellipsis-vertical'
-                                            "
-                                        ></mat-icon>
-                                    </button>
-                                    <mat-menu #listCard09Menu="matMenu">
+                                  
                                         <button
-                                            mat-menu-item
+                                        mat-flat-button color="primary"
                                             (click)="addImage()"
                                         >
                                             Add image
                                         </button>
-                                    </mat-menu>
+                              
                                 </div>
                             </div>
                             <p>
@@ -274,6 +263,13 @@
                                 <textarea
                                     matInput
                                     formControlName="Description"
+                                ></textarea>
+                            </mat-form-field>
+                            <mat-form-field class="w-full">
+                                <mat-label>About</mat-label>
+                                <textarea
+                                    matInput
+                                    formControlName="About"
                                 ></textarea>
                             </mat-form-field>
                             <mat-form-field class="w-full">
