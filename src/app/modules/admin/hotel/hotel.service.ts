@@ -3,6 +3,14 @@ import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 
+interface KosherAdminInfo {
+    title: string;
+    subtitle: string;
+    description: string;
+    options: string[]; 
+    information: string; 
+}
+
 interface HotelData {
     id: string;
     value: {
@@ -22,6 +30,7 @@ interface HotelData {
 })
 export class HotelService {
     constructor(private http: HttpClient) {}
+    temporaryUrl = 'https://app-x6i4pjdvfq-uc.a.run.app/api/';
 
     getAllHotels(data: {
         page: number;
@@ -55,10 +64,10 @@ export class HotelService {
                 hasNextPage: boolean;
                 hasPrevPage: boolean;
             };
-        }>(`${environment.baseUrl}hotelData?${queryParams}`);
+        }>(`${this.temporaryUrl}hotelData?${queryParams}`);
     }
     getHotelById(id: string): Observable<any> {
-        return this.http.get(`${environment.baseUrl}hotelData/${id}`);
+        return this.http.get(`${this.temporaryUrl}hotelData/${id}`);
     }
     getAllKosherHotels(data: {
         page: number;
@@ -85,12 +94,12 @@ export class HotelService {
                 hasPrevPage: boolean;
             };
         }>(
-            `${environment.baseUrl}kosherHotelData?hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`
+            `${this.temporaryUrl}kosherHotelData?hotelName=${data.hotelName}&page=${data.page}&pageSize=${data.pageSize}`
         );
     }
 
     updateKosherHotel(data: HotelData): Observable<any> {
-        const url = `${environment.baseUrl}kosherHotelData/${data.id}`;
+        const url = `${this.temporaryUrl}kosherHotelData/${data.id}`;
         console.log(data);
 
         return this.http.put(url, data).pipe(
@@ -102,13 +111,13 @@ export class HotelService {
         );
     }
     getKosherHotelById(id: any): Observable<any> {
-        return this.http.get(`${environment.baseUrl}kosherHotelData/${id}`);
+        return this.http.get(`${this.temporaryUrl}kosherHotelData/${id}`);
     }
     getHotelImage(file: any): Observable<any> {
-        return this.http.post(`${environment.baseUrl}UploadImage`, file);
+        return this.http.post(`${this.temporaryUrl}UploadImage`, file);
     }
     toggleKosherStatus(hotelId: string, isKosher: boolean): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/toggleKosherStatus`;
+        const url = `${this.temporaryUrl}hotelData/toggleKosherStatus`;
         const body = { hotelId, isKosher };
 
         return this.http.post(url, body);
@@ -149,21 +158,21 @@ export class HotelService {
                 hasNextPage: boolean;
                 hasPrevPage: boolean;
             };
-        }>(`${environment.baseUrl}hotelData/hotels/tbo-hotels?${queryParams}`);
+        }>(`${this.temporaryUrl}hotelData/hotels/tbo-hotels?${queryParams}`);
     }
     getTBOHotelById(id: string): Observable<any> {
         return this.http.get(
-            `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`
+            `${this.temporaryUrl}hotelData/hotels/tbo-hotels/${id}`
         );
     }
     addHotel(data: any): Observable<any> {
         return this.http.post<any>(
-            `${environment.baseUrl}hotelData/hotels/tbo-hotels`,
+            `${this.temporaryUrl}hotelData/hotels/tbo-hotels`,
             data
         );
     }
     updateHotel(data: HotelData, id: string): Observable<any> {
-        const url = `${environment.baseUrl}hotelData/hotels/tbo-hotels/${id}`;
+        const url = `${this.temporaryUrl}hotelData/hotels/tbo-hotels/${id}`;
         console.log(data);
 
         return this.http.put(url, data).pipe(
@@ -203,10 +212,10 @@ export class HotelService {
                 hasNextPage: boolean;
                 hasPrevPage: boolean;
             };
-        }>(`${environment.baseUrl}roomMap?${queryParams}`);
+        }>(`${this.temporaryUrl}roomMap?${queryParams}`);
     }
     updateRoom(data: any): Observable<any> {
-        const url = `${environment.baseUrl}roomMap/${data.id}`;
+        const url = `${this.temporaryUrl}roomMap/${data.id}`;
         console.log(data);
 
         return this.http.put(url, data).pipe(
@@ -219,7 +228,7 @@ export class HotelService {
     }
 
     getCitySearch(value: string): Observable<any> {
-        const url = `${environment.baseUrl}tboHotelDetails/citySearchList?value=${value}`;
+        const url = `${this.temporaryUrl}tboHotelDetails/citySearchList?value=${value}`;
         const httpContext = new HttpContext();
         return this.http.get(url, { context: httpContext });
     }
@@ -250,15 +259,25 @@ export class HotelService {
                 hasNextPage: boolean;
                 hasPrevPage: boolean;
             };
-        }>(`${environment.baseUrl}tboCityListAdmin?${queryParams}`);
+        }>(`${this.temporaryUrl}tboCityListAdmin?${queryParams}`);
     }
     updateCity(data: any): Observable<any> {
-        const url = `${environment.baseUrl}tboCityListAdmin/${data.id}`;
+        const url = `${this.temporaryUrl}tboCityListAdmin/${data.id}`;
         return this.http.put(url, data).pipe(
             catchError((error) => {
                 console.error('Error updating hotel data:', error);
                 return throwError(() => new Error('Error updating hotel data'));
             })
         );
+    }
+    getAdminInfo(): Observable<KosherAdminInfo> {
+        return this.http.get<KosherAdminInfo>(
+            `${this.temporaryUrl}kosherAdminInfo`
+        );
+    }
+
+    // PUT update admin info
+    updateAdminInfo(data: Partial<KosherAdminInfo>): Observable<any> {
+        return this.http.put(`${this.temporaryUrl}kosherAdminInfo`, data);
     }
 }

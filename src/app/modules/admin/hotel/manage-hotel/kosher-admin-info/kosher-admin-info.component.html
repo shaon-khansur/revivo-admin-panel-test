@@ -1,0 +1,40 @@
+  <form *ngIf="form && !loading" [formGroup]="form" (ngSubmit)="onSubmit()" class="admin-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+      
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Subtitle</mat-label>
+      <input matInput formControlName="subtitle" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+  
+    <label class="section-label">Options</label>
+    <div formArrayName="options">
+      <div *ngFor="let opt of options.controls; let i = index" class="option-row">
+        <mat-form-field appearance="outline" class="option-input">
+          <input matInput [formControlName]="i" />
+        </mat-form-field>
+        <button mat-icon-button color="warn" type="button" (click)="removeOption(i)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+      </div>
+      <button mat-button color="primary" type="button" (click)="addOption()">
+        <mat-icon>add</mat-icon> Add Option
+      </button>
+    </div>
+  
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Information</mat-label>
+      <textarea matInput formControlName="information" rows="2"></textarea>
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" type="submit">Save Changes</button>
+  </form>
+  

@@ -7,8 +7,13 @@ import { AddHotelComponent } from './manage-hotel/add-hotel/add-hotel.component'
 import { TboHotelListComponent } from './manage-hotel/tbo-list/tbo-hotel-list/tbo-hotel-list.component';
 import { TboRoomComponent } from './manage-hotel/tbo-list/tbo-room/tbo-room.component';
 import { TboCitylistComponent } from './manage-hotel/tbo-citylist/tbo-citylist.component';
+import { KosherAdminInfoComponent } from './manage-hotel/kosher-admin-info/kosher-admin-info.component';
 
 export default [
+    {
+        path: 'kosher-Admin-Info',
+        component: KosherAdminInfoComponent,
+    },
     {
         path: 'hotel-list',
         component: HotelListComponent,

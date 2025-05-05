@@ -165,6 +165,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     link : '/hotel/hotel-list',
             // },
             {
+                id   : 'hotel.kosher-info',
+                title: 'Kosher Admin Info',
+                type : 'basic',
+                icon : 'heroicons_outline:information-circle',
+                link : '/hotel/kosher-Admin-Info',
+            },
+            {
                 id   : 'hotel.Tbo',
                 title: 'TBO Hotel List',
                 type : 'basic',
