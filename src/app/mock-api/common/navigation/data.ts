@@ -237,6 +237,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:user-group',
                 link : '/supports/openMemory',
             },
+            {
+                id   : 'support.flightsOrderDetails',
+                title: 'Flights Order Details',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/supports/flights-order-details',
+            },
         ],
     },
     {
