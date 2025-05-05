@@ -165,6 +165,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     link : '/hotel/hotel-list',
             // },
             {
+                id   : 'hotel.kosher-info',
+                title: 'Kosher Admin Info',
+                type : 'basic',
+                icon : 'heroicons_outline:information-circle',
+                link : '/hotel/kosher-Admin-Info',
+            },
+            {
                 id   : 'hotel.Tbo',
                 title: 'TBO Hotel List',
                 type : 'basic',
@@ -229,6 +236,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type : 'basic',
                 icon : 'heroicons_outline:user-group',
                 link : '/supports/openMemory',
+            },
+            {
+                id   : 'support.flightsOrderDetails',
+                title: 'Flights Order Details',
+                type : 'basic',
+                icon : 'heroicons_outline:user-group',
+                link : '/supports/flights-order-details',
             },
         ],
     },

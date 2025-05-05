@@ -121,6 +121,7 @@ export class AddHotelComponent implements OnInit {
             this.hotelForm = this.fb.group({
                 HotelName: ['', Validators.required],
                 Description: [''],
+                About: [''],
                 HotelFacilities: this.fb.array([]),
                 Attractions: [''],
                 Address: [''],
@@ -156,6 +157,7 @@ export class AddHotelComponent implements OnInit {
                         // Patch the form with hotel data
                         this.hotelForm.patchValue({
                             HotelName: hotel.HotelName,
+                            About: [hotel.About],
                             Description: hotel.Description,
                             Attractions: hotel.Attractions,
                             Address: hotel.Address,
@@ -203,34 +205,34 @@ export class AddHotelComponent implements OnInit {
     }
 
     /** ✅ Fetch city list and return filtered data */
-filterCities(value: string): Observable<any[]> {
-    console.log('value', value);
+    filterCities(value: string): Observable<any[]> {
+        console.log('value', value);
 
-    if (value.trim() === '') {
-        // Reset form fields if input is empty
-        this.hotelForm.patchValue({
-            CityCode: '',
-            CountryCode: '',
-            CountryName: '',
-            cityLatitude: '',
-            cityLongitude: '',
-        });
+        if (value.trim() === '') {
+            // Reset form fields if input is empty
+            this.hotelForm.patchValue({
+                CityCode: '',
+                CountryCode: '',
+                CountryName: '',
+                cityLatitude: '',
+                cityLongitude: '',
+            });
+        }
+
+        // Fetch cities from API and return filtered list
+        return this.hotelService.getCitySearch(value).pipe(
+            tap((data) => {
+                this.cities = data.data; // Update stored city list
+                console.log('cities data', this.cities);
+            }),
+            map((data) => {
+                const filterValue = value.toLowerCase();
+                return data.data.filter((city) =>
+                    city.CityName.toLowerCase().includes(filterValue)
+                );
+            })
+        );
     }
-
-    // Fetch cities from API and return filtered list
-    return this.hotelService.getCitySearch(value).pipe(
-        tap((data) => {
-            this.cities = data.data; // Update stored city list
-            console.log('cities data', this.cities);
-        }),
-        map((data) => {
-            const filterValue = value.toLowerCase();
-            return data.data.filter((city) =>
-                city.CityName.toLowerCase().includes(filterValue)
-            );
-        })
-    );
-}
 
     /** ✅ Properly update the selected city */
     onCitySelected(event: MatAutocompleteSelectedEvent): void {
