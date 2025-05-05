@@ -266,6 +266,15 @@
                             </mat-form-field> -->
                             <!-- Description Data Section -->
                             <div formGroupName="Description">
+                                <h3>📄 Description - Details</h3>
+                                <mat-form-field class="w-full">
+                                    <textarea
+                                        matInput
+                                        formControlName="details"
+                                        placeholder="Enter description details"
+                                    ></textarea>
+                                </mat-form-field>
+
                                 <h3>📘 Description - Data</h3>
                                 <div formGroupName="data">
                                     <div
@@ -303,36 +312,59 @@
                                 <h3>📝 Description - Remarks</h3>
                                 <div formGroupName="remarks">
                                     <ng-container
-                                        *ngFor="let key of getKeys(hotelForm.get('Description.remarks')?.value)"
+                                        *ngFor="
+                                            let key of getKeys(
+                                                hotelForm.get(
+                                                    'Description.remarks'
+                                                )?.value
+                                            )
+                                        "
                                     >
                                         <!-- Handle CheckInInstructions separately -->
                                         <div
-                                            *ngIf="key === 'CheckInInstructions'"
+                                            *ngIf="
+                                                key === 'CheckInInstructions'
+                                            "
                                             [formGroupName]="key"
                                             class="mb-4 border p-3 rounded shadow-sm"
                                         >
                                             <mat-label>
                                                 {{
-                                                    hotelForm.get('Description.remarks.CheckInInstructions.field')
-                                                        ?.value
+                                                    hotelForm.get(
+                                                        "Description.remarks.CheckInInstructions.field"
+                                                    )?.value
                                                 }}
                                             </mat-label>
                                             <div formArrayName="description">
                                                 <div
-                                                    *ngFor="let item of checkInInstructionsArray.controls; let i = index"
+                                                    *ngFor="
+                                                        let item of checkInInstructionsArray.controls;
+                                                        let i = index
+                                                    "
                                                 >
-                                                    <mat-form-field class="w-full">
-                                                        <mat-label>Instruction {{ i + 1 }}</mat-label>
+                                                    <mat-form-field
+                                                        class="w-full"
+                                                    >
+                                                        <mat-label
+                                                            >Instruction
+                                                            {{
+                                                                i + 1
+                                                            }}</mat-label
+                                                        >
                                                         <input
                                                             matInput
-                                                            [formControlName]="i"
+                                                            [formControlName]="
+                                                                i
+                                                            "
                                                             placeholder="Enter instruction"
                                                         />
                                                     </mat-form-field>
                                                     <button
                                                         mat-button
                                                         color="warn"
-                                                        (click)="removeInstruction(i)"
+                                                        (click)="
+                                                            removeInstruction(i)
+                                                        "
                                                     >
                                                         Remove
                                                     </button>
@@ -346,18 +378,23 @@
                                                 Add Instruction
                                             </button>
                                         </div>
-                                
+
                                         <!-- Handle all other remarks -->
                                         <div
-                                            *ngIf="key !== 'CheckInInstructions'"
+                                            *ngIf="
+                                                key !== 'CheckInInstructions'
+                                            "
                                             [formGroupName]="key"
                                             class="mb-4 border p-3 rounded shadow-sm"
                                         >
                                             <mat-form-field class="w-full">
                                                 <mat-label>
                                                     {{
-                                                        hotelForm.get('Description.remarks.' + key + '.field')
-                                                            ?.value
+                                                        hotelForm.get(
+                                                            "Description.remarks." +
+                                                                key +
+                                                                ".field"
+                                                        )?.value
                                                     }}
                                                 </mat-label>
                                                 <textarea
@@ -369,7 +406,6 @@
                                         </div>
                                     </ng-container>
                                 </div>
-                                
                             </div>
 
                             <mat-form-field class="w-full">
