@@ -7,8 +7,8 @@ interface KosherAdminInfo {
     title: string;
     subtitle: string;
     description: string;
-    options: string[]; 
-    information: string; 
+    options: string[];
+    information: string;
 }
 
 interface HotelData {
@@ -160,9 +160,9 @@ export class HotelService {
             };
         }>(`${this.temporaryUrl}hotelData/hotels/tbo-hotels?${queryParams}`);
     }
-    getTBOHotelById(id: string): Observable<any> {
+    getTBOHotelById(id: string, isKosher: any): Observable<any> {
         return this.http.get(
-            `${this.temporaryUrl}hotelData/hotels/tbo-hotels/${id}`
+            `${this.temporaryUrl}hotelData/hotels/tbo-hotels/${id}/${isKosher}`
         );
     }
     addHotel(data: any): Observable<any> {

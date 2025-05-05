@@ -97,6 +97,7 @@ export class AddHotelComponent implements OnInit {
     roomCategories: any[] = [];
     hotelIfo: any;
     id: string;
+    isKosher: boolean;
 
     cities: any[];
 
@@ -115,12 +116,20 @@ export class AddHotelComponent implements OnInit {
         this.hotelService.getCitySearch('').subscribe((data) => {
             this.cities = data.data;
         });
+
         this.route.params.subscribe((params) => {
             this.id = params['id'];
+            const kosher = params['isKosher'];
+            this.isKosher = kosher === 'true';
             console.log('params', params);
             this.hotelForm = this.fb.group({
                 HotelName: ['', Validators.required],
-                Description: [''],
+                Description: this.fb.group({
+                    details: [''],
+                    data: this.fb.group({}),
+                    remarks: this.fb.group({}),
+                }),
+
                 About: [''],
                 HotelFacilities: this.fb.array([]),
                 Attractions: [''],
@@ -148,49 +157,118 @@ export class AddHotelComponent implements OnInit {
                 isKosher: false,
             });
             if (this.id) {
-                this.hotelService.getTBOHotelById(this.id).subscribe(
-                    (hotel) => {
-                        this.hotelIfo = hotel;
-                        this.previewImages = hotel.Thumbnail;
-                        console.log('hotel data', hotel);
+                this.hotelService
+                    .getTBOHotelById(this.id, this.isKosher)
+                    .subscribe(
+                        (hotel) => {
+                            this.hotelIfo = hotel;
+                            this.previewImages = hotel.Thumbnail;
+                            console.log('hotel data', hotel);
+                            // Patch the form with hotel data
+                            this.hotelForm.patchValue({
+                                HotelName: hotel.HotelName,
+                                About: hotel.About,
+                                Description: {
+                                    details: hotel.Description?.details || '',
+                                    data: hotel.Description?.data || {},
+                                    remarks: hotel.Description?.remarks || {},
+                                },
+                                Attractions: hotel.Attractions,
+                                Address: hotel.Address,
+                                PinCode: hotel.PinCode,
+                                CityCode: hotel.CityCode,
+                                CountryName: hotel.CountryName,
+                                PhoneNumber: hotel.PhoneNumber,
+                                FaxNumber: hotel.FaxNumber,
+                                Map: hotel.Map,
+                                HotelRating: hotel.HotelRating,
+                                CityName: hotel.CityName,
+                                CountryCode: hotel.CountryCode,
+                                CheckInTime: hotel.CheckInTime,
+                                CheckOutTime: hotel.CheckOutTime,
+                                Thumbnail: hotel.Thumbnail,
+                                Latitude: hotel.Latitude,
+                                Longitude: hotel.Longitude,
+                                cityLatitude: hotel.cityLatitude,
+                                cityLongitude: hotel.cityLongitude,
+                                HotelWebsiteUrl: hotel.HotelWebsiteUrl,
+                                HotelCode: hotel.HotelCode,
+                                source: hotel.source,
+                                isKosher: hotel.isKosher,
+                            });
 
-                        // Patch the form with hotel data
-                        this.hotelForm.patchValue({
-                            HotelName: hotel.HotelName,
-                            About: [hotel.About],
-                            Description: hotel.Description,
-                            Attractions: hotel.Attractions,
-                            Address: hotel.Address,
-                            PinCode: hotel.PinCode,
-                            CityCode: hotel.CityCode,
-                            CountryName: hotel.CountryName,
-                            PhoneNumber: hotel.PhoneNumber,
-                            FaxNumber: hotel.FaxNumber,
-                            Map: hotel.Map,
-                            HotelRating: hotel.HotelRating,
-                            CityName: hotel.CityName,
-                            CountryCode: hotel.CountryCode,
-                            CheckInTime: hotel.CheckInTime,
-                            CheckOutTime: hotel.CheckOutTime,
-                            Thumbnail: hotel.Thumbnail,
-                            Latitude: hotel.Latitude,
-                            Longitude: hotel.Longitude,
-                            cityLatitude: hotel.cityLatitude,
-                            cityLongitude: hotel.cityLongitude,
-                            HotelWebsiteUrl: hotel.HotelWebsiteUrl,
-                            HotelCode: hotel.HotelCode,
-                            source: hotel.source,
-                            isKosher: hotel.isKosher,
-                        });
-                        // Set facilities
-                        this.setFacilities(hotel.HotelFacilities || []);
-                        // Set hotel images
-                        this.setHotelImages(hotel.Images || []);
-                    },
-                    (error) => {
-                        console.error('Error fetching hotel:', error);
-                    }
-                );
+                            // Handle Description.data dynamically
+                            const dataGroup = this.hotelForm.get(
+                                'Description.data'
+                            ) as FormGroup;
+                            Object.entries(
+                                hotel.Description?.data || {}
+                            ).forEach(([key, val]) => {
+                                dataGroup.addControl(
+                                    key,
+                                    this.fb.group({
+                                        field: [(val as any)?.field], // Cast 'val' to 'any' to access 'field'
+                                        description: [
+                                            (val as any)?.description,
+                                        ], // Cast 'val' to 'any' to access 'description'
+                                    })
+                                );
+                            });
+
+                            // Handle Description.remarks dynamically
+                            const remarksGroup = this.hotelForm.get(
+                                'Description.remarks'
+                            ) as FormGroup;
+
+                            Object.entries(
+                                hotel.Description?.remarks || {}
+                            ).forEach(([key, val]) => {
+                                if (key === 'CheckInInstructions' && val) {
+                                    const checkInInstructionsGroup =
+                                        this.fb.group({
+                                            field: [(val as any).field], // Cast 'val' to 'any' to access 'field'
+                                            description: this.fb.array([]), // Initialize as FormArray
+                                        });
+
+                                    // Populate the 'description' FormArray with the instructions
+                                    ((val as any).description || []).forEach(
+                                        (instruction: any) => {
+                                            (
+                                                checkInInstructionsGroup.get(
+                                                    'description'
+                                                ) as FormArray
+                                            ).push(
+                                                this.fb.control(instruction)
+                                            );
+                                        }
+                                    );
+
+                                    remarksGroup.addControl(
+                                        'CheckInInstructions',
+                                        checkInInstructionsGroup
+                                    );
+                                } else {
+                                    remarksGroup.addControl(
+                                        key,
+                                        this.fb.group({
+                                            field: [(val as any)?.field],
+                                            description: [
+                                                (val as any)?.description,
+                                            ],
+                                        })
+                                    );
+                                }
+                            });
+
+                            // Set facilities
+                            this.setFacilities(hotel.HotelFacilities || []);
+                            // Set hotel images
+                            this.setHotelImages(hotel.Images || []);
+                        },
+                        (error) => {
+                            console.error('Error fetching hotel:', error);
+                        }
+                    );
             }
             // ✅ Trigger suggestions by default using `startWith('')`
             this.filteredCities = this.hotelForm
@@ -202,6 +280,48 @@ export class AddHotelComponent implements OnInit {
                     switchMap((value) => this.filterCities(value || ''))
                 );
         });
+    }
+
+    get checkInInstructionsArray(): FormArray {
+        return this.hotelForm.get(
+            'Description.remarks.CheckInInstructions.description'
+        ) as FormArray;
+    }
+
+    // Add a new instruction (FormControl)
+    addInstruction(): void {
+        const checkInInstructionsGroup = this.hotelForm.get(
+            'Description.remarks.CheckInInstructions'
+        ) as FormGroup;
+
+        let descriptionArray = checkInInstructionsGroup.get(
+            'description'
+        ) as FormArray;
+
+        if (!descriptionArray) {
+            descriptionArray = this.fb.array([]);
+            checkInInstructionsGroup.addControl(
+                'description',
+                descriptionArray
+            );
+        }
+
+        // Push a FormControl, NOT FormGroup
+        descriptionArray.push(this.fb.control(''));
+    }
+
+    removeInstruction(index: number): void {
+        const descriptionArray = this.hotelForm.get(
+            'Description.remarks.CheckInInstructions.description'
+        ) as FormArray;
+
+        if (descriptionArray && descriptionArray.length > 0) {
+            descriptionArray.removeAt(index);
+        }
+    }
+
+    getKeys(obj: any): string[] {
+        return obj ? Object.keys(obj) : [];
     }
 
     /** ✅ Fetch city list and return filtered data */

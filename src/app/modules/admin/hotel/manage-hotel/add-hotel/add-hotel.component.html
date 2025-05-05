@@ -176,14 +176,13 @@
                                     Gallery
                                 </div>
                                 <div class="-mr-3">
-                                  
-                                        <button
-                                        mat-flat-button color="primary"
-                                            (click)="addImage()"
-                                        >
-                                            Add image
-                                        </button>
-                              
+                                    <button
+                                        mat-flat-button
+                                        color="primary"
+                                        (click)="addImage()"
+                                    >
+                                        Add image
+                                    </button>
                                 </div>
                             </div>
                             <p>
@@ -258,14 +257,141 @@
                     <div class="flex flex-col items-start w-full">
                         <!-- Create Post -->
                         <fuse-card class="flex flex-col w-full p-6 sm:p-8 pb-6">
-                            <mat-form-field class="w-full">
-                                <mat-label>Description</mat-label>
-                                <textarea
-                                    matInput
-                                    formControlName="Description"
-                                ></textarea>
-                            </mat-form-field>
-                            <mat-form-field class="w-full">
+                            <!-- Description Data Section -->
+                            <div formGroupName="Description">
+                                <mat-accordion multi>
+                              
+                                  <!-- 📄 Details Accordion -->
+                                  <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title>📄 Description - Details</mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <mat-form-field class="w-full">
+                                      <textarea
+                                        matInput
+                                        formControlName="details"
+                                        placeholder="Enter description details"
+                                      ></textarea>
+                                    </mat-form-field>
+                                  </mat-expansion-panel>
+                              
+                                  <!-- 📘 Data Accordion -->
+                                  <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title>📘 Description - Data</mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div formGroupName="data">
+                                      <div
+                                        *ngFor="
+                                          let key of getKeys(hotelForm.get('Description.data')?.value)
+                                        "
+                                      >
+                                        <div
+                                          [formGroupName]="key"
+                                          class="mb-4 border p-3 rounded shadow-sm"
+                                        >
+                                          <mat-form-field class="w-full">
+                                            <mat-label>
+                                              {{
+                                                hotelForm.get('Description.data.' + key + '.field')?.value
+                                              }}
+                                            </mat-label>
+                                            <textarea
+                                              matInput
+                                              formControlName="description"
+                                            ></textarea>
+                                          </mat-form-field>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </mat-expansion-panel>
+                              
+                                  <!-- 📝 Remarks Accordion -->
+                                  <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title>📝 Description - Remarks</mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div formGroupName="remarks">
+                                      <ng-container
+                                        *ngFor="
+                                          let key of getKeys(hotelForm.get('Description.remarks')?.value)
+                                        "
+                                      >
+                                        <!-- CheckInInstructions -->
+                                        <div
+                                          *ngIf="key === 'CheckInInstructions'"
+                                          [formGroupName]="key"
+                                          class="mb-4 border p-3 rounded shadow-sm"
+                                        >
+                                          <mat-label>
+                                            {{
+                                              hotelForm.get(
+                                                'Description.remarks.CheckInInstructions.field'
+                                              )?.value
+                                            }}
+                                          </mat-label>
+                                          <div formArrayName="description">
+                                            <div
+                                              *ngFor="
+                                                let item of checkInInstructionsArray.controls;
+                                                let i = index
+                                              "
+                                            >
+                                              <mat-form-field class="w-full">
+                                                <mat-label>Instruction {{ i + 1 }}</mat-label>
+                                                <input
+                                                  matInput
+                                                  [formControlName]="i"
+                                                  placeholder="Enter instruction"
+                                                />
+                                              </mat-form-field>
+                                              <button
+                                                mat-button
+                                                color="warn"
+                                                (click)="removeInstruction(i)"
+                                              >
+                                                Remove
+                                              </button>
+                                            </div>
+                                          </div>
+                                          <button
+                                            mat-button
+                                            color="primary"
+                                            (click)="addInstruction()"
+                                          >
+                                            Add Instruction
+                                          </button>
+                                        </div>
+                              
+                                        <!-- Other remarks -->
+                                        <div
+                                          *ngIf="key !== 'CheckInInstructions'"
+                                          [formGroupName]="key"
+                                          class="mb-4 border p-3 rounded shadow-sm"
+                                        >
+                                          <mat-form-field class="w-full">
+                                            <mat-label>
+                                              {{
+                                                hotelForm.get('Description.remarks.' + key + '.field')
+                                                  ?.value
+                                              }}
+                                            </mat-label>
+                                            <textarea
+                                              matInput
+                                              formControlName="description"
+                                              placeholder="Enter description"
+                                            ></textarea>
+                                          </mat-form-field>
+                                        </div>
+                                      </ng-container>
+                                    </div>
+                                  </mat-expansion-panel>
+                              
+                                </mat-accordion>
+                              </div>
+                              
+
+                            <mat-form-field class="w-full mt-4">
                                 <mat-label>About</mat-label>
                                 <textarea
                                     matInput
@@ -338,7 +464,8 @@
                                             "
                                             [value]="city.CityName"
                                         >
-                                            {{ city.CityName }}, {{city.CountryCode}}
+                                            {{ city.CityName }},
+                                            {{ city.CountryCode }}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>

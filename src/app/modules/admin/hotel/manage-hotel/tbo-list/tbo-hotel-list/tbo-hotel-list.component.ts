@@ -42,7 +42,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     _MatSlideToggleRequiredValidatorModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
 ],
   templateUrl: './tbo-hotel-list.component.html',
   styleUrls: ['./tbo-hotel-list.component.scss']
@@ -117,14 +117,14 @@ export class TboHotelListComponent implements OnInit {
 
   onKosherStatusChange(selectedValue: string): void {
       if (selectedValue === '') {
-          this.kosherStatusFilter = ''; // Show all hotels (both kosher and non-kosher)
+          this.kosherStatusFilter = '';
       } else if (selectedValue === 'true') {
-          this.kosherStatusFilter = true; // Filter for kosher hotels
+          this.kosherStatusFilter = true; 
       } else if (selectedValue === 'false') {
-          this.kosherStatusFilter = false; // Filter for non-kosher hotels
+          this.kosherStatusFilter = false; 
       }
 
-      this.refreshHotelList(); // Fetch the filtered hotel list
+      this.refreshHotelList();
   }
 
   getStars(rate: number): number[] {
@@ -172,7 +172,7 @@ export class TboHotelListComponent implements OnInit {
   }
 
   openDialog(hotel): void {
-      this.router.navigate(['hotel/hotel-details', hotel.HotelCode]);
+      this.router.navigate(['hotel/hotel-details', hotel.HotelCode, hotel.isKosher]);
   }
 
   createHotel(): void {
