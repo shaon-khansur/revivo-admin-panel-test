@@ -14,4 +14,10 @@ export class FlightsOrderDetailsService {
             `${environment.baseUrl}flights-order?page=${data.page}&limit=${data.limit}`
         );
     }
+
+    searchFlightsOrder(data: {searchBy: string, value: string}) {
+        return this.http.get<any>(
+            `${environment.baseUrl}flights-order/search?${data.searchBy}=${data.value}`
+        );
+    }
 }
