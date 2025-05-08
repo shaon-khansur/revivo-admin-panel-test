@@ -1,0 +1,36 @@
+<div mat-dialog-content>
+    <h1 class="font-bold">Update Facility</h1>
+    <hr class="my-2" />
+    <div class="facility-card">
+        <div class="related-list">
+          <span class="related-badge" *ngFor="let item of facility.related">{{ item }}</span>
+        </div>
+      </div>
+      
+
+    <form [formGroup]="form">
+        <!-- City Hebrew Name -->
+        <mat-form-field class="w-full">
+            <mat-label>Facility Tag Name</mat-label>
+            <mat-select formControlName="tag">
+              <mat-option *ngFor="let feature of topHotelFeatures" [value]="feature">
+                {{ feature }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          
+
+        <!-- Country Hebrew Name -->
+        <mat-form-field class="w-full">
+            <mat-label>Icon Name</mat-label>
+            <input matInput formControlName="iconName" />
+        </mat-form-field>
+    </form>
+</div>
+
+<!-- Dialog Actions -->
+<div mat-dialog-actions class="flex justify-end gap-2">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button color="primary" (click)="onSave()">Save</button>
+</div>

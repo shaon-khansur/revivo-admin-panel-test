@@ -192,6 +192,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon : 'heroicons_outline:globe-asia-australia',
                 link : '/hotel/tbo-cityList',
             },
+            {
+                id   : 'hotel.Tbo-facilities',
+                title: 'Facility List',
+                type : 'basic',
+                icon : 'heroicons_outline:newspaper',
+                link : '/hotel/tbo-facility',
+            },
             // {
             //     id   : 'hotel.kosher-hotel',
             //     title: 'Kosher-Hotel List',

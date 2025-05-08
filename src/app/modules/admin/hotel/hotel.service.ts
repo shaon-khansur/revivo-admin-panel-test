@@ -270,6 +270,47 @@ export class HotelService {
             })
         );
     }
+    // facility
+    getFacilityData(data: {
+        page: number;
+        facilityName: string;
+        perPage: number;
+    }): Observable<{
+        allData: any[];
+        metadata: {
+            totalItems: number;
+            totalPages: number;
+            currentPage: number;
+            hasNextPage: boolean;
+            hasPrevPage: boolean;
+        };
+    }> {
+        // Start with the basic query parameters
+        let queryParams = `facilityName=${data.facilityName}&page=${data.page}&perPage=${data.perPage}`;
+        return this.http.get<{
+            allData: any[];
+            metadata: {
+                totalItems: number;
+                totalPages: number;
+                currentPage: number;
+                hasNextPage: boolean;
+                hasPrevPage: boolean;
+            };
+        }>(
+            `${this.temporaryUrl}getHotelFacility/getAllFacilityList?${queryParams}`
+        );
+    }
+    updateFacility(data: any): Observable<any> {
+        const url = `${this.temporaryUrl}getHotelFacility/updateIconName/${data.id}`;
+        return this.http.put(url, data).pipe(
+            catchError((error) => {
+                console.error('Error updating hotel facility data:', error);
+                return throwError(
+                    () => new Error('Error updating facility data')
+                );
+            })
+        );
+    }
     getAdminInfo(): Observable<KosherAdminInfo> {
         return this.http.get<KosherAdminInfo>(
             `${this.temporaryUrl}kosherAdminInfo`
