@@ -1,14 +1,25 @@
 <div mat-dialog-content>
     <h1 class="font-bold">Update Facility</h1>
     <hr class="my-2" />
-    <h1 class="mb-5 text-lg">{{ facility.tag }}</h1>
+    <div class="facility-card">
+        <div class="related-list">
+          <span class="related-badge" *ngFor="let item of facility.related">{{ item }}</span>
+        </div>
+      </div>
+      
 
     <form [formGroup]="form">
         <!-- City Hebrew Name -->
         <mat-form-field class="w-full">
-            <mat-label>Facility Name</mat-label>
-            <input matInput formControlName="tag" />
-        </mat-form-field>
+            <mat-label>Facility Tag Name</mat-label>
+            <mat-select formControlName="tag">
+              <mat-option *ngFor="let feature of topHotelFeatures" [value]="feature">
+                {{ feature }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          
 
         <!-- Country Hebrew Name -->
         <mat-form-field class="w-full">

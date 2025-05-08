@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormArray,
@@ -6,7 +6,6 @@ import {
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
-    Validators,
 } from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
@@ -55,6 +54,41 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export class UpdateFacilityComponent {
     form: FormGroup;
 
+    topHotelFeatures = [
+        'Private beach / Direct beach access',
+        'Terrace / Rooftop terrace',
+        'Balcony / Private balcony or terrace',
+        'Sea view / Ocean view rooms',
+        'Infinity pool / Pool with view',
+        'Casino / Casino nearby',
+        'Evening entertainment / Live music',
+        'Nightclub / DJ / Lounge bar',
+        'Tour desk / Concierge services',
+        'Free shuttle',
+        'Outdoor pool',
+        'Indoor heated pool',
+        'Jacuzzi / Hot tub / Whirlpool',
+        'Spa and wellness centre',
+        'Massage / In-room massage',
+        'Turkish bath / Hammam / Steam room / Sauna',
+        'Fitness center / Gym',
+        'Yoga classes / Fitness classes',
+        'Bicycles available / Bike tours',
+        'Running or walking trails nearby',
+        'Air conditioning',
+        'Free WiFi',
+        'Room service',
+        'Kitchenette / Fully equipped kitchen',
+        'Blackout curtains / Soundproof rooms',
+        'Smart TV / Digital TV service / Streaming',
+        'In-room safe / Laptop safe',
+        'Complimentary toiletries / Bathrobes / Slippers',
+        'Kids’ club / Playground / Babysitting services',
+        'Free breakfast / Buffet breakfast',
+    ];
+    isCustomTag = false;
+  customTag = '';
+
     constructor(
         public dialogRef: MatDialogRef<UpdateFacilityComponent>,
         @Inject(MAT_DIALOG_DATA) public facility: any,
@@ -62,41 +96,64 @@ export class UpdateFacilityComponent {
     ) {
         // Initialize the form
         this.form = this.fb.group({
-            tag: [this.facility?.tag || ''],
-            iconName: [
-                this.facility?.iconName || '',
-            ],
-      
-    
+            tag: [this.findMatchingFeature(this.facility?.tag)],
+            iconName: [this.facility?.iconName || ''],
             id: facility.id,
         });
 
-        // Update form with data from the dialog
+        // Update form with consistent, matched data
         this.updateForm(facility);
     }
 
-    // Get airport data as an array
+    enableCustomTag() {
+        this.isCustomTag = true;
+      }
+    
+      // Handle selection change and custom tag saving
+      onSelectionChange(event: any) {
+        // If it's a custom tag, update the form value accordingly
+        if (this.isCustomTag && this.customTag) {
+          this.form.get('tag')?.setValue(this.customTag);
+        }
+      }
+    
+      // Save custom tag once user finishes input (on blur)
+      saveCustomTag() {
+        if (this.customTag) {
+          this.form.get('tag')?.setValue(this.customTag); // Save the custom tag
+          this.isCustomTag = false; // Exit custom tag input mode
+        }
+      }
+    
+
+    findMatchingFeature(value: string): string {
+        if (!value) return '';
+        const match = this.topHotelFeatures.find(
+            feature =>
+                feature.toLowerCase().replace(/\s+/g, '') ===
+                value.toLowerCase().replace(/\s+/g, '')
+        );
+        return match || '';
+    }
+
     get airportDataArray(): FormArray {
         return this.form.get('airportData') as FormArray;
     }
 
-    // Method to patch the form with new data
     updateForm(facility: any): void {
         this.form.patchValue({
-            tag: facility.tag,
+            tag: this.findMatchingFeature(facility.tag), // FIXED: ensure tag matches topHotelFeatures
             iconName: facility.iconName,
             id: facility.id,
         });
     }
 
-    // Method to save the form data
     onSave(): void {
         if (this.form.valid) {
             this.dialogRef.close({ action: 'save', data: this.form.value });
         }
     }
 
-    // Method to cancel and close the dialog
     onCancel(): void {
         this.dialogRef.close();
     }

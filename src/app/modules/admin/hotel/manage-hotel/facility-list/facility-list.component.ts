@@ -53,6 +53,7 @@ export class FacilityListComponent implements OnInit {
     dataSource = new MatTableDataSource<any>([]);
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = [
+        'totalItems',
         'tag',
         'iconName',
         'view',
